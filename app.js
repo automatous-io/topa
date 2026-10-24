@@ -1506,7 +1506,7 @@ function aboutHtml() {
     `<button class="ax" data-about-close aria-label="Close">${CLOSE_ICON}</button>` +
     `<div class="ahead"><h2>TOPA</h2><p>Ventura County Local Music Finder</p></div>` +
     `<p class="astory">A personal project by local music lovers who wanted to find live music nearby, ` +
-    `pick a show fast, and have their Tesla navigate there. The future is now.</p>` +
+    `pick a show fast, and have their Tesla navigate there by a tap on the screen or voice. The future is now!</p>` +
     `<h3>How it works</h3>` +
     `<p>Shows come from the public <a href="${VR_SITE}" target="_blank" rel="noopener">Ventura Rocks</a> calendar, ` +
     `checked about 3 times a day${updatedLabel() ? ` (last change ${updatedLabel()})` : ""}. ` +

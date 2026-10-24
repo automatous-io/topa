@@ -1,6 +1,6 @@
 # TOPA Local Music Finder
 
-*A personal project by local music lovers who wanted to find live local music nearby, pick a show fast, and have their Tesla navigate there. The future is now!*
+*A personal project by local music lovers who wanted to find live local music nearby, pick a show fast, and have their Tesla navigate there by a tap on the screen or voice. The future is now!*
 
 **Who's playing locally tonight, and what do they sound like?** TOPA is a Spotify-style live music finder for Ventura County, designed first for a Tesla's touchscreen and then for phones. Open it, see upcoming shows, tap ▶ to hear a band, and go.
 

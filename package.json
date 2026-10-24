@@ -1,0 +1,11 @@
+{
+  "name": "topa",
+  "private": true,
+  "description": "Tests for TOPA. The app itself has no build step and no dependencies.",
+  "scripts": {
+    "test": "node --test tests/"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^24.43.1"
+  }
+}

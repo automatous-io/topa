@@ -107,6 +107,22 @@ cache a new name, so every phone and car picks up the new files.
 Two address-bar switches help with testing: `?tesla=1` shows the car-only voice hint in any browser, and
 `?now=2026-10-24T19:00` pins the date and time.
 
+## Tests
+
+```sh
+npm install   # once; the only dependency is for testing (puppeteer-core)
+npm test
+```
+
+[`tests/app.test.mjs`](tests/app.test.mjs) opens the real app in headless Chrome and uses it like a person would: day and
+genre chips, search, starring bands and venues, the Faves tabs, opening a show and going back, the Tesla-only voice hint,
+and the phone layout. Each test gets a fresh browser session. Runs are repeatable: listings come from a saved copy
+([`tests/fixtures/events.json`](tests/fixtures/events.json)), the clock is pinned, and Deezer and visit counting are
+blocked. It uses your installed Chrome, or set `CHROME_PATH`.
+
+[`.github/workflows/test.yml`](.github/workflows/test.yml) runs the same tests on GitHub for every code change, so each
+commit gets a ✓ or ✗ before it's tagged as a release.
+
 ## Project layout
 
 | Path | What it is |
@@ -118,9 +134,11 @@ Two address-bar switches help with testing: `?tesla=1` shows the car-only voice 
 | `events.json` | Current listings, written by the fetch script |
 | `scripts/fetch_events.py` | Pulls and cleans the calendar |
 | `.github/workflows/update-events.yml` | Runs the fetch on a schedule |
+| `.github/workflows/test.yml` | Runs the tests on every code change |
 | `sw.js`, `manifest.json`, `icon-*.png` | Offline support and install icons |
 | `screenshots/` | Tesla and phone screenshots |
 | `.prettierrc.json` | Code formatting settings ([Prettier](https://prettier.io)) |
+| `tests/`, `package.json` | Browser tests (`npm test`) and their saved listings |
 | `LICENSE` | All rights reserved; what is and isn't covered |
 
 ## Credits

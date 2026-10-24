@@ -1,0 +1,25 @@
+#
+# Copyright 2026 AUTOMATOUS.IO. All rights reserved. See LICENSE.
+#
+name: Tests
+on:
+  push:
+    branches: [main]
+    # the 3x-daily listings update and docs-only changes don't need a test run
+    paths-ignore: ["events.json", "screenshots/**", "**.md"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # the runner already has Google Chrome installed; the tests find it on their own
+      - run: npm test

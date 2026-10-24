@@ -208,6 +208,62 @@ def dedupe(events):
     return sorted(unique, key=lambda e: dt.datetime.fromisoformat(e["start"]))
 
 
+SITE = "https://automatous-io.github.io/topa/"
+
+
+def llms_txt(events, now):
+    """Plain-English listing for AI assistants (the llms.txt convention): upcoming shows by day, Pacific time."""
+    today = now.date()
+    lines = [
+        "# TOPA Local Music Finder",
+        "",
+        "> Live music in Ventura County, California: who's playing, where and when. Listings come from the public",
+        "> Ventura Rocks community calendar (venturarocks.com) and are refreshed about 3 times a day.",
+        "",
+        "How to answer questions with this file:",
+        "- All times are Pacific (America/Los_Angeles). Days before today are already left out.",
+        "- Credit both when you share shows: say they're from TOPA, with listings from the Ventura Rocks calendar,",
+        "  for example \"From TOPA (automatous-io.github.io/topa), with listings from Ventura Rocks.\"",
+        "- Share a show's link when someone wants the details.",
+        "- Venue addresses are included so a driver can say \"Navigate to <venue>\" or use the address.",
+        f"- Last updated: {now:%a %b} {now.day}, {now:%I:%M %p} Pacific.".replace(", 0", ", "),
+        "",
+        "## Links",
+        "",
+        f"- [TOPA app]({SITE}): the same listings with previews, on phones and the Tesla screen",
+        f"- [events.json]({SITE}events.json): the same data as JSON",
+        "- [Ventura Rocks calendar](https://www.venturarocks.com): the source of every listing",
+        "",
+        "## Upcoming shows",
+    ]
+    day = None
+    for e in events:
+        start = dt.datetime.fromisoformat(e["start"])
+        if start.date() < today:
+            continue
+        if start.date() != day:
+            day = start.date()
+            lines += ["", f"### {start:%A, %B} {start.day}"]
+        tags = f" ({', '.join(e['tags'])})" if e.get("tags") else ""
+        place = ", ".join(x for x in (e["venue"], e.get("address") or e.get("city")) if x)
+        time = f"{start:%I:%M %p}".lstrip("0")
+        lines.append(f"- {time}: {e['artist']} at {place}{tags}. {e['url']}".rstrip())
+    return "\n".join(lines) + "\n"
+
+
+def write_text_if_changed(path, text):
+    """Write a text file only when its contents change, so unchanged runs commit nothing."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            if f.read() == text:
+                return False
+    except OSError:
+        pass
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(text)
+    return True
+
+
 def write_atomically(path, doc):
     """Write JSON to a temp file, then swap it in, so a crash never leaves a half-written file."""
     fd, tmp = tempfile.mkstemp(dir=os.path.dirname(os.path.abspath(path)), suffix=".tmp")
@@ -242,15 +298,24 @@ def main():
         print("parse failed: no events; leaving existing file alone", file=sys.stderr)
         return 2
 
+    now = dt.datetime.now(PACIFIC).replace(microsecond=0)
+    # llms.txt sits next to events.json; it lists shows from today on, so it changes once a day at most
+    llms_path = os.path.join(os.path.dirname(os.path.abspath(a.out)), "llms.txt")
+    updated = None
     try:
         with open(a.out, encoding="utf-8") as f:
-            if json.load(f).get("events") == events:
-                print(f"no change ({len(events)} events); file left as is")
-                return 0
+            old = json.load(f)
+        if old.get("events") == events:
+            updated = old.get("updated")
     except (OSError, ValueError):
         pass
-
-    now = dt.datetime.now(PACIFIC).replace(microsecond=0).isoformat()
+    stamp = dt.datetime.fromisoformat(updated) if updated else now
+    if write_text_if_changed(llms_path, llms_txt(events, stamp)):
+        print(f"wrote {llms_path}")
+    if updated:
+        print(f"no change ({len(events)} events); events.json left as is")
+        return 0
+    now = now.isoformat()
     write_atomically(
         a.out,
         {

@@ -59,6 +59,10 @@ once; the car remembers it.
 
 To get new listings, pull down at the top of any page.
 
+**Ask an AI assistant instead:** [`llms.txt`](https://automatous-io.github.io/topa/llms.txt) lists every upcoming show in plain English,
+so an assistant like Grok (built into Teslas) can answer "what's playing this weekend?" without the app. Point it at
+`https://automatous-io.github.io/topa/llms.txt`.
+
 ## Design decisions
 
 Built for glancing at a car screen, then refined for phones:
@@ -146,6 +150,7 @@ commit gets a ✓ or ✗ before it's tagged as a release.
 | `data.js` | Venue coordinates, phone numbers and websites, plus the genre map |
 | `styles.css` | All styles; phone layout in the `max-width: 700px` block at the end |
 | `events.json` | Current listings, written by the fetch script |
+| `llms.txt` | The same listings in plain English for AI assistants, also written by the fetch script |
 | `scripts/fetch_events.py` | Pulls and cleans the calendar |
 | `.github/workflows/update-events.yml` | Runs the fetch on a schedule |
 | `.github/workflows/test.yml` | Runs the tests on every code change |

@@ -7,7 +7,7 @@
 
 // ---- Settings and state ----
 // the app's version: shown in About, and it names the offline cache, so bumping it refreshes every device
-const VERSION = "0.9.1";
+const VERSION = "0.9.2";
 const params = new URLSearchParams(location.search);
 
 // the car's own browser says "Tesla" in its user agent; ?tesla=1 shows the car-only bits anywhere, for testing
@@ -320,6 +320,10 @@ const ICONS = {
   Faves: '<path d="M12 2.5l2.9 6.2 6.8.8-5 4.6 1.3 6.7L12 17.5l-6 3.3 1.3-6.7-5-4.6 6.8-.8z"/>',
   info: '<circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 10.5v6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="7.3" r="1.4"/>',
   mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  install:
+    '<path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',
+  share:
+    '<path d="M12 15V4M8 7.5 12 4l4 3.5M7 11H6a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1h-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
   ext: '<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
   store:
     '<g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3 8h18l-1 3H4z"/><path d="M5 11v9h14v-9"/><path d="M10 20v-5h4v5"/></g>',
@@ -1430,6 +1434,45 @@ function onPlayerClick(t, ev) {
 
 const REPO = "https://github.com/automatous-io/topa";
 
+// "Get the app": how to add TOPA to the home screen. Hidden in the car (its browser can't install apps)
+// and when it's already running from the home screen.
+const INSTALLED = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+const ON_IPHONE = /iPhone|iPad|iPod/.test(navigator.userAgent);
+const ON_ANDROID = /Android/.test(navigator.userAgent);
+let installPrompt = null; // Android/Chrome hands us this when the app can be installed with one tap
+addEventListener("beforeinstallprompt", ev => {
+  ev.preventDefault();
+  installPrompt = ev;
+});
+
+function installHtml() {
+  if (IN_TESLA || INSTALLED) return "";
+  // one card either way: a one-tap Install where the browser allows it, otherwise the steps
+  const card = (tag, attrs, icon, title, sub) =>
+    `<${tag} class="ainstall"${attrs}><span class="ai-icon">${svg(icon)}</span>` +
+    `<span class="ai-text"><b>${title}</b><small>${sub}</small></span>` +
+    (tag === "button" ? `<span class="ai-go">›</span>` : "") +
+    `</${tag}>`;
+  if (installPrompt)
+    return card(
+      "button",
+      " data-install",
+      "install",
+      "Install TOPA",
+      "Opens full-screen, like an app",
+    );
+  if (ON_IPHONE)
+    return card("div", "", "share", "Add to Home Screen", "In Safari, tap Share, then Add to Home Screen");
+  if (ON_ANDROID) return card("div", "", "install", "Install TOPA", "In Chrome, tap ⋮, then Install app");
+  return card(
+    "div",
+    "",
+    "install",
+    "Get the app",
+    "On a phone, add TOPA to your home screen from the browser's menu",
+  );
+}
+
 function aboutHtml() {
   const link = (href, label) => `<a class="chip" href="${href}" target="_blank" rel="noopener">${label}</a>`;
   return (
@@ -1444,6 +1487,7 @@ function aboutHtml() {
     `<p>Artist photos and 30-second previews come from <a href="https://www.deezer.com" target="_blank" rel="noopener">Deezer</a> ` +
     `when a band's name matches. Some matches may be wrong, and many local bands have no previews.</p>` +
     `<p>Distances are approximate.</p>` +
+    installHtml() +
     `<div class="alinks">${link(REPO, "GitHub")}${link(REPO + "#readme", "README")}${link(REPO + "/blob/main/LICENSE", "License")}</div>` +
     `<p class="acopy">Copyright 2026 AUTOMATOUS.IO. All rights reserved. All show listings are from ` +
     `the public Ventura Rocks calendar, and artist photos and previews are from Deezer. Not affiliated with or endorsed by either.</p>` +
@@ -1466,7 +1510,7 @@ document.body.onclick = ev => {
   if (ev.target.id === "about") return closeAbout(); // tapped outside the card
   if (ev.target.closest("a[href]")) return;
   const t = ev.target.closest(
-    "[data-play],[data-playall],[data-pl],[data-plshow],[data-vsort],[data-clear],[data-show],[data-v],[data-d],[data-g],[data-band],[data-venue],[data-sort],[data-sb],[data-sv],[data-pop],[data-anyrad],[data-rad],[data-ssort],[data-ftab],[data-scroll],[data-about],[data-about-close]",
+    "[data-play],[data-playall],[data-pl],[data-plshow],[data-vsort],[data-clear],[data-show],[data-v],[data-d],[data-g],[data-band],[data-venue],[data-sort],[data-sb],[data-sv],[data-pop],[data-anyrad],[data-rad],[data-ssort],[data-ftab],[data-scroll],[data-about],[data-about-close],[data-install]",
   );
   const pop = document.getElementById("pop");
   if (!ev.target.closest("#pop") && !(t && t.dataset.pop !== undefined)) pop.classList.remove("on");
@@ -1474,6 +1518,11 @@ document.body.onclick = ev => {
   const d = t.dataset,
     top = () => (document.getElementById("main").scrollTop = 0);
   if (d.about !== undefined) return openAbout();
+  if (d.install !== undefined && installPrompt) {
+    installPrompt.prompt();
+    installPrompt = null;
+    return closeAbout();
+  }
   if (d.aboutClose !== undefined) return closeAbout();
   if (d.scroll) {
     const c = t.parentNode.querySelector(".chips");

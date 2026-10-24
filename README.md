@@ -29,7 +29,8 @@ More in [`screenshots/`](screenshots/): every page at Tesla size (1920×1200) an
 - **Distance when you want it.** It shows every show by default. Pick 5, 10 or 25 miles to narrow it down. Distances only appear when the browser shares your location, so it never shows guessed ones.
 - **Getting there.** Directions open Google Maps. In the car's own browser, show and venue pages also show the phrase to say
   ("Navigate to The Grape") and the address, since a map link in the browser may not start the car's navigation.
-- **Works like an app.** You can add it to a phone's home screen, it keeps working offline with the last listings, and the browser's back button (or swipe-back) moves through pages.
+- **Works like an app.** You can add it to a phone's home screen (iPhone: Safari → Share → Add to Home Screen; Android:
+  Chrome → ⋮ → Install app), it keeps working offline with the last listings, and the browser's back button (or swipe-back) moves through pages.
 - **About.** Credits, how it works, and links to this repo live in an About popup, opened from the sidebar on the Tesla
   or the bottom bar on phones, so the main screens stay clean.
 

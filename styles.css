@@ -1019,6 +1019,57 @@ h2 {
   text-align: center;
   color: var(--mute);
 }
+/* "Get the app" card in About */
+.ainstall {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 22px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #ffffff0d;
+  border: 1px solid #ffffff14;
+  text-align: left;
+  color: var(--ink);
+}
+button.ainstall:hover {
+  background: #ffffff17;
+}
+.ai-icon {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--acc);
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ai-icon svg {
+  width: 24px;
+  height: 24px;
+}
+.ai-text {
+  flex: 1;
+  min-width: 0;
+}
+.ai-text b {
+  display: block;
+  font-size: 16px;
+}
+.ai-text small {
+  display: block;
+  margin-top: 2px;
+  font-size: 14px;
+  color: var(--mute);
+}
+.ai-go {
+  font-size: 26px;
+  color: var(--mute);
+}
 .alinks {
   display: flex;
   flex-wrap: wrap;

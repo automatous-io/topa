@@ -1547,8 +1547,8 @@ main.back {
     z-index: 3;
     top: 0;
     width: calc(100% + 32px);
-    margin: 0 -16px 10px;
-    padding: calc(10px + env(safe-area-inset-top)) 0 10px;
+    margin: 0 -16px 18px;
+    padding: calc(18px + env(safe-area-inset-top)) 0 14px;
     text-align: center;
     background: transparent;
     transition:
@@ -1564,7 +1564,7 @@ main.back {
   }
   .mlogo small {
     display: block;
-    margin-top: 2px;
+    margin-top: 5px;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.04em;
@@ -1615,8 +1615,8 @@ main.back {
   }
   .hero {
     /* slides up under the pinned header so its purple glow fills the top */
-    margin: calc(-94px - env(safe-area-inset-top)) -16px 18px;
-    padding: calc(106px + env(safe-area-inset-top)) 16px 20px;
+    margin: calc(-120px - env(safe-area-inset-top)) -16px 18px;
+    padding: calc(132px + env(safe-area-inset-top)) 16px 20px;
     gap: 16px;
   }
   .hero .art {
@@ -1765,7 +1765,7 @@ main.back {
   .star.big {
     position: absolute;
     right: 12px;
-    top: calc(114px + env(safe-area-inset-top));
+    top: calc(140px + env(safe-area-inset-top));
     margin: 0;
   }
   .hero {

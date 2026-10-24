@@ -96,6 +96,7 @@ Ventura Rocks calendar (Tockify)
 
 1. **Listings.** [`scripts/fetch_events.py`](scripts/fetch_events.py) (Python standard library only) reads the calendar's public
    `monthly` and `upcoming` pages, keeps only facts (band, time, venue, address, town, tags, link), merges and de-duplicates them,
+   writes every time in Pacific with a plain-English `when` ("Sat Oct 24, 7:00 PM") so people and AI assistants read it right,
    and writes `events.json`. If the page won't parse, it exits with an error and leaves the old file alone.
 2. **Schedule.** [`.github/workflows/update-events.yml`](.github/workflows/update-events.yml) runs it around 7am, noon and 4pm Pacific
    and commits `events.json` only when the listings changed.

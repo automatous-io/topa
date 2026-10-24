@@ -24,11 +24,13 @@ import re
 import sys
 import tempfile
 import urllib.request
+from zoneinfo import ZoneInfo
 from html.parser import HTMLParser
 
 BASE = "https://tockify.com/vtarocks/"
 USER_AGENT = "TOPA-local-music-finder/1.0 (+https://github.com/automatous-io/topa; personal, non-commercial; 3x daily)"
 SCHEMA = 1
+PACIFIC = ZoneInfo("America/Los_Angeles")  # every venue is in Ventura County
 
 
 def get(page):
@@ -59,10 +61,23 @@ def city_from(address):
 
 
 def iso(ms):
-    """Epoch milliseconds -> '2026-10-23T02:00:00Z'."""
+    """Epoch milliseconds -> Pacific time with its offset, e.g. '2026-10-22T19:00:00-07:00'."""
     if not ms:
         return None
-    return dt.datetime.fromtimestamp(ms / 1000, dt.timezone.utc).isoformat().replace("+00:00", "Z")
+    return dt.datetime.fromtimestamp(ms / 1000, PACIFIC).isoformat()
+
+
+def pacific(stamp):
+    """Any ISO time ('…Z' or with an offset) -> the same moment in Pacific time."""
+    if not stamp:
+        return None
+    return dt.datetime.fromisoformat(stamp.replace("Z", "+00:00")).astimezone(PACIFIC).isoformat()
+
+
+def when(stamp):
+    """'2026-10-24T19:00:00-07:00' -> 'Sat Oct 24, 7:00 PM': easy for people and AI assistants to read back."""
+    d = dt.datetime.fromisoformat(stamp)
+    return f"{d:%a %b} {d.day}, {d:%I:%M %p}".replace(", 0", ", ")
 
 
 def json_object_at(text, start):
@@ -169,8 +184,8 @@ def from_ld(text):
             events.append(
                 {
                     "artist": clean_artist(html.unescape(item.get("name") or "")),
-                    "start": item.get("startDate"),
-                    "end": item.get("endDate"),
+                    "start": pacific(item.get("startDate")),
+                    "end": pacific(item.get("endDate")),
                     "venue": (place.get("name") or "").strip(),
                     "address": ", ".join(p for p in parts if p),
                     "city": address.get("addressLocality") or "",
@@ -188,8 +203,9 @@ def dedupe(events):
         key = (e["artist"], e["venue"], e["start"])
         if e["artist"] and e["start"] and key not in seen:
             seen.add(key)
-            unique.append(e)
-    return sorted(unique, key=lambda e: e["start"])
+            unique.append({**e, "when": when(e["start"])})
+    # sort by the actual moment (string order can slip when daylight saving changes the offset)
+    return sorted(unique, key=lambda e: dt.datetime.fromisoformat(e["start"]))
 
 
 def write_atomically(path, doc):
@@ -234,12 +250,13 @@ def main():
     except (OSError, ValueError):
         pass
 
-    now = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    now = dt.datetime.now(PACIFIC).replace(microsecond=0).isoformat()
     write_atomically(
         a.out,
         {
             "schema": SCHEMA,
             "updated": now,
+            "time_zone": "America/Los_Angeles (all times are Pacific)",
             "source": {"url": BASE + "monthly", "parser": parser, "credit": "Ventura Rocks (venturarocks.com)"},
             "events": events,
         },

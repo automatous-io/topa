@@ -10,14 +10,22 @@
 const VERSION = "0.9.6";
 const params = new URLSearchParams(location.search);
 
-// the car's browser calls itself "TeslaBrowser/<version>" on Linux; in case a version leaves that out, a Linux
-// touchscreen (which almost nothing else is) counts too. ?tesla=1 shows the car-only bits anywhere, for testing.
-const IN_TESLA =
-  /Tesla/i.test(navigator.userAgent) ||
-  (/X11; Linux/.test(navigator.userAgent) &&
-    !/Android/.test(navigator.userAgent) &&
-    navigator.maxTouchPoints > 0) ||
-  params.has("tesla");
+// Is this the car's browser? Some versions say "Tesla" in the user agent, but current ones just say
+// "X11; Linux x86_64" like desktop Chrome on Linux, so a Linux touchscreen (which almost nothing else is)
+// counts too. As a sure fallback, opening TOPA once with ?tesla=1 remembers it on this device (?tesla=0 undoes it).
+const IN_TESLA = (() => {
+  const ua = navigator.userAgent;
+  const touch =
+    navigator.maxTouchPoints > 0 || "ontouchstart" in window || matchMedia("(any-pointer: coarse)").matches;
+  const linuxTouchscreen = /X11; Linux/.test(ua) && !/Android|CrOS/.test(ua) && touch;
+  const flag = params.get("tesla");
+  try {
+    if (flag === "0") localStorage.removeItem("topa.car.v1");
+    else if (flag !== null) localStorage.setItem("topa.car.v1", "1");
+    if (localStorage.getItem("topa.car.v1")) return true;
+  } catch (_) {}
+  return flag !== null && flag !== "0" ? true : /Tesla/i.test(ua) || linuxTouchscreen;
+})();
 const NOW = params.get("now") ? new Date(params.get("now")) : new Date(); // ?now=… pins the date for testing
 
 // what the app saves in the browser (the version number lets a future format change start fresh)

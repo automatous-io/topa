@@ -7,11 +7,17 @@
 
 // ---- Settings and state ----
 // the app's version: shown in About, and it names the offline cache, so bumping it refreshes every device
-const VERSION = "0.9.5";
+const VERSION = "0.9.6";
 const params = new URLSearchParams(location.search);
 
-// the car's own browser says "Tesla" in its user agent; ?tesla=1 shows the car-only bits anywhere, for testing
-const IN_TESLA = /Tesla/i.test(navigator.userAgent) || params.has("tesla");
+// the car's browser: some versions say "Tesla" in the user agent; others only say Linux, on a touchscreen,
+// which almost nothing else is. ?tesla=1 shows the car-only bits anywhere, for testing.
+const IN_TESLA =
+  /Tesla/i.test(navigator.userAgent) ||
+  (/X11; Linux/.test(navigator.userAgent) &&
+    !/Android/.test(navigator.userAgent) &&
+    navigator.maxTouchPoints > 0) ||
+  params.has("tesla");
 const NOW = params.get("now") ? new Date(params.get("now")) : new Date(); // ?now=… pins the date for testing
 
 // what the app saves in the browser (the version number lets a future format change start fresh)
@@ -1519,7 +1525,7 @@ function aboutHtml() {
     `<button class="ax" data-about-close aria-label="Close">${CLOSE_ICON}</button>` +
     `<div class="ahead">${wordmark("about")}<p>Ventura County Local Music Finder</p></div>` +
     `<p class="astory">A personal project by local music lovers who wanted to find live music nearby, ` +
-    `pick a show fast, and have their Tesla navigate there by a tap on the screen or voice. The future is now!</p>` +
+    `pick a show fast, and have their Tesla navigate there by voice. The future is now!</p>` +
     `<h3>How it works</h3>` +
     `<p>Shows come from the public <a href="${VR_SITE}" target="_blank" rel="noopener">Ventura Rocks</a> calendar, ` +
     `checked about 3 times a day${updatedLabel() ? ` (last change ${updatedLabel()})` : ""}. ` +

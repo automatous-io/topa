@@ -2,7 +2,7 @@
 
 <h1 align="center">TOPA Local Music Finder</h1>
 
-*A personal project by local music lovers who wanted to find live local music nearby, pick a show fast, and have their Tesla navigate there by a tap on the screen or voice. The future is now!*
+*A personal project by local music lovers who wanted to find live local music nearby, pick a show fast, and have their Tesla navigate there by voice. The future is now!*
 
 **Who's playing locally tonight, and what do they sound like?** TOPA is a Spotify-style live music finder for Ventura County, designed first for a Tesla's touchscreen and then for phones. Open it, see upcoming shows, tap ▶ to hear a band, and go.
 
@@ -48,8 +48,9 @@ To get new listings, pull down at the top of any page.
   you're looking at, it's pinned at the top of Shows, and shows at a faved venue are tagged "★ Fave venue". The Faves tab
   switches between your bands and venues.
 - **Distance when you want it.** It shows every show by default. Pick 5, 10 or 25 miles to narrow it down. Distances only appear when the browser shares your location, so it never shows guessed ones.
-- **Getting there.** Directions open Google Maps. In the car's own browser, show and venue pages also show the phrase to say
-  ("Navigate to The Grape") and the address, since a map link in the browser may not start the car's navigation.
+- **Getting there.** For safety, Tesla doesn't let websites start the car's navigation; a map link just opens Google Maps
+  in the browser. So in the car, show and venue pages show the phrase to say ("Navigate to The Grape") with the
+  address, and the car's voice command does the rest. On phones, directions open the maps app.
 - **Works like an app.** Add it to a phone's home screen (see [Use it](#use-it)) and it opens full-screen. It keeps working
   offline with the last listings, pull down to refresh, and the back button (or swipe-back) moves through pages.
 - **About.** Credits, how it works, and links to this repo live in an About popup, opened from the sidebar on the Tesla

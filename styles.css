@@ -696,19 +696,25 @@ h2 {
 }
 /* Tesla only: how to start the car's navigation by voice */
 .vhint {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-top: 14px;
-  font-size: 17px;
-  color: #ccc;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
+  padding: 12px 18px 12px 12px;
+  border-radius: 14px;
+  background: #ffffff12;
+  border: 1px solid #ffffff1f;
+  font-size: 18px;
+  color: #ddd;
 }
 .vhint svg {
   flex: none;
-  width: 22px;
-  height: 22px;
-  margin-top: 1px;
-  color: var(--acc);
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 50%;
+  background: var(--sunset);
+  color: var(--on-acc);
 }
 .vhint b {
   color: var(--ink);
@@ -1471,6 +1477,114 @@ main.back {
 #toast.on {
   opacity: 1;
 }
+/* ---- the car's screen ----
+   The Tesla browser is zoomed in: full screen is about 1280px wide, and with the car's side panel open
+   about 780px. These sizes keep everything comfortable there, and on any other wide screen. */
+@media (min-width: 701px) {
+  main {
+    padding: 22px 28px 32px;
+  }
+  .hero {
+    margin: -22px -28px 22px;
+    padding: 36px 28px 24px;
+    gap: 24px;
+  }
+  .hero .art {
+    width: 168px;
+    height: 168px;
+    font-size: 54px;
+  }
+  .hero h1 {
+    font-size: 48px;
+  }
+  .star.big {
+    margin-top: 24px;
+  }
+  .agrid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  .agrid .tile {
+    padding: 10px;
+  }
+}
+/* half screen (the car's side panel open) */
+@media (max-width: 1000px) and (min-width: 701px) {
+  .app {
+    grid-template-columns: 80px minmax(0, 1fr);
+    gap: 6px;
+    padding: 6px;
+  }
+  nav button {
+    width: 66px;
+    height: 62px;
+  }
+  main {
+    padding: 18px 20px 28px;
+  }
+  h1 {
+    font-size: 30px;
+  }
+  .hero {
+    margin: -18px -20px 18px;
+    padding: 24px 20px 20px;
+    gap: 18px;
+    align-items: center;
+  }
+  .hero .art {
+    width: 112px;
+    height: 112px;
+    font-size: 38px;
+  }
+  .hero h1 {
+    font-size: 34px;
+    margin: 4px 0 8px;
+  }
+  .agrid {
+    grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+    gap: 8px;
+  }
+  .agrid .tile {
+    padding: 6px;
+  }
+  .tile b {
+    font-size: 15px;
+  }
+  .tile small {
+    font-size: 13px;
+  }
+  /* rows: drop the genre tags column so band and venue names have room */
+  .rw {
+    grid-template-columns: 64px 48px minmax(0, 1fr) auto;
+    gap: 14px;
+    padding: 8px 10px;
+  }
+  .rw .art {
+    width: 48px;
+    height: 48px;
+  }
+  .rw > .tg {
+    display: none;
+  }
+  .rw > .star {
+    grid-column: 4;
+  }
+  .rw.vrow {
+    grid-template-columns: 48px minmax(0, 1fr) minmax(0, 220px) auto;
+  }
+  .vrow > .star {
+    grid-column: 4;
+  }
+  .vnext {
+    font-size: 14px;
+  }
+  .cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .vhint {
+    font-size: 16px;
+  }
+}
+
 @media (max-width: 700px) {
   .app {
     grid-template-columns: minmax(0, 1fr);

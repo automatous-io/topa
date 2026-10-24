@@ -1,0 +1,19 @@
+TOPA Local Music Finder
+Copyright 2026 AUTOMATOUS.IO. All rights reserved.
+
+WHAT THIS COVERS
+The source code, design, and original graphics in this repository
+(including the TOPA name and logo). It is shared publicly for viewing
+as a personal portfolio piece. No permission is granted to copy, modify,
+distribute, or use it without written permission from the author.
+
+WHAT THIS DOES NOT COVER
+This project displays content it does not own, and claims no rights to it:
+
+- All show listings (bands, dates, venues, addresses) are from the public
+  Ventura Rocks calendar (venturarocks.com).
+- Artist photos and 30-second previews are streamed from Deezer under
+  Deezer's own terms. None are stored in this repository.
+- Band names, venue names, and any trademarks belong to their owners.
+  Their appearance here does not mean they endorse or are affiliated
+  with this project.

@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+._*
+
+# Python (scripts/fetch_events.py)
+__pycache__/
+*.pyc
+.venv/
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Local-only files
+*.log
+.env

@@ -1,0 +1,68 @@
+<!doctype html>
+<!--
+Copyright 2026 AUTOMATOUS.IO. All rights reserved. See LICENSE.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <meta name="theme-color" content="#000" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="icon-192.png" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <title>TOPA Local Music Finder</title>
+    <meta name="description" content="Live music near you in Ventura County." />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app" id="app">
+      <nav id="nav"></nav>
+      <main id="main"></main>
+      <div id="player" hidden>
+        <div class="pll">
+          <div class="pla"></div>
+          <div class="pli">
+            <b class="plt"></b>
+            <button class="plb" data-plshow></button>
+          </div>
+        </div>
+        <div class="plc">
+          <div class="plbtns">
+            <button data-pl="prev" aria-label="Previous"></button>
+            <button class="pp" data-pl="toggle" aria-label="Play or pause"></button>
+            <button data-pl="next" aria-label="Next"></button>
+          </div>
+          <div class="plp">
+            <small class="plcur">0:00</small>
+            <div data-pl="seek">
+              <span><i></i></span>
+            </div>
+            <small class="pldur">0:30</small>
+          </div>
+        </div>
+        <div class="plr">
+          <span class="pldz">Preview via Deezer</span>
+          <button class="plx" data-pl="close" aria-label="Close player">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.4"
+              stroke-linecap="round"
+            >
+              <path d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="pop" id="pop"></div>
+    <div class="about" id="about" role="dialog" aria-modal="true" aria-label="About TOPA" hidden>
+      <div class="acard"></div>
+    </div>
+    <div id="toast" role="status"></div>
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

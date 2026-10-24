@@ -1,0 +1,1 @@
+{ "printWidth": 110, "arrowParens": "avoid", "overrides": [{ "files": "*.html", "options": { "htmlWhitespaceSensitivity": "ignore" } }] }

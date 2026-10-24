@@ -7,7 +7,7 @@
 
 // ---- Settings and state ----
 // the app's version: shown in About, and it names the offline cache, so bumping it refreshes every device
-const VERSION = "0.9.3";
+const VERSION = "0.9.4";
 const params = new URLSearchParams(location.search);
 
 // the car's own browser says "Tesla" in its user agent; ?tesla=1 shows the car-only bits anywhere, for testing
@@ -182,6 +182,7 @@ async function fetchLatest() {
 
 // pull-to-refresh: fresh listings in place (same page, day and filters), plus a quiet check for a newer app
 async function refresh() {
+  countEvent("refresh");
   const ok = await fetchLatest();
   render();
   toast(ok ? "Listings refreshed" : "Couldn't refresh. Check your connection.");
@@ -406,6 +407,18 @@ const urlFor = v => {
   return location.pathname + (s ? "?" + s : "");
 };
 
+// ---- Visit counting (GoatCounter: no cookies, nothing personal; local testing isn't counted) ----
+// pages count as "/shows", "/band/Pozo", "/venue/The Grape"…; taps like previews and directions count as events
+function pagePath(v) {
+  const page = v.split(":")[0],
+    arg = v.slice(page.length + 1);
+  const name = page === "Show" ? (EVENTS[+arg] ? EVENTS[+arg].artist : "") : arg;
+  return "/" + page.toLowerCase() + (name ? "/" + name : "");
+}
+window.goatcounter = { path: () => pagePath(view) }; // the first page, counted when the script loads
+const countView = () => window.goatcounter.count?.({ path: pagePath(view) });
+const countEvent = (name, title = "") => window.goatcounter.count?.({ path: name, title, event: true });
+
 function go(v) {
   if (v === view) return;
   prev = view;
@@ -415,6 +428,7 @@ function go(v) {
   } catch (_) {}
   render();
   document.getElementById("main").scrollTop = 0;
+  countView();
 }
 
 addEventListener("popstate", ev => {
@@ -423,6 +437,7 @@ addEventListener("popstate", ev => {
   prev = st.prev || "Shows";
   render();
   document.getElementById("main").scrollTop = 0;
+  countView();
 });
 
 // ---- Lists and the Shows page ----
@@ -1239,6 +1254,7 @@ function unlockAudio() {
 
 // single: play one band's top tracks; otherwise one track per band, in order, starting at `start`
 async function playQueue(names, start, single) {
+  countEvent(single ? "play-band" : "play-all", names[start] || "");
   const tok = ++playback.token;
   if (single) {
     const h = names[0];
@@ -1497,7 +1513,7 @@ function aboutHtml() {
     `Every show links back to its Ventura Rocks listing.</p>` +
     `<p>Artist photos and 30-second previews come from <a href="https://www.deezer.com" target="_blank" rel="noopener">Deezer</a> ` +
     `when a band's name matches. Some matches may be wrong, and many local bands have no previews.</p>` +
-    `<p>Distances are approximate.</p>` +
+    `<p>Distances are approximate. Visits are counted anonymously (no cookies, nothing personal) to see how TOPA is used.</p>` +
     installHtml() +
     `<div class="alinks">${link(REPO, "GitHub")}${link(REPO + "#readme", "README")}${link(REPO + "/blob/main/LICENSE", "License")}</div>` +
     `<p class="acopy">Copyright 2026 AUTOMATOUS.IO. All rights reserved. All show listings are from ` +
@@ -1519,7 +1535,12 @@ addEventListener("keydown", ev => ev.key === "Escape" && closeAbout());
 // one click handler for the whole app; buttons say what they do with data-* attributes
 document.body.onclick = ev => {
   if (ev.target.id === "about") return closeAbout(); // tapped outside the card
-  if (ev.target.closest("a[href]")) return;
+  const link = ev.target.closest("a[href]");
+  if (link) {
+    if (link.href.includes("/maps/dir/"))
+      countEvent("directions", link.closest("[data-venue]")?.dataset.venue || "");
+    return;
+  }
   const t = ev.target.closest(
     "[data-play],[data-playall],[data-pl],[data-plshow],[data-vsort],[data-clear],[data-show],[data-v],[data-d],[data-g],[data-band],[data-venue],[data-sort],[data-sb],[data-sv],[data-pop],[data-anyrad],[data-rad],[data-ssort],[data-ftab],[data-scroll],[data-about],[data-about-close],[data-install]",
   );
@@ -1530,6 +1551,7 @@ document.body.onclick = ev => {
     top = () => (document.getElementById("main").scrollTop = 0);
   if (d.about !== undefined) return openAbout();
   if (d.install !== undefined && installPrompt) {
+    countEvent("install");
     installPrompt.prompt();
     installPrompt = null;
     return closeAbout();
@@ -1579,9 +1601,11 @@ document.body.onclick = ev => {
     bsort = d.sort;
     render();
   } else if (d.sb) {
+    countEvent("fave-band", d.sb);
     toggleFave("bands", d.sb);
     render();
   } else if (d.sv) {
+    countEvent("fave-venue", d.sv);
     toggleFave("venues", d.sv);
     render();
   } else if (d.pop !== undefined) {

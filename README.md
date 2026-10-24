@@ -126,6 +126,7 @@ Two address-bar switches help with testing: `?tesla=1` shows the car-only voice 
 ## Credits
 
 - **Show listings** come from the [Ventura Rocks](https://www.venturarocks.com) public calendar.
+- **Visit counts** come from [GoatCounter](https://www.goatcounter.com): anonymous, no cookies, nothing personal.
 - **Artist photos and previews** come from [Deezer](https://www.deezer.com) through its public API.
 
 ## License

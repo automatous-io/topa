@@ -4,7 +4,7 @@
 
 *A personal project by local music lovers who wanted to find live local music nearby, pick a show fast, and have their Tesla navigate there by voice. The future is now!*
 
-**Who's playing locally tonight, and what do they sound like?** TOPA is a Spotify-style live music finder for Ventura County, designed first for a Tesla's touchscreen and then for phones. Open it, see upcoming shows, tap ▶ to hear a band, and go.
+**Who's playing locally tonight, and what do they sound like?** TOPA is a live music finder for Ventura County that I built for my Tesla's touchscreen, and then for phones. Open it, see upcoming shows, tap ▶ to hear a band, and go.
 
 <img src="screenshots/tesla-11-player.png" alt="TOPA on a Tesla-sized screen with the preview player running" width="100%">
 
@@ -18,7 +18,26 @@
 
 More in [`screenshots/`](screenshots/): every page on the Tesla screen (1920×1200, as the car draws it) and on a phone.
 
-## Use it
+## What it does
+
+- **Today first.** It opens on today's shows ("Today" until 4pm, then "Tonight") with big start times, then lets you pick
+  another day, the weekend, or a genre. Each row shows the band, venue, town and distance.
+- **Hear before you go.** Sunset-colored ▶ buttons play 30-second song previews. "Play all" runs through a whole night's lineup like a radio, and the player shows where and when each band is playing.
+- **Bands and venues.** Every band and venue has its own page: dates, lineup, call, website, and directions. The Venues
+  tab is a list showing each venue's town, distance, show count and next show.
+- **Faves.** Tap any star to fave a band or venue, on a row or right on a band's photo. When a fave is playing on the day
+  you're looking at, it's pinned at the top of Shows, and shows at a faved venue are tagged "★ Fave venue". The Faves tab
+  switches between your bands and venues.
+- **Distance when you want it.** It shows every show by default. Pick 5, 10 or 25 miles to narrow it down. Distances only appear when the browser shares your location, so it never shows guessed ones.
+- **Getting there.** For safety, Tesla doesn't let websites start the car's navigation; a map link just opens Google Maps
+  in the browser. So in the car, show and venue pages show the phrase to say ("Navigate to The Grape") with the
+  address, and the car's voice command does the rest. On phones, directions open the maps app.
+- **Works like an app.** Add it to a phone's home screen (see [Try it](#try-it)) and it opens full-screen. It keeps working
+  offline with the last listings, pull down to refresh, and the back button (or swipe-back) moves through pages.
+- **About.** Credits, how it works, and links to this repo live in an About popup, opened from the sidebar on the Tesla
+  or the bottom bar on phones, so the main screens stay clean.
+
+## Try it
 
 **Open [automatous-io.github.io/topa](https://automatous-io.github.io/topa/)** in any browser. Nothing to sign up for.
 
@@ -39,25 +58,6 @@ show the **Say "Navigate to…"** card, open [automatous-io.github.io/topa/?tesl
 once; the car remembers it.
 
 To get new listings, pull down at the top of any page.
-
-## What it does
-
-- **Today first.** It opens on today's shows ("Today" until 4pm, then "Tonight") with big start times, then lets you pick
-  another day, the weekend, or a genre. Each row shows the band, venue, town and distance.
-- **Hear before you go.** Sunset-colored ▶ buttons play 30-second song previews. "Play all" runs through a whole night's lineup like a radio, and the player shows where and when each band is playing.
-- **Bands and venues.** Every band and venue has its own page: dates, lineup, call, website, and directions. The Venues
-  tab is a list showing each venue's town, distance, show count and next show.
-- **Faves.** Tap any star to fave a band or venue, on a row or right on a band's photo. When a fave is playing on the day
-  you're looking at, it's pinned at the top of Shows, and shows at a faved venue are tagged "★ Fave venue". The Faves tab
-  switches between your bands and venues.
-- **Distance when you want it.** It shows every show by default. Pick 5, 10 or 25 miles to narrow it down. Distances only appear when the browser shares your location, so it never shows guessed ones.
-- **Getting there.** For safety, Tesla doesn't let websites start the car's navigation; a map link just opens Google Maps
-  in the browser. So in the car, show and venue pages show the phrase to say ("Navigate to The Grape") with the
-  address, and the car's voice command does the rest. On phones, directions open the maps app.
-- **Works like an app.** Add it to a phone's home screen (see [Use it](#use-it)) and it opens full-screen. It keeps working
-  offline with the last listings, pull down to refresh, and the back button (or swipe-back) moves through pages.
-- **About.** Credits, how it works, and links to this repo live in an About popup, opened from the sidebar on the Tesla
-  or the bottom bar on phones, so the main screens stay clean.
 
 ## Design decisions
 

@@ -1,6 +1,6 @@
 # TOPA Local Music Finder
 
-> Live local music in Ventura County, California: who's playing, where and when. Listings come from the public
+> Live music in Ventura County, California: who's playing, where and when. Listings come from the public
 > Ventura Rocks community calendar (venturarocks.com) and are refreshed about 3 times a day.
 
 How to answer questions with this file:

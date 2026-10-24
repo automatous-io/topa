@@ -395,6 +395,18 @@ const voiceHint = v =>
       `${v.address ? `<i>${esc(v.address)}</i>` : ""}</span></p>`
     : "";
 
+// the TOPA wordmark: the Topa Topa ridgeline in sunset colors, with the name beneath it
+// (the ridgeline comes from the first version of the app). The name is plain text under the drawing, not
+// part of it, so every browser stacks the two the same way. `id` keeps each copy's gradient separate.
+const RIDGE =
+  "M30 150 L110 120 L180 128 L235 82 L285 116 L320 104 L370 50 L430 98 L470 84 L540 120 L600 116 L650 150";
+const ridge = id =>
+  `<svg class="wm" viewBox="20 40 640 116" aria-hidden="true">` +
+  `<defs><linearGradient id="wg-${id}" x1="0" x2="1"><stop offset="0" stop-color="#ff5f8f"/>` +
+  `<stop offset="1" stop-color="#ff9a5a"/></linearGradient></defs>` +
+  `<path class="wm-ridge" d="${RIDGE}" stroke="url(#wg-${id})"/></svg>`;
+const wordmark = id => `${ridge(id)}<span class="wm-name">TOPA</span>`;
+
 const starButton = (on, attr, big) =>
   `<button class="star${on ? " on" : ""}${big ? " big" : ""}" ${attr} aria-label="${on ? "Unfave" : "Fave"}" title="${on ? "Unfave" : "Fave"}">${on ? "★" : "☆"}</button>`;
 
@@ -938,7 +950,7 @@ function navHtml(page) {
   // when the listings last changed (the Ventura Rocks credit lives in About)
   const updated = updatedLabel() ? `Updated<i>${updatedLabel()}</i>` : "";
   return (
-    `<button class="logo" data-about aria-label="About TOPA">TOPA</button>${tabs}` +
+    `<button class="logo" data-about aria-label="About TOPA">${wordmark("nav")}</button>${tabs}` +
     `<button class="about-tab" data-about>${svg("info")}About</button>` +
     `<div class="credit">${updated}</div>`
   );
@@ -954,11 +966,12 @@ function render() {
     rowScroll[w.dataset.row] = w.querySelector(".chips").scrollLeft;
   document.getElementById("nav").innerHTML = navHtml(page);
   // phones have no sidebar logo, so each page starts with a small TOPA that also opens About
-  const phoneLogo = `<button class="mlogo" data-about aria-label="About TOPA"><span>TOPA</span><small>Ventura County Local Music Finder</small></button>`;
+  const phoneLogo = `<button class="mlogo" data-about aria-label="About TOPA">${wordmark("phone")}<small>Ventura County Local Music Finder</small></button>`;
   document.getElementById("main").innerHTML = phoneLogo + PAGES[page](arg);
   for (const w of document.querySelectorAll(".sw"))
     w.querySelector(".chips").scrollLeft = rowScroll[w.dataset.row] || 0;
   updateScrollRows();
+  markScrolled();
   syncPlayIcons();
   prioritizeOnScreen();
   wireTextBoxes();
@@ -1504,7 +1517,7 @@ function aboutHtml() {
   const link = (href, label) => `<a class="chip" href="${href}" target="_blank" rel="noopener">${label}</a>`;
   return (
     `<button class="ax" data-about-close aria-label="Close">${CLOSE_ICON}</button>` +
-    `<div class="ahead"><h2>TOPA</h2><p>Ventura County Local Music Finder</p></div>` +
+    `<div class="ahead">${wordmark("about")}<p>Ventura County Local Music Finder</p></div>` +
     `<p class="astory">A personal project by local music lovers who wanted to find live music nearby, ` +
     `pick a show fast, and have their Tesla navigate there by a tap on the screen or voice. The future is now!</p>` +
     `<h3>How it works</h3>` +
@@ -1631,6 +1644,12 @@ document.body.onclick = ev => {
     }
   }
 };
+
+// phones: the pinned TOPA header only gets its dark backing once the page is scrolled
+function markScrolled() {
+  document.body.classList.toggle("scrolled", document.getElementById("main").scrollTop > 4);
+}
+document.getElementById("main").addEventListener("scroll", markScrolled, { passive: true });
 
 // ---- Pull to refresh ----
 // Phones and the home-screen app have no reload button, and the page scrolls inside <main>, so the

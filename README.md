@@ -37,7 +37,7 @@ To get new listings, pull down at the top of any page.
 
 - **Today first.** It opens on today's shows ("Today" until 4pm, then "Tonight") with big start times, then lets you pick
   another day, the weekend, or a genre. Each row shows the band, venue, town and distance.
-- **Hear before you go.** Green ▶ buttons play 30-second song previews. "Play all" runs through a whole night's lineup like a radio, and the player shows where and when each band is playing.
+- **Hear before you go.** Sunset-colored ▶ buttons play 30-second song previews. "Play all" runs through a whole night's lineup like a radio, and the player shows where and when each band is playing.
 - **Bands and venues.** Every band and venue has its own page: dates, lineup, call, website, and directions. The Venues
   tab is a list showing each venue's town, distance, show count and next show.
 - **Faves.** Tap any star to fave a band or venue, on a row or right on a band's photo. When a fave is playing on the day
@@ -65,7 +65,9 @@ Built for glancing at a car screen, then refined for phones:
   already ended drop off.
 - **No repeated information.** Single-day lists show only times, since the date is in the title. Band pages lead with the
   venue on each row, and a venue's page drops the venue line, since it's in the header. Each list shows one fave star per band.
-- **Green means play or selected, yellow means fave.**
+- **Its own look: the "Pink Moment."** TOPA is named for the Topa Topa mountains above Ojai, whose bluffs glow pink
+  and orange at sunset. That's the palette: a sunset pink-to-orange for play and selected, dusk purples behind it,
+  yellow for faves, and the Topa Topa ridgeline over the name.
 
 ## How it works
 

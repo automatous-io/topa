@@ -7,7 +7,7 @@
 
 // ---- Settings and state ----
 // the app's version: shown in About, and it names the offline cache, so bumping it refreshes every device
-const VERSION = "0.9.4";
+const VERSION = "0.9.5";
 const params = new URLSearchParams(location.search);
 
 // the car's own browser says "Tesla" in its user agent; ?tesla=1 shows the car-only bits anywhere, for testing

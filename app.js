@@ -10,8 +10,8 @@
 const VERSION = "0.9.6";
 const params = new URLSearchParams(location.search);
 
-// the car's browser: some versions say "Tesla" in the user agent; others only say Linux, on a touchscreen,
-// which almost nothing else is. ?tesla=1 shows the car-only bits anywhere, for testing.
+// the car's browser calls itself "TeslaBrowser/<version>" on Linux; in case a version leaves that out, a Linux
+// touchscreen (which almost nothing else is) counts too. ?tesla=1 shows the car-only bits anywhere, for testing.
 const IN_TESLA =
   /Tesla/i.test(navigator.userAgent) ||
   (/X11; Linux/.test(navigator.userAgent) &&

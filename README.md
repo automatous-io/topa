@@ -16,7 +16,7 @@
   </tr>
 </table>
 
-More in [`screenshots/`](screenshots/): every page at Tesla size (1920×1200) and phone size.
+More in [`screenshots/`](screenshots/): every page on the Tesla screen (1920×1200, as the car draws it) and on a phone.
 
 ## Use it
 
@@ -63,6 +63,9 @@ Built for glancing at a car screen, then refined for phones:
 - **Big targets, one tap.** Main buttons are 44–60px tall. Choices are buttons you can see, not dropdowns or sliders. Picking a distance is one tap and closes the panel, and every star faves in one tap without leaving the page.
 - **The sidebar sits on the left on the Tesla.** It's the closest edge to the driver, it uses width (which the screen has plenty of) instead of height, and it keeps app buttons away from Tesla's own controls at the bottom. Phones get a bottom tab bar instead.
 - **Fewer places to look.** Search sits in the Shows header instead of on its own tab, and there's no separate Home page. The menu is Shows · Bands · Venues · Faves.
+- **The layout moves with the screen.** Sizes adjust as the screen gets wider or narrower, so TOPA fits the Tesla at
+  full screen, the narrower view when the car's side panel is open, a laptop window, and a phone, without anything
+  oversized or cramped. (The car's browser is zoomed in, so full screen behaves like a 1280px-wide window.)
 - **Short headers.** Title, count, search and the main buttons share one row on the Tesla, so more shows fit on screen.
 - **Rows that scroll sideways say so.** Day and genre rows fade at the edge and show ‹ › arrows on the Tesla when more chips
   are hidden. Phones show a cut-off chip and swipe instead.

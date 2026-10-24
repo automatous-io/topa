@@ -7,7 +7,7 @@
 
 // ---- Settings and state ----
 // the app's version: shown in About, and it names the offline cache, so bumping it refreshes every device
-const VERSION = "0.9.2";
+const VERSION = "0.9.3";
 const params = new URLSearchParams(location.search);
 
 // the car's own browser says "Tesla" in its user agent; ?tesla=1 shows the car-only bits anywhere, for testing
@@ -163,15 +163,32 @@ async function load() {
   setEvents(cached);
   status = cached.length ? { c: "cached", updated: c.updated } : { c: "loading" };
   render();
+  if (!(await fetchLatest()) && !cached.length) status = { c: "offline" };
+  render();
+}
+
+// get the latest events.json and keep a copy for next time; false when offline
+async function fetchLatest() {
   try {
     const j = await fetchListings();
     setEvents(dropPast(j.events));
     store.set(LISTINGS_KEY, { ts: Date.now(), updated: j.updated, events: j.events });
     status = { c: "live", updated: j.updated };
+    return true;
   } catch (_) {
-    if (!cached.length) status = { c: "offline" };
+    return false;
   }
+}
+
+// pull-to-refresh: fresh listings in place (same page, day and filters), plus a quiet check for a newer app
+async function refresh() {
+  const ok = await fetchLatest();
   render();
+  toast(ok ? "Listings refreshed" : "Couldn't refresh. Check your connection.");
+  navigator.serviceWorker
+    ?.getRegistration()
+    .then(r => r && r.update())
+    .catch(() => {});
 }
 
 // ---- Formatting helpers ----
@@ -1454,13 +1471,7 @@ function installHtml() {
     (tag === "button" ? `<span class="ai-go">›</span>` : "") +
     `</${tag}>`;
   if (installPrompt)
-    return card(
-      "button",
-      " data-install",
-      "install",
-      "Install TOPA",
-      "Opens full-screen, like an app",
-    );
+    return card("button", " data-install", "install", "Install TOPA", "Opens full-screen, like an app");
   if (ON_IPHONE)
     return card("div", "", "share", "Add to Home Screen", "In Safari, tap Share, then Add to Home Screen");
   if (ON_ANDROID) return card("div", "", "install", "Install TOPA", "In Chrome, tap ⋮, then Install app");
@@ -1596,6 +1607,77 @@ document.body.onclick = ev => {
     }
   }
 };
+
+// ---- Pull to refresh ----
+// Phones and the home-screen app have no reload button, and the page scrolls inside <main>, so the
+// browser's own pull-to-refresh doesn't kick in. Pull down at the top of any page to refresh.
+(() => {
+  const main = document.getElementById("main"),
+    ptr = document.getElementById("ptr"),
+    PULL_TO_REFRESH = 80,
+    SIZE = 52;
+  let y0 = null,
+    x0 = 0,
+    pull = 0,
+    busy = false;
+  // the page slides down with your finger and the button sits in the gap it opens
+  const show = (y, turn) => {
+    main.style.transform = y ? `translateY(${y}px)` : "";
+    ptr.style.transform = `translate(-50%, ${Math.max(0, y - SIZE) / 2 + SIZE}px) rotate(${turn}deg)`;
+    ptr.style.opacity = Math.min(1, y / (PULL_TO_REFRESH * 0.6));
+  };
+  const reset = () => {
+    ptr.classList.add("back");
+    main.classList.add("back");
+    show(0, 0);
+    setTimeout(() => {
+      ptr.classList.remove("back", "spin", "ready");
+      main.classList.remove("back");
+    }, 250);
+  };
+  main.addEventListener(
+    "touchstart",
+    ev => {
+      // center the button over the page area (on the Tesla the sidebar takes the left edge)
+      const r = main.getBoundingClientRect();
+      ptr.style.left = `${r.left + r.width / 2}px`;
+      y0 = !busy && main.scrollTop <= 0 && ev.touches.length === 1 ? ev.touches[0].clientY : null;
+      x0 = ev.touches[0].clientX;
+      pull = 0;
+    },
+    { passive: true },
+  );
+  main.addEventListener(
+    "touchmove",
+    ev => {
+      if (y0 === null) return;
+      const dy = ev.touches[0].clientY - y0,
+        dx = Math.abs(ev.touches[0].clientX - x0);
+      if (dy <= 0 || dx > dy || main.scrollTop > 0) {
+        if (pull) reset();
+        y0 = pull ? y0 : null;
+        pull = 0;
+        return;
+      }
+      ev.preventDefault(); // stop the page's own bounce while pulling
+      pull = Math.min(dy * 0.55, 130);
+      ptr.classList.toggle("ready", pull >= PULL_TO_REFRESH);
+      show(pull, pull * 3);
+    },
+    { passive: false },
+  );
+  main.addEventListener("touchend", async () => {
+    if (y0 === null) return;
+    y0 = null;
+    if (pull < PULL_TO_REFRESH) return reset();
+    busy = true;
+    ptr.classList.add("spin");
+    show(PULL_TO_REFRESH, 0);
+    await Promise.all([refresh(), new Promise(r => setTimeout(r, 600))]); // spin long enough to see
+    busy = false;
+    reset();
+  });
+})();
 
 // ---- Start ----
 try {

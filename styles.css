@@ -1367,6 +1367,49 @@ button.ainstall:hover {
   color: #ffffff55;
   white-space: nowrap;
 }
+/* pull-to-refresh arrow: slides down from the top as you pull, spins while refreshing */
+#ptr {
+  position: fixed;
+  z-index: 8;
+  top: calc(-52px + env(safe-area-inset-top));
+  left: 50%;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #2a2a2a;
+  color: var(--ink);
+  box-shadow: 0 8px 22px #000b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translate(-50%, 0);
+  pointer-events: none;
+}
+#ptr svg {
+  width: 28px;
+  height: 28px;
+}
+/* pulled far enough (or refreshing): solid green, like the play buttons */
+#ptr.ready,
+#ptr.spin {
+  background: var(--acc);
+  color: #000;
+}
+#ptr.back,
+main.back {
+  transition:
+    transform 0.25s,
+    opacity 0.25s;
+}
+#ptr.spin svg {
+  animation: ptrspin 0.8s linear infinite;
+}
+@keyframes ptrspin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 #toast {
   position: fixed;
   left: 50%;

@@ -1,4 +1,6 @@
-# TOPA Local Music Finder
+<p align="center"><img src="icon-512.png" alt="TOPA app icon" width="128"></p>
+
+<h1 align="center">TOPA Local Music Finder</h1>
 
 *A personal project by local music lovers who wanted to find live local music nearby, pick a show fast, and have their Tesla navigate there by a tap on the screen or voice. The future is now!*
 
@@ -26,6 +28,8 @@ More in [`screenshots/`](screenshots/): every page at Tesla size (1920×1200) an
 2. Tap the **Share** button (the square with an arrow pointing up) at the bottom of the screen.
 3. Scroll down and tap **Add to Home Screen**, then **Add**.
 4. Open TOPA from the new icon on your home screen. Allow location when it asks if you want distances.
+
+<img src="screenshots/phone-00-home-screen.png" alt="The TOPA icon on an iPhone home screen" width="320">
 
 **Android:** open the link in **Chrome**, tap **⋮** (top right), then **Install app** (or **Add to Home screen**). The About page inside the app also has a one-tap **Install TOPA** button when Chrome offers it.
 

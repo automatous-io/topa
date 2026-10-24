@@ -33,7 +33,10 @@ More in [`screenshots/`](screenshots/): every page on the Tesla screen (1920×12
 
 **Android:** open the link in **Chrome**, tap **⋮** (top right), then **Install app** (or **Add to Home screen**). The About page inside the app also has a one-tap **Install TOPA** button when Chrome offers it.
 
-**Tesla:** open the link in the car's browser and bookmark it.
+**Tesla:** open the link in the car's browser and bookmark it. **Best viewed full screen:** tap the expand arrows at the
+left of the browser's address bar. It also works with the car's side panel open, just with less room. If show pages don't
+show the **Say "Navigate to…"** card, open [automatous-io.github.io/topa/?tesla=1](https://automatous-io.github.io/topa/?tesla=1)
+once; the car remembers it.
 
 To get new listings, pull down at the top of any page.
 
@@ -114,7 +117,7 @@ Or double-click `serve.command` on a Mac. Location only works over `https://` or
 The version lives at the top of `app.js` (`VERSION`) and shows in the About popup. Bumping it also gives the offline
 cache a new name, so every phone and car picks up the new files.
 
-Two address-bar switches help with testing: `?tesla=1` shows the car-only voice hint in any browser, and
+Two address-bar switches help with testing: `?tesla=1` turns on the car-only voice hint and remembers it on that device (`?tesla=0` turns it off), and
 `?now=2026-10-24T19:00` pins the date and time.
 
 ## Tests

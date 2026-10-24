@@ -32,6 +32,8 @@ More in [`screenshots/`](screenshots/): every page on the Tesla screen (1920×12
 - **Getting there.** For safety, Tesla doesn't let websites start the car's navigation; a map link just opens Google Maps
   in the browser. So in the car, show and venue pages show the phrase to say ("Navigate to The Grape") with the
   address, and the car's voice command does the rest. On phones, directions open the maps app.
+- **Ask your car.** An AI assistant like Grok, built into Teslas, can answer questions like "what's playing this weekend?" or "is jazz playing this Friday in Ventura?" from
+  [`llms.txt`](https://automatous-io.github.io/topa/llms.txt), a plain-English copy of the listings, with no app needed.
 - **Works like an app.** Add it to a phone's home screen (see [Try it](#try-it)) and it opens full-screen. It keeps working
   offline with the last listings, pull down to refresh, and the back button (or swipe-back) moves through pages.
 - **About.** Credits, how it works, and links to this repo live in an About popup, opened from the sidebar on the Tesla
@@ -94,16 +96,20 @@ Ventura Rocks calendar (Tockify)
         ▼
    events.json  ──────────►  index.html + app.js (one page, no build step)
   (facts only)               ├─ loads events.json from the same site
-                             ├─ Deezer API (JSONP): artist photos + 30s previews
-                             └─ sw.js: offline cache
+        │                    ├─ Deezer API (JSONP): artist photos + 30s previews
+        │                    └─ sw.js: offline cache
+   llms.txt  ─────────────►  AI assistants (Grok in the car, others)
+  (plain English)
 ```
 
 1. **Listings.** [`scripts/fetch_events.py`](scripts/fetch_events.py) (Python standard library only) reads the calendar's public
    `monthly` and `upcoming` pages, keeps only facts (band, time, venue, address, town, tags, link), merges and de-duplicates them,
    writes every time in Pacific with a plain-English `when` ("Sat Oct 24, 7:00 PM") so people and AI assistants read it right,
-   and writes `events.json`. If the page won't parse, it exits with an error and leaves the old file alone.
+   and writes `events.json`, plus `llms.txt`: every upcoming show by day in plain English, with addresses and links, and a
+   note asking assistants to credit TOPA and Ventura Rocks. If the page won't parse, it exits with an error and leaves the old file alone.
 2. **Schedule.** [`.github/workflows/update-events.yml`](.github/workflows/update-events.yml) runs it around 7am, noon and 4pm Pacific
-   and commits `events.json` only when the listings changed.
+   and commits `events.json` and `llms.txt` only when they changed (`llms.txt` also drops past days, so it changes at most
+   once a day otherwise).
 3. **The app.** `index.html` shows the last saved listings right away (so it opens instantly and works offline), then swaps in the
    latest `events.json`. If the scheduled fetch ever fails, the old file stays in place and the "Updated" date stops moving.
 4. **Previews.** The app matches each band against Deezer's free API in the background, soonest shows first. A band only gets a

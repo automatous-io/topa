@@ -185,7 +185,7 @@ async function refresh() {
   countEvent("refresh");
   const ok = await fetchLatest();
   render();
-  toast(ok ? "Listings refreshed" : "Couldn't refresh. Check your connection.");
+  toast(ok ? "Shows refreshed" : "Couldn't refresh. Check your connection.");
   navigator.serviceWorker
     ?.getRegistration()
     .then(r => r && r.update())

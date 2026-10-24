@@ -7,7 +7,7 @@
 
 // ---- Settings and state ----
 // the app's version: shown in About, and it names the offline cache, so bumping it refreshes every device
-const VERSION = "0.9.3";
+const VERSION = "0.9.0";
 const params = new URLSearchParams(location.search);
 
 // the car's own browser says "Tesla" in its user agent; ?tesla=1 shows the car-only bits anywhere, for testing
@@ -646,9 +646,8 @@ function showsPage() {
       (faves.length > FAVES_SHOWN
         ? `<button class="seeall" data-v="Faves">See all in Faves<span>›</span></button>`
         : "") +
-      `</section><div class="rule"></div>` +
-      // one day: label the full list with that day, like the day headers on multi-day views
-      (multi || !byDay.length ? "" : `<h2 class="dh">${dh(byDay[0][0])}</h2>`)
+      // the divider alone separates My Faves from the full list; the day is already in the page title
+      `</section><div class="rule"></div>`
     : "";
   // wide screens: distance sits in the header; phones: distance and sort lead the genre row
   return (

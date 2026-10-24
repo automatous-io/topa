@@ -7,7 +7,7 @@
 
 // ---- Settings and state ----
 // the app's version: shown in About, and it names the offline cache, so bumping it refreshes every device
-const VERSION = "0.9.1";
+const VERSION = "0.9.2";
 const params = new URLSearchParams(location.search);
 
 // the car's own browser says "Tesla" in its user agent; ?tesla=1 shows the car-only bits anywhere, for testing
@@ -632,13 +632,13 @@ function showsPage() {
   const sb = n
     ? `<button class="chip sortb" data-ssort="${ssort === "time" ? "dist" : "time"}" aria-label="Sorted by ${ssort === "time" ? "start time" : "distance"}. Tap to switch.">${svg("sort")}${ssort === "time" ? "Soonest" : "Nearest"}</button>`
     : "";
-  // "Faves": faved bands, or anything at a faved venue, pinned on top (same filters as the list; they stay in it too)
+  // "My Faves": faved bands, or anything at a faved venue, pinned on top (same filters as the list; they stay in it too)
   const faves = L.filter(e => SAVED.bands.includes(bandName(e)) || SAVED.venues.includes(e.venue)).sort(
     (a, b) => a.startMs - b.startMs,
   );
   const FAVES_SHOWN = 3;
   const favesSection = faves.length
-    ? `<section class="favsec"><h2 class="dh"><span class="fvs">★</span> Faves</h2>` +
+    ? `<section class="favsec"><h2 class="dh">My Faves</h2>` +
       faves
         .slice(0, FAVES_SHOWN)
         .map(x => showRow(x, !multi))

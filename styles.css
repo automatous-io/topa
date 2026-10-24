@@ -899,11 +899,6 @@ h2 {
   background: #ffc15e1f;
   font-weight: 700;
 }
-.favsec .dh .fvs {
-  color: var(--fave);
-  font-size: inherit;
-  margin: 0 4px 0 0;
-}
 .seeall {
   display: inline-flex;
   align-items: center;

@@ -918,7 +918,7 @@ function render() {
     rowScroll[w.dataset.row] = w.querySelector(".chips").scrollLeft;
   document.getElementById("nav").innerHTML = navHtml(page);
   // phones have no sidebar logo, so each page starts with a small TOPA that also opens About
-  const phoneLogo = `<button class="mlogo" data-about aria-label="About TOPA">TOPA</button>`;
+  const phoneLogo = `<button class="mlogo" data-about aria-label="About TOPA"><span>TOPA</span><small>Ventura County Local Music Finder</small></button>`;
   document.getElementById("main").innerHTML = phoneLogo + PAGES[page](arg);
   for (const w of document.querySelectorAll(".sw"))
     w.querySelector(".chips").scrollLeft = rowScroll[w.dataset.row] || 0;

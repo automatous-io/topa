@@ -7,7 +7,7 @@
 
 // ---- Settings and state ----
 // the app's version: shown in About, and it names the offline cache, so bumping it refreshes every device
-const VERSION = "0.9.2";
+const VERSION = "0.9.3";
 const params = new URLSearchParams(location.search);
 
 // the car's own browser says "Tesla" in its user agent; ?tesla=1 shows the car-only bits anywhere, for testing
@@ -913,12 +913,6 @@ function render() {
   if (!PAGES[view.split(":")[0]]) view = "Shows";
   const page = view.split(":")[0];
   const arg = view.slice(page.length + 1);
-  // phones have no sidebar, so the Shows page ends with the way into About
-  const credit =
-    page === "Shows"
-      ? `<button class="hcredit" data-about><b>About TOPA</b>Listings from Ventura Rocks` +
-        `${updatedLabel() ? ` · Updated ${updatedLabel()}` : ""}</button>`
-      : "";
   // keep chip rows where they were scrolled (tapping a genre re-renders the page)
   const rowScroll = {};
   for (const w of document.querySelectorAll(".sw"))
@@ -926,7 +920,7 @@ function render() {
   document.getElementById("nav").innerHTML = navHtml(page);
   // phones have no sidebar logo, so each page starts with a small TOPA that also opens About
   const phoneLogo = `<button class="mlogo" data-about aria-label="About TOPA">TOPA</button>`;
-  document.getElementById("main").innerHTML = phoneLogo + PAGES[page](arg) + credit;
+  document.getElementById("main").innerHTML = phoneLogo + PAGES[page](arg);
   for (const w of document.querySelectorAll(".sw"))
     w.querySelector(".chips").scrollLeft = rowScroll[w.dataset.row] || 0;
   updateScrollRows();

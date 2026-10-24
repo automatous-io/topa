@@ -611,9 +611,6 @@ h2 {
   font-weight: 600;
   color: #ffffff66;
 }
-.hcredit {
-  display: none;
-}
 .hero .hx {
   flex: 1;
   min-width: 0;
@@ -1359,16 +1356,9 @@ h2 {
   .credit {
     display: none;
   }
-  .hcredit {
-    display: block;
-    width: 100%;
-    text-align: center;
-    font-size: 14px;
-    color: #ffffff88;
-    padding: 18px 0 8px;
-  }
+  /* About is the fifth button in the phone's bottom bar */
   nav .about-tab {
-    display: none;
+    margin-top: 0;
   }
   .about {
     padding: calc(12px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom));
@@ -1383,12 +1373,6 @@ h2 {
   }
   .ahead p {
     font-size: 14px;
-  }
-  .hcredit b {
-    display: block;
-    margin-bottom: 4px;
-    font-size: 16px;
-    color: var(--acc);
   }
   nav .logo {
     display: none;

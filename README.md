@@ -30,8 +30,8 @@ More in [`screenshots/`](screenshots/): every page at Tesla size (1920×1200) an
 - **Getting there.** Directions open Google Maps. In the car's own browser, show and venue pages also show the phrase to say
   ("Navigate to The Grape") and the address, since a map link in the browser may not start the car's navigation.
 - **Works like an app.** You can add it to a phone's home screen, it keeps working offline with the last listings, and the browser's back button (or swipe-back) moves through pages.
-- **About.** Credits, how it works, and links to this repo live in an About popup, opened from the sidebar (or the end of
-  the Shows list on phones), so the main screens stay clean.
+- **About.** Credits, how it works, and links to this repo live in an About popup, opened from the sidebar on the Tesla
+  or the bottom bar on phones, so the main screens stay clean.
 
 ## Design decisions
 

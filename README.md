@@ -2,7 +2,7 @@
 
 *A personal project by local music lovers who wanted to find live local music nearby, pick a show fast, and have their Tesla navigate there. The future is now!*
 
-**What's playing tonight, and what does it sound like?** TOPA is a Spotify-style live music finder for Ventura County, designed first for a Tesla's touchscreen and then for phones. Open it, see upcoming shows, tap ▶ to hear a band, and go.
+**Who's playing locally tonight, and what do they sound like?** TOPA is a Spotify-style live music finder for Ventura County, designed first for a Tesla's touchscreen and then for phones. Open it, see upcoming shows, tap ▶ to hear a band, and go.
 
 <img src="screenshots/tesla-11-player.png" alt="TOPA on a Tesla-sized screen with the preview player running" width="100%">
 
@@ -15,6 +15,23 @@
 </table>
 
 More in [`screenshots/`](screenshots/): every page at Tesla size (1920×1200) and phone size.
+
+## Use it
+
+**Open [automatous-io.github.io/topa](https://automatous-io.github.io/topa/)** in any browser. Nothing to sign up for.
+
+**iPhone: add it to your home screen** so it opens full-screen, like an app:
+
+1. Open the link in **Safari**.
+2. Tap the **Share** button (the square with an arrow pointing up) at the bottom of the screen.
+3. Scroll down and tap **Add to Home Screen**, then **Add**.
+4. Open TOPA from the new icon on your home screen. Allow location when it asks if you want distances.
+
+**Android:** open the link in **Chrome**, tap **⋮** (top right), then **Install app** (or **Add to Home screen**). The About page inside the app also has a one-tap **Install TOPA** button when Chrome offers it.
+
+**Tesla:** open the link in the car's browser and bookmark it.
+
+To get new listings, pull down at the top of any page.
 
 ## What it does
 
@@ -29,8 +46,8 @@ More in [`screenshots/`](screenshots/): every page at Tesla size (1920×1200) an
 - **Distance when you want it.** It shows every show by default. Pick 5, 10 or 25 miles to narrow it down. Distances only appear when the browser shares your location, so it never shows guessed ones.
 - **Getting there.** Directions open Google Maps. In the car's own browser, show and venue pages also show the phrase to say
   ("Navigate to The Grape") and the address, since a map link in the browser may not start the car's navigation.
-- **Works like an app.** You can add it to a phone's home screen (iPhone: Safari → Share → Add to Home Screen; Android:
-  Chrome → ⋮ → Install app), it keeps working offline with the last listings, and the browser's back button (or swipe-back) moves through pages.
+- **Works like an app.** Add it to a phone's home screen (see [Use it](#use-it)) and it opens full-screen. It keeps working
+  offline with the last listings, pull down to refresh, and the back button (or swipe-back) moves through pages.
 - **About.** Credits, how it works, and links to this repo live in an About popup, opened from the sidebar on the Tesla
   or the bottom bar on phones, so the main screens stay clean.
 

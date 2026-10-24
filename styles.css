@@ -36,7 +36,9 @@ button {
   display: grid;
   grid-template-columns: 96px minmax(0, 1fr);
   grid-template-rows: 1fr;
+  /* dvh = the visible screen; plain vh on phones includes the area behind the browser's toolbars */
   height: 100vh;
+  height: 100dvh;
   gap: 8px;
   padding: 8px;
 }
@@ -1346,7 +1348,8 @@ h2 {
 @media (max-width: 700px) {
   .app {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: 1fr 68px;
+    /* env(safe-area-inset-*): space taken by the iPhone's status bar and home bar */
+    grid-template-rows: minmax(0, 1fr) calc(68px + env(safe-area-inset-bottom));
     padding: 0;
     gap: 0;
   }
@@ -1355,7 +1358,7 @@ h2 {
     flex-direction: row;
     justify-content: space-around;
     border-radius: 0;
-    padding: 0;
+    padding: 0 0 env(safe-area-inset-bottom);
     background: linear-gradient(transparent, #000 40%);
   }
   .credit {
@@ -1373,7 +1376,7 @@ h2 {
     display: none;
   }
   .about {
-    padding: 12px;
+    padding: calc(12px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom));
     align-items: flex-end;
   }
   .acard {
@@ -1422,14 +1425,14 @@ h2 {
     position: relative;
     grid-row: 1;
     border-radius: 0;
-    padding: 52px 16px 20px;
+    padding: calc(52px + env(safe-area-inset-top)) 16px 20px;
   }
   /* centered TOPA at the top of each phone page; scrolls away with it */
   .mlogo {
     display: block;
     position: absolute;
     z-index: 2;
-    top: 10px;
+    top: calc(10px + env(safe-area-inset-top));
     left: 50%;
     transform: translateX(-50%);
     padding: 6px 12px;
@@ -1481,8 +1484,8 @@ h2 {
     font-size: 24px;
   }
   .hero {
-    margin: -52px -16px 18px;
-    padding: 64px 16px 20px;
+    margin: calc(-52px - env(safe-area-inset-top)) -16px 18px;
+    padding: calc(64px + env(safe-area-inset-top)) 16px 20px;
     gap: 16px;
   }
   .hero .art {
@@ -1621,7 +1624,7 @@ h2 {
   .star.big {
     position: absolute;
     right: 12px;
-    top: 72px;
+    top: calc(72px + env(safe-area-inset-top));
     margin: 0;
   }
   .hero {
@@ -1688,7 +1691,7 @@ h2 {
     height: 28px;
   }
   .app.pl {
-    grid-template-rows: minmax(0, 1fr) 64px 68px;
+    grid-template-rows: minmax(0, 1fr) 64px calc(68px + env(safe-area-inset-bottom));
   }
   .app.pl nav {
     grid-row: 3;
@@ -1757,11 +1760,11 @@ h2 {
     height: 44px;
   }
   #toast {
-    bottom: 150px;
+    bottom: calc(150px + env(safe-area-inset-bottom));
   }
   .pop {
     top: auto;
-    bottom: 84px;
+    bottom: calc(84px + env(safe-area-inset-bottom));
     left: 12px;
     right: 12px;
     width: auto;

@@ -33,7 +33,7 @@ More in [`screenshots/`](screenshots/): every page on the Tesla screen (1920×12
   in the browser. So in the car, show and venue pages show the phrase to say ("Navigate to The Grape") with the
   address, and the car's voice command does the rest. On phones, directions open the maps app.
 - **Ask your car.** An AI assistant like Grok, built into Teslas, can answer questions like "what's playing this weekend?" or "is jazz playing this Friday in Ventura?" from
-  [`llms.txt`](https://automatous-io.github.io/topa/llms.txt), a plain-English copy of the listings, with no app needed.
+  [`llms.txt`](https://topa.automatous.io/llms.txt), a plain-English copy of the listings, with no app needed.
 - **Works like an app.** Add it to a phone's home screen (see [Try it](#try-it)) and it opens full-screen. It keeps working
   offline with the last listings, pull down to refresh, and the back button (or swipe-back) moves through pages.
 - **About.** Credits, how it works, and links to this repo live in an About popup, opened from the sidebar on the Tesla
@@ -41,7 +41,7 @@ More in [`screenshots/`](screenshots/): every page on the Tesla screen (1920×12
 
 ## Try it
 
-**Open [automatous-io.github.io/topa](https://automatous-io.github.io/topa/)** in any browser. Nothing to sign up for.
+**Open [topa.automatous.io](https://topa.automatous.io/)** in any browser. Nothing to sign up for.
 
 **iPhone: add it to your home screen** so it opens full-screen, like an app:
 
@@ -56,14 +56,14 @@ More in [`screenshots/`](screenshots/): every page on the Tesla screen (1920×12
 
 **Tesla:** open the link in the car's browser and bookmark it. **Best viewed full screen:** tap the expand arrows at the
 left of the browser's address bar. It also works with the car's side panel open, just with less room. If show pages don't
-show the **Say "Navigate to…"** card, open [automatous-io.github.io/topa/?tesla=1](https://automatous-io.github.io/topa/?tesla=1)
+show the **Say "Navigate to…"** card, open [topa.automatous.io/?tesla=1](https://topa.automatous.io/?tesla=1)
 once; the car remembers it.
 
 To get new listings, pull down at the top of any page.
 
-**Ask an AI assistant instead:** [`llms.txt`](https://automatous-io.github.io/topa/llms.txt) lists every upcoming show in plain English,
+**Ask an AI assistant instead:** [`llms.txt`](https://topa.automatous.io/llms.txt) lists every upcoming show in plain English,
 so an assistant like Grok (built into Teslas) can answer "what's playing this weekend?" without the app. Point it at
-`https://automatous-io.github.io/topa/llms.txt`.
+`https://topa.automatous.io/llms.txt`.
 
 ## Design decisions
 

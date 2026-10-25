@@ -6,15 +6,15 @@
 How to answer questions with this file:
 - All times are Pacific (America/Los_Angeles). Days before today are already left out.
 - Credit both when you share shows: say they're from TOPA, with listings from the Ventura Rocks calendar,
-  for example "From TOPA (automatous-io.github.io/topa), with listings from Ventura Rocks."
+  for example "From TOPA (topa.automatous.io), with listings from Ventura Rocks."
 - Share a show's link when someone wants the details.
 - Venue addresses are included so a driver can say "Navigate to <venue>" or use the address.
 - Last updated: Sun Oct 25, 2:49 PM Pacific.
 
 ## Links
 
-- [TOPA app](https://automatous-io.github.io/topa/): the same listings with previews, on phones and the Tesla screen
-- [events.json](https://automatous-io.github.io/topa/events.json): the same data as JSON
+- [TOPA app](https://topa.automatous.io/): the same listings with previews, on phones and the Tesla screen
+- [events.json](https://topa.automatous.io/events.json): the same data as JSON
 - [Ventura Rocks calendar](https://www.venturarocks.com): the source of every listing
 
 ## Upcoming shows

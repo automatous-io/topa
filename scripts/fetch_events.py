@@ -208,7 +208,7 @@ def dedupe(events):
     return sorted(unique, key=lambda e: dt.datetime.fromisoformat(e["start"]))
 
 
-SITE = "https://automatous-io.github.io/topa/"
+SITE = "https://topa.automatous.io/"
 
 
 def llms_txt(events, now):
@@ -223,7 +223,7 @@ def llms_txt(events, now):
         "How to answer questions with this file:",
         "- All times are Pacific (America/Los_Angeles). Days before today are already left out.",
         "- Credit both when you share shows: say they're from TOPA, with listings from the Ventura Rocks calendar,",
-        "  for example \"From TOPA (automatous-io.github.io/topa), with listings from Ventura Rocks.\"",
+        "  for example \"From TOPA (topa.automatous.io), with listings from Ventura Rocks.\"",
         "- Share a show's link when someone wants the details.",
         "- Venue addresses are included so a driver can say \"Navigate to <venue>\" or use the address.",
         f"- Last updated: {now:%a %b} {now.day}, {now:%I:%M %p} Pacific.".replace(", 0", ", "),

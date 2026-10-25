@@ -9,7 +9,7 @@ How to answer questions with this file:
   for example "From TOPA (automatous-io.github.io/topa), with listings from Ventura Rocks."
 - Share a show's link when someone wants the details.
 - Venue addresses are included so a driver can say "Navigate to <venue>" or use the address.
-- Last updated: Sun Oct 25, 7:18 AM Pacific.
+- Last updated: Sun Oct 25, 2:49 PM Pacific.
 
 ## Links
 
@@ -20,7 +20,6 @@ How to answer questions with this file:
 ## Upcoming shows
 
 ### Sunday, October 25
-- 10:00 AM: Jockey Jord at Harbor Cove Cafe, 1867 Spinnaker Dr, Ventura, CA 93001 (Ventura, free). https://tockify.com/vtarocks/detail/26747/1792947600000
 - 1:00 PM: Robin and the Love Letters & Friends at Sam's Place (The Vine), 308 E Ojai Ave, Ojai, CA 93023 (Ojai, 21+). https://tockify.com/vtarocks/detail/24671/1792958400000
 - 2:00 PM: Steve and Sally Williams at Trois le Fou & Lester Wineries, 4522 Market St Suite B, Ventura, CA 93003 (Ventura, popular-covers). https://tockify.com/vtarocks/detail/25915/1792962000000
 - 2:00 PM: Strummed Down at Magnavino Cellars | Public Realm Brewing, 961 Rice Ave, Oxnard, CA 93030 (Oxnard). https://tockify.com/vtarocks/detail/26671/1792962000000
@@ -90,6 +89,7 @@ How to answer questions with this file:
 - 8:00 PM: Live Band Karaoke at Sagebrush Cantina Restaurant & Saloon, 23527 Calabasas Rd, Calabasas, CA 91302 (Calabasas). https://tockify.com/vtarocks/detail/24658/1793329200000
 
 ### Friday, October 30
+- 4:00 PM: Cover Lover, Grief and Sorrow, Pito Pakeeto, Dog Leg... at Mrs. Olson's Coffee Hut, 2800 Harbor Blvd, Oxnard, CA 93035 (Oxnard, $10, all-ages, punk, folk). https://tockify.com/vtarocks/detail/27075/1793401200000
 - 5:00 PM: Happy hour w/ Fred Kaplan Trio at The Grape, 2733 E Main St, Ventura, CA 93003 (Ventura, 21+, no-cover, West-Coast-Swing, Boogie-Woogie-Blues). https://tockify.com/vtarocks/detail/26325/1793404800000
 - 5:00 PM: Pika Pika at Topa Topa Brewing, 4880 Colt St, Ventura, CA 93003 (Ventura, Colt-Street). https://tockify.com/vtarocks/detail/26958/1793404800000
 - 5:00 PM: Jim Friery at Taqueria Jalisco Restaurant, 4275 Tierra Rejada Rd, Moorpark, CA 93021 (Moorpark, Americana). https://tockify.com/vtarocks/detail/22/1793404800000

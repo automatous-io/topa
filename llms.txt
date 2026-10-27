@@ -9,7 +9,7 @@ How to answer questions with this file:
   for example "From TOPA (topa.automatous.io), with listings from Ventura Rocks."
 - Share a show's link when someone wants the details.
 - Venue addresses are included so a driver can say "Navigate to <venue>" or use the address.
-- Last updated: Mon Oct 26, 12:58 PM Pacific.
+- Last updated: Tue Oct 27, 12:27 PM Pacific.
 
 ## Links
 
@@ -19,18 +19,14 @@ How to answer questions with this file:
 
 ## Upcoming shows
 
-### Monday, October 26
-- 5:00 PM: Katie Shorey at Boatyard Pub, 1583 Spinnaker Dr, Ventura, CA 93001 (Ventura, popular-covers, fleetwood-mac-covers). https://tockify.com/vtarocks/detail/21823/1793059200000
-- 8:00 PM: Resavoir at The Deer Lodge, 2261 Maricopa Hwy, Ojai, CA 93023 (Ojai, 21+, ticketed-event). https://tockify.com/vtarocks/detail/25223/1793070000000
-
 ### Tuesday, October 27
 - 5:00 PM: Happy hour w/ Monte Montgomery & Friends at The Grape, 2733 E Main St, Ventura, CA 93003 (Ventura, 21+, jazz, no-cover). https://tockify.com/vtarocks/detail/24682/1793145600000
 - 5:00 PM: Ken Devoe at Boatyard Pub, 1583 Spinnaker Dr, Ventura, CA 93001 (Ventura, cover-tunes). https://tockify.com/vtarocks/detail/23717/1793145600000
 - 5:00 PM: The Sea Hunters at Vaquero y Mar, 435 E Thompson Blvd, Ventura, CA 93001 (Ventura, Surf, Rock, Exotica). https://tockify.com/vtarocks/detail/9028/1793145600000
 - 5:00 PM: Jim Friery at Taqueria Jalisco Restaurant, 4275 Tierra Rejada Rd, Moorpark, CA 93021 (Moorpark, Americana). https://tockify.com/vtarocks/detail/21/1793145600000
+- 5:30 PM: Mack and D at Margarita Villa, 1567 Spinnaker Dr, Ventura, CA 93001 (Ventura, popular-covers). https://tockify.com/vtarocks/detail/26698/1793147400000
 - 6:00 PM: Tour Support w/ Kurt & Bob at Ric's Restaurant Sports Lounge, F, 2500 Las Posas Rd, Camarillo, CA 93010 (Camarillo, Rock-Covers). https://tockify.com/vtarocks/detail/25/1793149200000
 - 6:00 PM: Danny D at Prime Steakhouse & Wine Bar, 2209 E Thompson Blvd, Ventura, CA 93001 (Ventura, Sinatra-covers). https://tockify.com/vtarocks/detail/20/1793149200000
-- 6:00 PM: Mack and D at Margarita Villa, 1567 Spinnaker Dr, Ventura, CA 93001 (Ventura, popular-covers). https://tockify.com/vtarocks/detail/26698/1793149200000
 - 7:00 PM: Tyler Stone at Tarantula Hill Brewing Company, 244 E Thousand Oaks Blvd, Thousand Oaks, CA 91360 (Thousand-Oaks, no-cover, acoustic-covers). https://tockify.com/vtarocks/detail/27026/1793152800000
 - 7:00 PM: Milo Sledge and Company at Gigi's Cocktails, 2493 Grand Ave, Ventura, CA 93003 (Ventura, 21+, blues). https://tockify.com/vtarocks/detail/26861/1793152800000
 - 7:00 PM: The Gratitude Jazz Jam at The Grape, 2733 E Main St, Ventura, CA 93003 (Ventura, Jazz, Jam, 21+, $10-cover-at-door). https://tockify.com/vtarocks/detail/93/1793152800000
@@ -69,6 +65,8 @@ How to answer questions with this file:
 - 5:00 PM: Pika Pika at Topa Topa Brewing, 4880 Colt St, Ventura, CA 93003 (Ventura, Colt-Street). https://tockify.com/vtarocks/detail/26958/1793404800000
 - 5:00 PM: Jim Friery at Taqueria Jalisco Restaurant, 4275 Tierra Rejada Rd, Moorpark, CA 93021 (Moorpark, Americana). https://tockify.com/vtarocks/detail/22/1793404800000
 - 6:00 PM: A Haunted Evneing of Halloween Classics at Samuelson Chapel, 165 Chapel Ln, Thousand Oaks, CA 91360 (Thousand-Oaks, ticketed-event). https://tockify.com/vtarocks/detail/26830/1793408400000
+- 6:00 PM: Francisco Leon at Farmer and the Cook, 339 W El Roblar Dr, Ojai, CA 93023. https://tockify.com/vtarocks/detail/27084/1793408400000
+- 6:00 PM: Frank Barajas and Joe Hamilton at Bombay Bar & Grill, 143 S California St, Ventura, CA 93001 (Ventura, all-ages, rock-&-roll-covers). https://tockify.com/vtarocks/detail/27079/1793408400000
 - 6:00 PM: The Grizwalds at Sunland Vintage Winery, 1321 E Thousand Oaks Blvd, Thousand Oaks, CA 91362 (Thousand-Oaks, $5-cover). https://tockify.com/vtarocks/detail/26581/1793408400000
 - 6:00 PM: Los Amigos at Margarita Villa, 1567 Spinnaker Dr, Ventura, CA 93001 (Ventura, popular-covers). https://tockify.com/vtarocks/detail/26699/1793408400000
 - 6:00 PM: Mack and D at Boatyard Pub, 1583 Spinnaker Dr, Ventura, CA 93001 (Ventura, Rock-&-Roll). https://tockify.com/vtarocks/detail/26443/1793408400000
@@ -103,6 +101,7 @@ How to answer questions with this file:
 ### Saturday, October 31
 - 10:00 AM: Ukulele Weekly Jam at Harbor Cove Cafe, 1867 Spinnaker Dr, Ventura, CA 93001 (Ventura, free). https://tockify.com/vtarocks/detail/23935/1793466000000
 - 12:00 PM: Spencer the Gardener, Dylan Cunningham, Josephoenix, Duane Bartels, Eric Lamire, May Lumen, Beau Red, Geroge Lamiere at Ojai Ranch House, 102 Besant Rd, Ojai, CA 93023 (Ojai). https://tockify.com/vtarocks/detail/26857/1793473200000
+- 2:00 PM: Strummed Down at Crown and Anchor, 2891 Thousand Oaks Blvd, Thousand Oaks, CA 91362 (Thousand-Oaks, popular-covers). https://tockify.com/vtarocks/detail/27081/1793480400000
 - 2:00 PM: Tony Ybarra spirtis of Jazz at The Grape, 2733 E Main St, Ventura, CA 93003 (Ventura, 21+). https://tockify.com/vtarocks/detail/26809/1793480400000
 - 3:00 PM: Teresa Russell at Winchesters Grill & Saloon, 632 E Main St, Ventura, CA 93001 (Ventura, No-cover-charge). https://tockify.com/vtarocks/detail/26903/1793484000000
 - 4:00 PM: Emerald Thundercat at Feros Ferio Winery, 310 E Ojai Ave, Ojai, CA 93023 (Ojai, no-cover-charge). https://tockify.com/vtarocks/detail/26021/1793487600000
@@ -127,6 +126,7 @@ How to answer questions with this file:
 - 8:00 PM: (acoustic) Michale Graves, Spider Baby at Mrs. Olson's Coffee Hut, 2800 Harbor Blvd, Oxnard, CA 93035 (Oxnard, 18+, tickets-via-eventbrite). https://tockify.com/vtarocks/detail/26874/1793502000000
 - 8:00 PM: Bad Habit at Nabu, Townsgate Rd, Westlake Village, CA 91361 (Westlake-Village, 21+, classic-rock). https://tockify.com/vtarocks/detail/26542/1793502000000
 - 8:00 PM: Magia Negra at The Grape, 2733 E Main St, Ventura, CA 93003 (Ventura, 21+, ticketed-event). https://tockify.com/vtarocks/detail/26810/1793502000000
+- 8:00 PM: The Rose Valley Thorns, The Van Allen Twins at The Deer Lodge, 2261 Maricopa Hwy, Ojai, CA 93023 (Ojai, 21+, $15-at-door). https://tockify.com/vtarocks/detail/27087/1793502000000
 - 8:30 PM: Members Only at The Garage, 1091 Scandia Ave, Ventura, CA 93004 (Ventura, 21+, no-cover-charge, popular-covers). https://tockify.com/vtarocks/detail/26431/1793503800000
 - 8:30 PM: The Return of the Ghastlies, Wasted Rage at Rock & Roll Pizza (Harley's Valley Bowl, 5255 Cochran St, Simi Valley, CA 93063 (Simi-Valley, Harley's-Valley-Bowl, 18+, no-cover). https://tockify.com/vtarocks/detail/26782/1793503800000
 - 9:00 PM: The Bridge City Sinners, Liam St. John, Yes Ma'am at Ventura Music Hall - VMH, 1888 E Thompson Blvd, Ventura, CA 93001 (Ventura, All-ages, VMH, ticketed-event). https://tockify.com/vtarocks/detail/25623/1793505600000
@@ -144,12 +144,15 @@ How to answer questions with this file:
 - 2:00 PM: Vinny Berry at Topa Topa Brewing, 4880 Colt St, Ventura, CA 93003 (Ventura, Colt-Street). https://tockify.com/vtarocks/detail/26591/1793570400000
 - 3:00 PM: Jazz Band at Ventura College Performing Arts Center, 4700 Loma Vista Rd, Ventura, CA 93003 (Ventura, $5---$15-cover). https://tockify.com/vtarocks/detail/25896/1793574000000
 - 3:00 PM: Nikolay Sivchuk, Bayan & Evgeny Tonkha, Cello (new date) at Beatrice Wood Center for the Arts, 8585 N Ojai Rd, Ojai, CA 93023 (Oaji, ticketed-event). https://tockify.com/vtarocks/detail/25725/1793574000000
+- 3:00 PM: The Avenue Quintet Deconstructed at  (Ojai, $25-suggested-donation). https://tockify.com/vtarocks/detail/27088/1793574000000
 - 3:00 PM: Dave & Tim Faux Real at Nabu, Townsgate Rd, Westlake Village, CA 91361 (Westlake-Village, 21+). https://tockify.com/vtarocks/detail/26961/1793574000000
 - 3:00 PM: RJ Mischo Band at Winchesters Grill & Saloon, 632 E Main St, Ventura, CA 93001 (Ventura, no-cover-charge). https://tockify.com/vtarocks/detail/26905/1793574000000
 - 3:00 PM: Skin Deep at Sagebrush Cantina Restaurant & Saloon, 23527 Calabasas Rd, Calabasas, CA 91302 (Calabasas). https://tockify.com/vtarocks/detail/26791/1793574000000
 - 3:00 PM: Brandon Ragan Project at Tony's Pizzaria, 186 E Thompson Blvd, Ventura, CA 93001 (Ventura, Free, All-ages, Dance-favorites, Old-School-Sunday). https://tockify.com/vtarocks/detail/26382/1793574000000
 - 4:00 PM: Bogey & John at Feros Ferio Winery, 310 E Ojai Ave, Ojai, CA 93023 (Ojai, no-cover-charge, popular-covers). https://tockify.com/vtarocks/detail/26491/1793577600000
 - 4:00 PM: Joe Delia at Boatyard Pub, 1583 Spinnaker Dr, Ventura, CA 93001 (Ventura, popular-covers). https://tockify.com/vtarocks/detail/26913/1793577600000
+- 4:00 PM: Strummed Down at Chuy's Mesquite Broiler, Towne Center Shopping Center, 1397 E Los Angeles Ave, Simi Valley, CA 93065 (Simi-Valley-West, popular-rock-covers). https://tockify.com/vtarocks/detail/27082/1793577600000
+- 4:00 PM: Ryder & Friends, MDRN LVRS at Bombay Bar & Grill, 143 S California St, Ventura, CA 93001 (Ventura, all-ages, kid-and-pet-friendly, danceable-favorites). https://tockify.com/vtarocks/detail/27080/1793577600000
 - 5:00 PM: Gaba Groove at Rock & Roll Pizza (Harley's Valley Bowl, 5255 Cochran St, Simi Valley, CA 93063 (Simi-Valley, Harley's-Valley-Bowl, all-ages, no-cover). https://tockify.com/vtarocks/detail/26986/1793581200000
 - 7:00 PM: Amelia McLean at Ojai Underground Exchange, 616 Pearl St, Ojai, CA 93023 (Ojai, ticketed-event, bz). https://tockify.com/vtarocks/detail/26761/1793588400000
 - 8:00 PM: Dax at Ventura Music Hall - VMH, 1888 E Thompson Blvd, Ventura, CA 93001 (Ventura, All-ages, VMH, ticketed-event). https://tockify.com/vtarocks/detail/24922/1793592000000
@@ -176,6 +179,7 @@ How to answer questions with this file:
 - 5:00 PM: Frank Barajas at Boatyard Pub, 1583 Spinnaker Dr, Ventura, CA 93001 (Ventura, Rock-&-Roll). https://tockify.com/vtarocks/detail/24386/1793840400000
 - 5:30 PM: Ken DeVoe at The Shores, 1031 Harbor Blvd, Oxnard, CA 93035 (Oxnard, acoustic-covers). https://tockify.com/vtarocks/detail/26929/1793842200000
 - 6:00 PM: Ojai Valley Bluegrass Pickers - Open Jam at Ojai Valley Brewing, 307 Bryant St, Ojai, CA 93023 (Ojai, OVB, Ojai-Valley-Brewery). https://tockify.com/vtarocks/detail/23164/1793844000000
+- 6:00 PM: Open mic at The Deer Lodge, 2261 Maricopa Hwy, Ojai, CA 93023 (Ojai, 21+). https://tockify.com/vtarocks/detail/25217/1793844000000
 - 7:00 PM: RJ Mischo at The Grape, 2733 E Main St, Ventura, CA 93003 (Ventura, 21+, $15-cover). https://tockify.com/vtarocks/detail/26877/1793847600000
 - 7:00 PM: The Adicts, The Mainliners, Dr. Know at The Majestic Ventura Theater, 26 S Chestnut St, Ventura, CA 93001 (Ventura, ticketed-event, General-admission). https://tockify.com/vtarocks/detail/26458/1793847600000
 - 8:00 PM: Squirrel Flower at The Deer Lodge, 2261 Maricopa Hwy, Ojai, CA 93023 (Ojai, 21+, ticketed-event). https://tockify.com/vtarocks/detail/25013/1793851200000
@@ -198,6 +202,7 @@ How to answer questions with this file:
 - 3:00 PM: Will Canyon at Sagebrush Cantina Restaurant & Saloon, 23527 Calabasas Rd, Calabasas, CA 91302 (Calabasas). https://tockify.com/vtarocks/detail/26998/1794006000000
 - 5:00 PM: Happy hour w/ Fred Kaplan Trio at The Grape, 2733 E Main St, Ventura, CA 93003 (Ventura, 21+, no-cover, West-Coast-Swing, Boogie-Woogie-Blues). https://tockify.com/vtarocks/detail/26325/1794013200000
 - 5:00 PM: Jim Friery at Taqueria Jalisco Restaurant, 4275 Tierra Rejada Rd, Moorpark, CA 93021 (Moorpark, Americana). https://tockify.com/vtarocks/detail/22/1794013200000
+- 6:00 PM: Francisco Leon at Farmer and the Cook, 339 W El Roblar Dr, Ojai, CA 93023. https://tockify.com/vtarocks/detail/27085/1794016800000
 - 6:00 PM: 40 oz of Freedom at Leashless Brewing, 585 E Thompson Blvd, Ventura, CA 93001 (Ventura, no-cover-charge, Sublime-tribute-band). https://tockify.com/vtarocks/detail/26954/1794016800000
 - 6:00 PM: DVR at Sunland Vintage Winery, 1321 E Thousand Oaks Blvd, Thousand Oaks, CA 91362 (Thousand-Oaks, $5-cover). https://tockify.com/vtarocks/detail/27024/1794016800000
 - 6:00 PM: Vinyl Gypsies at Margarita Villa, 1567 Spinnaker Dr, Ventura, CA 93001 (Ventura, classic-rock, popular-covers). https://tockify.com/vtarocks/detail/26890/1794016800000
@@ -209,6 +214,7 @@ How to answer questions with this file:
 - 7:00 PM: The Brill Building Legends Show at Namba Arts, 47 S Oak St, Ventura, CA 93001 (Ventura, ticketed-event, $40-at-door). https://tockify.com/vtarocks/detail/26543/1794020400000
 - 7:00 PM: Wild the River at Nectar of the Dogs Wine, 791 Chambers Ln, Simi Valley, CA 93065 (Simi-Valley, No-cover-charge, popular-covers). https://tockify.com/vtarocks/detail/26969/1794020400000
 - 7:00 PM: Jeffery Foucault w/ Niamh Regan at Ojai Underground Exchange, 616 Pearl St, Ojai, CA 93023 (Ojai, ticketed-event, bz). https://tockify.com/vtarocks/detail/26762/1794020400000
+- 7:00 PM: Camellia Boutros Band, The Crystal Tears at The Deer Lodge, 2261 Maricopa Hwy, Ojai, CA 93023 (Ojai, 21+, $15-cover). https://tockify.com/vtarocks/detail/26013/1794020400000
 - 7:00 PM: UND CVR SPR GRP at Tony's Pizzaria, 186 E Thompson Blvd, Ventura, CA 93001 (Ventura, Free, All-ages, 90's-rock). https://tockify.com/vtarocks/detail/26851/1794020400000
 - 7:00 PM: Will Breman at Lucky Fools Pub, 75 E High St, Moorpark, CA 93021 (Moorpark, singer/songwriter). https://tockify.com/vtarocks/detail/26514/1794020400000
 - 7:00 PM: Wow Band feat. MJ LIghtning at Winchesters Grill & Saloon, 632 E Main St, Ventura, CA 93001 (Ventura, No-cover-charge, rock-covers). https://tockify.com/vtarocks/detail/26906/1794020400000
@@ -222,6 +228,7 @@ How to answer questions with this file:
 - 8:30 PM: Cinnamon Whiskey at The Garage, 1091 Scandia Ave, Ventura, CA 93004 (Ventura, 21+, no-cover-charge, popular-covers). https://tockify.com/vtarocks/detail/27068/1794025800000
 - 8:30 PM: CRV at The Shores, 1031 Harbor Blvd, Oxnard, CA 93035 (Oxnard, country-rock). https://tockify.com/vtarocks/detail/26930/1794025800000
 - 8:30 PM: Fam Damly at Rock & Roll Pizza (Harley's Valley Bowl, 5255 Cochran St, Simi Valley, CA 93063 (Simi-Valley, Harley's-Valley-Bowl, 18+, no-cover). https://tockify.com/vtarocks/detail/26987/1794025800000
+- 9:00 PM: Kyle Brown at The Hub, 256 E Ojai Ave, Ojai, CA 93023 (Ojai, country-music). https://tockify.com/vtarocks/detail/27089/1794027600000
 
 ### Saturday, November 7
 - 10:00 AM: Ukulele Weekly Jam at Harbor Cove Cafe, 1867 Spinnaker Dr, Ventura, CA 93001 (Ventura, free). https://tockify.com/vtarocks/detail/23935/1794074400000

@@ -11,7 +11,7 @@ How to answer questions with this file:
   were sent in by local bands, fans, and venues.
 - Share a show's link when someone wants the details.
 - Venue addresses are included so a driver can say "Navigate to <venue>" or use the address.
-- Last updated: Wed Oct 28, 12:44 AM Pacific.
+- Last updated: Wed Oct 28, 1:03 AM Pacific.
 
 ## Links
 
@@ -257,3 +257,6 @@ How to answer questions with this file:
 - 8:00 PM: Plini at Ventura Music Hall - VMH, 1888 E Thompson Blvd, Ventura, CA 93001 (Ventura, All-ages, VMH, ticketed-event) (Ventura Rocks). https://tockify.com/vtarocks/detail/24923/1794110400000
 - 8:30 PM: Skeleton Keys at The Garage, 1091 Scandia Ave, Ventura, CA 93004 (Ventura, 21+, no-cover-charge, popular-covers) (Ventura Rocks). https://tockify.com/vtarocks/detail/27067/1794112200000
 - 9:00 PM: Steph's Rockin' Roadshow at The Shores, 1031 Harbor Blvd, Oxnard, CA 93035 (Oxnard, classic-rock-and-more) (Ventura Rocks). https://tockify.com/vtarocks/detail/26931/1794114000000
+
+### Sunday, November 8
+- 5:00 PM: Ardi at The Garage, 1091 Scandia Ave, Ventura, CA 93004 (rock, free) (TOPA community). https://www.instagram.com/p/De-CiAThxxo/

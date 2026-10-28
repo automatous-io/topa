@@ -3,11 +3,11 @@
 //
 // TOPA Local Music Finder
 // Shows listings from events.json (written 3x a day by scripts/fetch_events.py), plays 30-second previews
-// from Deezer, and keeps faves on the device. Venue data and the genre map live in data.js.
+// from Apple Music, and keeps faves on the device. Venue data and the genre map live in data.js.
 
 // ---- Settings and state ----
 // the app's version: shown in About, and it names the offline cache, so bumping it refreshes every device
-const VERSION = "0.9.8";
+const VERSION = "1.0.0";
 const params = new URLSearchParams(location.search);
 
 // Is this the car's browser? Some versions say "Tesla" in the user agent, but current ones just say
@@ -122,10 +122,15 @@ const townFromAddress = a => {
   );
 };
 
+// a show sent to TOPA directly (community/), not from the Ventura Rocks calendar
+const isAdded = e => e.source === "community";
+
 function toShow(o, rawTags) {
-  o.url = o.url || VR_CAL;
+  o.url = o.url || (isAdded(o) ? "" : VR_CAL);
   o.city = o.city || townFromAddress(o.address);
-  const c = KNOWN_VENUES[o.venue] || CITY_FALLBACK[o.city] || null;
+  // an added venue's map spot beats the built-in list
+  const c =
+    o.lat != null && o.lng != null ? [o.lat, o.lng] : KNOWN_VENUES[o.venue] || CITY_FALLBACK[o.city] || null;
   return {
     ...o,
     lat: c ? c[0] : null,
@@ -167,13 +172,20 @@ async function fetchListings() {
   return {
     updated: d.updated,
     events: d.events.map(e => toShow({ ...e, startMs: new Date(e.start).getTime() }, e.tags || [])),
+    extra: { bands: d.bands || {}, venues: d.venues || {} },
   };
 }
+
+// band and venue details people added (events.json "bands" and "venues")
+let EXTRA = { bands: {}, venues: {} };
+const setExtra = x => (EXTRA = { bands: (x && x.bands) || {}, venues: (x && x.venues) || {} });
+const addedVenue = name => EXTRA.venues[name] || {};
 
 // show the saved copy right away (works offline), then swap in the latest events.json
 async function load() {
   const c = store.get(LISTINGS_KEY),
     cached = c && Array.isArray(c.events) ? dropPast(c.events) : [];
+  setExtra(c && c.extra);
   setEvents(cached);
   status = cached.length ? { c: "cached", updated: c.updated } : { c: "loading" };
   render();
@@ -185,8 +197,9 @@ async function load() {
 async function fetchLatest() {
   try {
     const j = await fetchListings();
+    setExtra(j.extra);
     setEvents(dropPast(j.events));
-    store.set(LISTINGS_KEY, { ts: Date.now(), updated: j.updated, events: j.events });
+    store.set(LISTINGS_KEY, { ts: Date.now(), updated: j.updated, events: j.events, extra: j.extra });
     status = { c: "live", updated: j.updated };
     return true;
   } catch (_) {
@@ -284,9 +297,10 @@ const initials = s => {
 
 // ---- Building blocks (HTML snippets) ----
 
-// a band or venue picture: the Deezer photo when there is one, otherwise initials on a color unique to the name
-function art(s, cls = "", band = true) {
-  const ph = band && photoFor(s);
+// a band or venue picture: its photo when there is one, otherwise initials on a color unique to the name
+// (photo: for venues; bands look up their own)
+function art(s, cls = "", band = true, photo = "") {
+  const ph = photo || (band && photoFor(s));
   if (ph)
     return `<div class="art ${cls}"${band ? ` data-a="${esc(s)}"` : ""} style="background-image:url('${ph}')"></div>`;
   const h = hash(s),
@@ -320,7 +334,7 @@ const sortButton = (label, attr) =>
 const playAllButton = (l = "Play all") =>
   `<button class="chip pall" data-playall>${svg("play")}${l}</button>`;
 
-const venueArt = (v, c = "") => art(venueName(v), c, false);
+const venueArt = (v, c = "") => art(venueName(v), c, false, venuePhoto(v));
 
 const toggleFave = (k, n) => {
   const a = SAVED[k],
@@ -357,6 +371,11 @@ const ICONS = {
   share:
     '<path d="M12 15V4M8 7.5 12 4l4 3.5M7 11H6a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1h-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
   ext: '<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  // for a band's own show link when it's their Instagram post
+  ig: '<rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.3"/>',
+  // where a show came from: @ for shows sent to TOPA, a calendar for Ventura Rocks
+  at: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.6"/><path d="M15.6 8.6v4.6a2.4 2.4 0 0 0 4.8 0V12a8.4 8.4 0 1 0-3.4 6.8"/></g>',
+  cal: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10.2h17M8 3v4M16 3v4"/></g>',
   store:
     '<g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3 8h18l-1 3H4z"/><path d="M5 11v9h14v-9"/><path d="M10 20v-5h4v5"/></g>',
   pin: '<g fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s7-6.6 7-12a7 7 0 1 0-14 0c0 5.4 7 12 7 12z"/><circle cx="12" cy="9" r="2.6"/></g>',
@@ -380,8 +399,9 @@ const mapsQuery = v => encodeURIComponent([venueName(v.venue), v.city, "CA"].fil
 
 // Maps listing, call, website, directions
 const venueActions = v => {
-  const tel = VENUE_PHONES[v.venue];
-  const web = VENUE_SITES[v.venue];
+  // details someone added for the venue win over the built-in ones
+  const tel = addedVenue(v.venue).phone || VENUE_PHONES[v.venue];
+  const web = safeUrl(addedVenue(v.venue).website) || VENUE_SITES[v.venue];
   const link = (href, icon, title, label, newTab = true) =>
     `<a class="mi" href="${href}"${newTab ? ' target="_blank" rel="noopener"' : ""} title="${title}" aria-label="${label}">${svg(icon)}</a>`;
   return [
@@ -489,6 +509,12 @@ const venueDateRow = e => {
   );
 };
 
+// where a show came from: @ (sent to TOPA) or a calendar (Ventura Rocks); after: gap on the left
+const sourceIcon = (e, after) =>
+  isAdded(e)
+    ? `<span class="srci cm${after ? " af" : ""}" title="Sent straight to TOPA">${svg("at")}</span>`
+    : `<span class="srci vr${after ? " af" : ""}" title="From the Ventura Rocks community calendar">${svg("cal")}</span>`;
+
 // a show in a list; timeOnly when the date is already in the title or a day divider,
 // atVenue on lists that are all at one venue (its name, town and distance are already in the header)
 const showRow = (e, timeOnly, atVenue) => {
@@ -506,7 +532,7 @@ const showRow = (e, timeOnly, atVenue) => {
   const tags = labels.length ? `<div class="tg">${labels.join("")}</div>` : "";
   return (
     `<div class="rw" data-show="${e.id}"><div class="tcol">${date}<b>${timeLabel(e)}</b>${atVenue ? "" : milesUnderTime(e)}</div>${artWithPlay(band)}` +
-    `<div class="rb"><b>${esc(e.artist)}</b>` +
+    `<div class="rb"><b>${sourceIcon(e)}${esc(e.artist)}</b>` +
     (atVenue
       ? ""
       : `<button class="vb" data-venue="${esc(e.venue)}">${esc(venueName(e.venue))} <em>· ${esc(e.city)}${milesPart(e)}</em><span>›</span></button>`) +
@@ -803,6 +829,62 @@ function bandsPage() {
   );
 }
 
+// the links a band added about itself (website, Instagram, Bandcamp…), as small chips under its name
+const LINK_NAMES = {
+  website: "Website",
+  instagram: "Instagram",
+  facebook: "Facebook",
+  bandcamp: "Bandcamp",
+  spotify: "Spotify",
+  youtube: "YouTube",
+  soundcloud: "SoundCloud",
+};
+const bandLinks = name => {
+  const links = (EXTRA.bands[name] && EXTRA.bands[name].links) || {};
+  const chips = Object.keys(LINK_NAMES)
+    .filter(k => safeUrl(links[k]))
+    .map(
+      k =>
+        `<a class="chip" href="${esc(safeUrl(links[k]))}" target="_blank" rel="noopener">${LINK_NAMES[k]}</a>`,
+    );
+  return chips.length ? `<div class="blinks">${chips.join("")}</div>` : "";
+};
+
+// "+ Add a show" links at the bottom of band and venue pages, with the form filled in
+// what TOPA knows about a band or venue, to fill in its update form (keys are the form's field ids)
+const filled = o => Object.fromEntries(Object.entries(o).filter(([, v]) => v));
+const bandNow = name => {
+  const b = EXTRA.bands[name] || {},
+    links = b.links || {};
+  return filled({
+    name,
+    genres: (b.genres || []).join(", "),
+    town: b.town,
+    ...Object.fromEntries(Object.keys(LINK_NAMES).map(k => [k, links[k]])),
+    apple: b.apple && b.apple !== "none" ? `https://music.apple.com/us/artist/${b.apple}` : b.apple,
+  });
+};
+const venueNow = v => {
+  const added = addedVenue(v.venue),
+    spot = KNOWN_VENUES[v.venue] || (added.lat != null ? [added.lat, added.lng] : null);
+  return filled({
+    pick: v.venue,
+    address: added.address || v.address,
+    city: added.city || v.city,
+    coords: spot ? spot.join(", ") : "",
+    phone: added.phone || VENUE_PHONES[v.venue],
+    website: added.website || VENUE_SITES[v.venue],
+  });
+};
+
+const addLinks = list =>
+  `<div class="addrow">${list
+    .map(
+      ([form, label, fill]) =>
+        `<a href="${formUrl(form, fill)}" target="_blank" rel="noopener">+ ${label}</a>`,
+    )
+    .join("")}</div>`;
+
 function bandPage(name) {
   const L = EVENTS.filter(e => bandName(e) === name);
   const genres = L[0] && L[0].tags.length ? " · " + esc(L[0].tags.join(", ").toUpperCase()) : "";
@@ -810,8 +892,12 @@ function bandPage(name) {
     `<div class="hero">${art(name, "round")}<div class="hx">` +
     `<small>ARTIST${genres}</small><h1>${esc(name)}</h1><p>${showCount(L.length)}</p>` +
     `<div class="acts" style="align-items:center">${heroPlayButton(name)}</div>` +
-    `</div>${starButton(SAVED.bands.includes(name), `data-sb="${esc(name)}"`, 1)}</div>` +
-    L.map(venueDateRow).join("")
+    `${bandLinks(name)}</div>${starButton(SAVED.bands.includes(name), `data-sb="${esc(name)}"`, 1)}</div>` +
+    L.map(venueDateRow).join("") +
+    addLinks([
+      ["add-show", "Add a show", { band: name }],
+      ["add-band", "Update band info", bandNow(name)],
+    ])
   );
 }
 
@@ -867,7 +953,11 @@ function venuePage(key) {
     `</div>${starButton(SAVED.venues.includes(v.venue), `data-sv="${esc(v.venue)}"`, 1)}</div>` +
     section(todayWord(), tonight) +
     section("This week", thisWeek, tonight.length) +
-    section("Later", later.slice(0, 30), tonight.length || thisWeek.length)
+    section("Later", later.slice(0, 30), tonight.length || thisWeek.length) +
+    addLinks([
+      ["add-show", "Add a show here", { venue: v.venue }],
+      ["add-venue", "Update venue info", venueNow(v)],
+    ])
   );
 }
 
@@ -880,13 +970,22 @@ function showPage(id) {
     .toUpperCase();
   const otherDates = EVENTS.filter(x => bandName(x) === band && x.id !== e.id);
   const alsoHere = EVENTS.filter(x => x.venue === e.venue && bandName(x) !== band).slice(0, 6);
-  const listing =
-    `<a class="mi" href="${esc(e.url || VR_CAL)}" target="_blank" rel="noopener" title="View on Ventura Rocks" ` +
-    `aria-label="View on Ventura Rocks">${svg("ext")}</a>`;
+  // the show's link: its Ventura Rocks listing, or the link it was sent with (Instagram logo for a post)
+  const href = isAdded(e) ? safeUrl(e.url) : e.url || VR_CAL;
+  const onIg = isAdded(e) && /^https:\/\/(www\.)?instagram\.com\//.test(href);
+  const linkLabel = !isAdded(e)
+    ? "View on Ventura Rocks"
+    : onIg
+      ? "See the post on Instagram"
+      : "Show details";
+  const listing = href
+    ? `<a class="mi" href="${esc(href)}" target="_blank" rel="noopener" title="${linkLabel}" ` +
+      `aria-label="${linkLabel}">${svg(onIg ? "ig" : "ext")}</a>`
+    : "";
   const tags = e.tags.length ? `<div class="tg">${e.tags.map(x => `<i>${esc(x)}</i>`).join("")}</div>` : "";
   return (
     `<div class="hero">${art(band)}<div class="hx">` +
-    `<small>${date} · <span class="ac">${timeLabel(e)}</span></small><h1>${esc(e.artist)}</h1>` +
+    `<small>${date} · <span class="ac">${timeLabel(e)}</span>${sourceIcon(e, true)}</small><h1>${esc(e.artist)}</h1>` +
     `<button class="vb big" data-venue="${esc(e.venue)}">${esc(venueName(e.venue))} <em>· ${esc(e.city)}</em><span>›</span></button>` +
     `<div class="mrow">${heroPlayButton(band)}${listing}${venueActions(e)}<span class="sub">${distanceLabel(e)}</span></div>${voiceHint(e)}` +
     `${tags}</div>${starButton(SAVED.bands.includes(band), `data-sb="${esc(band)}"`, 1)}</div>` +
@@ -1032,19 +1131,28 @@ function locate(ok, msg = "Turn on location to filter by distance.") {
   );
 }
 
-// ---- 30-second previews (Deezer) ----
-// Deezer's API has no CORS headers, so it is called with JSONP. Preview links expire after ~15 min,
-// so only the artist match is saved; track links are fetched fresh when you press play.
-const DEEZER_API = "https://api.deezer.com",
-  MATCH_KEY = "topa.matches.v1";
+// ---- 30-second previews (Apple Music) ----
+// Apple's iTunes Search API: free, no key, about 20 calls a minute. Bands are checked in the background,
+// soonest and on-screen first.
+const ITUNES = "https://itunes.apple.com",
+  MATCH_KEY = "topa.matches.v2"; // v1 held Deezer matches
+try {
+  localStorage.removeItem("topa.matches.v1");
+} catch (_) {}
 
 let MATCHES = (s => (s && typeof s === "object" && !Array.isArray(s) ? s : {}))(store.get(MATCH_KEY));
 
-// MATCHES[band] = { v, t }: v is { id, n: Deezer name, pic, np: 1 if no playable previews } or 0 for no match;
-// t is when it was checked. Matches are rechecked after 14 days, misses after 3.
+// MATCHES[band] = { v, t }: v is { id, n: Apple Music name, pic, url: artist page, np: 1 if no previews }
+// or 0 for no match; t is when it was checked. Matches are rechecked after 14 days, misses after 3.
+// a band's own details can pin its Apple Music artist (an id) or turn previews off ("none")
+const pinnedArtist = h => String((EXTRA.bands[h] && EXTRA.bands[h].apple) || "");
+
 const matchFor = h => {
+  const pin = pinnedArtist(h);
+  if (pin === "none") return 0;
   const r = MATCHES[h];
   if (!r) return undefined;
+  if (pin && !(r.v && String(r.v.id) === pin)) return undefined; // a saved guess that isn't the pinned artist
   if (Date.now() - r.t > (r.v ? 12096e5 : 2592e5)) return undefined;
   return r.v;
 };
@@ -1059,11 +1167,16 @@ const hasPreview = h => {
   return !!(v && !v.np);
 };
 
-// the band's Deezer photo, if it's a real image and not the blank placeholder
+// a photo the band sent in (a file in the repo, e.g. community/photos/bands/saltgrass.jpg)
+const localPhoto = p => (/^(community\/)?photos\/[\w/-]+\.jpg$/.test(p || "") ? p : "");
+const bandPhoto = h => localPhoto(EXTRA.bands[h] && EXTRA.bands[h].photo);
+// a venue's photo (its own, else TOPA's)
+const venuePhoto = v => localPhoto(addedVenue(v).photo);
+
+// the band's picture: its own photo, else album art from Apple Music
 const photoFor = h => {
-  const v = matchFor(h),
-    u = v && safeUrl(v.pic);
-  return u && !/\/artist\/\//.test(u) ? u : "";
+  const v = matchFor(h);
+  return bandPhoto(h) || (v && safeUrl(v.pic)) || "";
 };
 
 // swap initials for the photo on tiles already on screen, without a re-render (keeps typing focus)
@@ -1089,7 +1202,7 @@ const normName = s =>
     .replace(/^the\s+/, "")
     .replace(/[^a-z0-9]/g, "");
 
-// cover/tribute acts and generic listings ("Open Mic") almost always match the wrong Deezer artist
+// cover/tribute acts and generic listings ("Open Mic") almost always match the wrong artist
 const GENERIC =
   /open mic|\bjam\b|karaoke|\bdj\b|orchestra|symphony|choir|tribute|\bcovers?\b|party|festival|fundraiser|showcase|jazz band|\bnight\b/i;
 
@@ -1108,73 +1221,71 @@ const canMatch = h => {
   );
 };
 
-// Deezer sends no CORS headers, so calls go through JSONP (a <script> tag with a callback)
-let jsonpCount = 0;
+// Apple's album art at 600x600 instead of 100x100
+const bigArt = u => safeUrl((u || "").replace(/\/\d+x\d+bb\./, "/600x600bb."));
 
-const jsonp = u =>
-  new Promise((res, rej) => {
-    const cb = "__dz" + ++jsonpCount + "_" + Date.now(),
-      s = document.createElement("script");
-    const done = () => {
-        clearTimeout(to);
-        window[cb] = () => {};
-        s.remove();
-      },
-      to = setTimeout(() => {
-        done();
-        rej("timeout");
-      }, 9000);
-    window[cb] = d => {
-      done();
-      d && !d.error ? res(d) : rej(d && d.error);
-    };
-    s.onerror = () => {
-      done();
-      rej("net");
-    };
-    s.src = u + (u.includes("?") ? "&" : "?") + "output=jsonp&callback=" + cb;
-    document.head.appendChild(s);
-  });
+const getJson = async u => {
+  const r = await fetch(u);
+  if (!r.ok) throw r.status;
+  return r.json();
+};
 
-// a band's top tracks with preview links, kept for 10 minutes (the links expire)
+// Apple Music songs -> what the player needs
+const toTracks = songs =>
+  songs
+    .filter(t => t && t.wrapperType === "track" && t.previewUrl)
+    .slice(0, 5)
+    .map(t => ({
+      title: t.trackName || "",
+      url: t.previewUrl,
+      cover: bigArt(t.artworkUrl100),
+      link: t.trackViewUrl,
+    }));
+
+// a band's top tracks with preview links, kept for the visit
 const trackCache = new Map();
 
 async function topTracks(id) {
-  const c = trackCache.get(id);
-  if (c && Date.now() - c.ts < 6e5) return c.list;
-  const d = await jsonp(`${DEEZER_API}/artist/${encodeURIComponent(id)}/top?limit=5`);
-  const list = (d.data || [])
-    .filter(t => t && t.preview)
-    .map(t => ({
-      title: t.title_short || t.title || "",
-      url: t.preview,
-      cover: t.album && (t.album.cover_big || t.album.cover_medium),
-    }));
-  trackCache.set(id, { ts: Date.now(), list });
+  if (trackCache.has(id)) return trackCache.get(id);
+  const d = await getJson(`${ITUNES}/lookup?id=${encodeURIComponent(id)}&entity=song&limit=10`);
+  const list = toTracks(d.results || []);
+  trackCache.set(id, list);
   return list;
 }
 
-// find a band on Deezer (cached); reveals its play buttons and photo when found
+// find a band on Apple Music (cached); reveals its play buttons and picture when found
 const lookupsInFlight = new Map();
 
 function lookupBand(h) {
   const v = matchFor(h);
   if (v !== undefined) return Promise.resolve(v);
   if (lookupsInFlight.has(h)) return lookupsInFlight.get(h);
-  if (!canMatch(h)) return Promise.resolve(0);
+  const pin = pinnedArtist(h);
+  if (!pin && !canMatch(h)) return Promise.resolve(0);
   const p = (async () => {
-    const d = await jsonp(`${DEEZER_API}/search/artist?q=${encodeURIComponent(h)}&limit=10`),
-      tix = bandEvents(h).some(e => e.tix);
-    // exact name only; a huge catalog on a small bar gig usually means several artists share the name
-    const c = (d.data || [])
-      .filter(a => normName(a.name) === normName(h) && a.nb_album > 0 && (tix || a.nb_album <= 30))
-      .sort((a, b) => b.nb_fan - a.nb_fan)[0];
-    if (!c) {
+    let songs;
+    if (pin)
+      songs = (await getJson(`${ITUNES}/lookup?id=${encodeURIComponent(pin)}&entity=song&limit=10`)).results;
+    else {
+      // songs by artists with this exact name; the one with the most songs wins
+      const d = await getJson(
+        `${ITUNES}/search?term=${encodeURIComponent(h)}&entity=song&attribute=artistTerm&limit=25`,
+      );
+      const mine = (d.results || []).filter(t => normName(t.artistName || "") === normName(h));
+      const counts = {};
+      mine.forEach(t => (counts[t.artistId] = (counts[t.artistId] || 0) + 1));
+      const best = Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0];
+      songs = mine.filter(t => String(t.artistId) === best);
+    }
+    const first = (songs || []).find(t => t.wrapperType === "track") || (songs || [])[0];
+    if (!first) {
       saveMatch(h, 0);
       return 0;
     }
-    const tr = await topTracks(c.id);
-    const r = { id: c.id, n: c.name, pic: c.picture_big || c.picture_medium || "" };
+    const tr = toTracks(songs);
+    trackCache.set(String(first.artistId), tr);
+    const r = { id: String(first.artistId), n: first.artistName, pic: tr[0] ? tr[0].cover : "" };
+    r.url = safeUrl((first.artistViewUrl || first.artistLinkUrl || "").replace(/\?.*$/, ""));
     if (!tr.length) r.np = 1;
     saveMatch(h, r);
     if (!r.np) showPlayButtons(h, true);
@@ -1188,7 +1299,7 @@ function lookupBand(h) {
 const playButtonsFor = h => [...document.querySelectorAll("[data-play]")].filter(b => b.dataset.play === h);
 const showPlayButtons = (h, on) => playButtonsFor(h).forEach(b => (b.hidden = !on));
 
-// check every band in the feed in the background (soonest first), gently: Deezer allows ~50 calls / 5s
+// check every band in the background, soonest first, at Apple's pace
 const lookupQueue = [];
 
 let lookupBusy = false;
@@ -1235,7 +1346,7 @@ async function runLookups() {
     } catch (_) {
       fails++;
     }
-    await new Promise(r => setTimeout(r, 300));
+    await new Promise(r => setTimeout(r, 3200));
   }
   lookupBusy = false;
 }
@@ -1315,7 +1426,7 @@ async function playCurrent() {
     tr = v ? await topTracks(v.id) : [];
   } catch (_) {
     if (tok === playback.token) {
-      toast("Couldn't reach Deezer. Check the connection.");
+      toast("Couldn't reach Apple Music. Check the connection.");
       syncPlayIcons();
     }
     return;
@@ -1344,6 +1455,11 @@ function showPlayer(it, t, v) {
   const pic = safeUrl((v && v.pic) || (t && t.cover));
   inPlayer(".pla").style.backgroundImage = pic ? `url("${pic}")` : "";
   inPlayer(".plt").textContent = t ? t.title : "Loading preview…";
+  // credit Apple Music and link to the song
+  const am = inPlayer(".pldz"),
+    amLink = safeUrl((t && t.link) || (v && v.url));
+  am.hidden = !amLink;
+  if (amLink) am.href = amLink;
   inPlayer(".plb").textContent =
     it.band + (e ? " · " + nextLabel(e) + " · " + venueName(e.venue) : "") + (e ? "  ›" : "");
   inPlayer(".plp i").style.width = "0";
@@ -1494,6 +1610,11 @@ function onPlayerClick(t, ev) {
 
 const REPO = "https://github.com/automatous-io/topa";
 
+// a TOPA form on GitHub (.github/ISSUE_TEMPLATE), with answers filled in, e.g. formUrl("add-show", { venue })
+const formUrl = (form, fill = {}) =>
+  `${REPO}/issues/new?` +
+  new URLSearchParams({ template: form + ".yml", ...fill }).toString().replace(/&/g, "&amp;");
+
 // "Get the app": how to add TOPA to the home screen. Hidden in the car (its browser can't install apps)
 // and when it's already running from the home screen.
 const INSTALLED = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
@@ -1527,27 +1648,76 @@ function installHtml() {
   );
 }
 
+// About: the four forms as one card, styled like the Install card
+const addCard = () =>
+  `<div class="aadd">` +
+  [
+    ["add-show", "at", "Add a show", "One night at any venue"],
+    ["add-weekly-show", "cal", "Add a weekly show", "Open mics and residencies"],
+    ["add-band", "Bands", "Add or update a band", "Links, photo, previews"],
+    ["add-venue", "Venues", "Add or update a venue", "Address, map spot, photo"],
+  ]
+    .map(
+      ([form, icon, title, sub]) =>
+        `<a href="${formUrl(form)}" target="_blank" rel="noopener"><span class="aa-icon">${svg(icon)}</span>` +
+        `<span class="ai-text"><b>${title}</b><small>${sub}</small></span><span class="ai-go">›</span></a>`,
+    )
+    .join("") +
+  `</div>`;
+
 function aboutHtml() {
   const link = (href, label) => `<a class="chip" href="${href}" target="_blank" rel="noopener">${label}</a>`;
   return (
     `<button class="ax" data-about-close aria-label="Close">${CLOSE_ICON}</button>` +
     `<div class="ahead">${wordmark("about")}<p>Ventura County Local Music Finder</p></div>` +
-    `<p class="astory">A personal project by local music lovers who wanted to find live music nearby, ` +
-    `pick a show fast, and have their Tesla navigate there by voice. The future is now!</p>` +
-    `<h3>How it works</h3>` +
-    `<p>Shows come from the public <a href="${VR_SITE}" target="_blank" rel="noopener">Ventura Rocks</a> calendar, ` +
-    `checked about 3 times a day${updatedLabel() ? ` (last change ${updatedLabel()})` : ""}. ` +
-    `Every show links back to its Ventura Rocks listing.</p>` +
-    `<p>Artist photos and 30-second previews come from <a href="https://www.deezer.com" target="_blank" rel="noopener">Deezer</a> ` +
-    `when a band's name matches. Some matches may be wrong, and many local bands have no previews.</p>` +
-    `<p>Distances are approximate. Visits are counted anonymously (no cookies, nothing personal) to see how TOPA is used.</p>` +
+    `<p class="astory">Made by local music lovers to find live music nearby and pick a show fast. ` +
+    `Bands, fans, and venues add to it, so it keeps getting better.</p>` +
+    `<h3>Where shows come from</h3>` +
+    `<div class="legend">` +
+    `<div><span class="srci vr">${svg("cal")}</span><span>The <a href="${VR_SITE}" target="_blank" rel="noopener">Ventura Rocks</a> ` +
+    `community calendar, checked 3 times a day</span></div>` +
+    `<div><span class="srci cm">${svg("at")}</span><span>Sent to TOPA by bands, fans, and venues</span></div>` +
+    `</div>` +
+    `<h3>Good to know</h3>` +
+    `<p>Previews and album art come from <a href="https://music.apple.com" target="_blank" rel="noopener">Apple Music</a>.</p>` +
+    `<p>Distances are approximate.<br>Visits are counted anonymously, with no cookies.</p>` +
+    `<button class="ainstall" data-about-add><span class="ai-icon cm">${svg("at")}</span>` +
+    `<span class="ai-text"><b>Add your show</b><small>Shows, bands, and venues</small></span>` +
+    `<span class="ai-go">›</span></button>` +
     installHtml() +
     `<div class="alinks">${link(REPO, "GitHub")}${link(REPO + "#readme", "README")}${link(REPO + "/blob/main/LICENSE", "License")}</div>` +
-    `<p class="acopy">Copyright 2026 AUTOMATOUS.IO. All rights reserved. All show listings are from ` +
-    `the public Ventura Rocks calendar, and artist photos and previews are from Deezer. Not affiliated with or endorsed by either.</p>` +
-    `<a class="aver" href="${REPO}" target="_blank" rel="noopener">v${VERSION}</a>`
+    `<p class="acopy">© 2026 AUTOMATOUS.IO. Not affiliated with Ventura Rocks or Apple.</p>` +
+    `<p class="aver"><a href="${REPO}" target="_blank" rel="noopener">v${VERSION}</a>` +
+    `${updatedLabel() ? ` · listings updated ${updatedLabel()}` : ""}</p>`
   );
 }
+
+// About's second page: how adding works, and the four forms
+function addHtml() {
+  return (
+    `<button class="ax" data-about-close aria-label="Close">${CLOSE_ICON}</button>` +
+    `<button class="aback" data-about-back>‹ About</button>` +
+    `<h2 class="atitle">Add your show</h2>` +
+    `<p>Bands, fans, and venues can send shows straight to TOPA, plus band info and venue photos. ` +
+    `Shows added this way get the <span class="srci cm">${svg("at")}</span>mark.</p>` +
+    `<ol class="asteps">` +
+    `<li><b>Pick what you're adding</b><span>A show, a weekly show, a band, or a venue.</span></li>` +
+    `<li><b>Fill in a short form</b><span>It's on GitHub, so you'll need a free account. A bot checks it in ` +
+    `about a minute and tells you if anything needs fixing.</span></li>` +
+    `<li><b>It goes live</b><span>Once it's approved, it shows up on TOPA within minutes.</span></li>` +
+    `</ol>` +
+    addCard() +
+    `<p class="anote">Already listed? Send the same form with the name and just what's changing; ` +
+    `blank answers stay as they are.</p>`
+  );
+}
+
+// show one of About's pages from the top
+const aboutPage = html => {
+  const card = document.querySelector("#about .acard");
+  card.innerHTML = html;
+  card.scrollTop = 0;
+};
 
 function openAbout() {
   const a = document.getElementById("about");
@@ -1569,7 +1739,7 @@ document.body.onclick = ev => {
     return;
   }
   const t = ev.target.closest(
-    "[data-play],[data-playall],[data-pl],[data-plshow],[data-vsort],[data-clear],[data-show],[data-v],[data-d],[data-g],[data-band],[data-venue],[data-sort],[data-sb],[data-sv],[data-pop],[data-anyrad],[data-rad],[data-ssort],[data-ftab],[data-scroll],[data-about],[data-about-close],[data-install]",
+    "[data-play],[data-playall],[data-pl],[data-plshow],[data-vsort],[data-clear],[data-show],[data-v],[data-d],[data-g],[data-band],[data-venue],[data-sort],[data-sb],[data-sv],[data-pop],[data-anyrad],[data-rad],[data-ssort],[data-ftab],[data-scroll],[data-about],[data-about-close],[data-about-add],[data-about-back],[data-install]",
   );
   const pop = document.getElementById("pop");
   if (!ev.target.closest("#pop") && !(t && t.dataset.pop !== undefined)) pop.classList.remove("on");
@@ -1584,6 +1754,8 @@ document.body.onclick = ev => {
     return closeAbout();
   }
   if (d.aboutClose !== undefined) return closeAbout();
+  if (d.aboutAdd !== undefined) return aboutPage(addHtml());
+  if (d.aboutBack !== undefined) return aboutPage(aboutHtml());
   if (d.scroll) {
     const c = t.parentNode.querySelector(".chips");
     c.scrollBy({ left: +d.scroll * c.clientWidth * 0.7, behavior: "smooth" });

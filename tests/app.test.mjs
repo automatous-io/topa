@@ -98,7 +98,8 @@ function findChrome() {
 
 // opens the app in its own private browser session (no faves or storage left over from other tests);
 // fails the test if the page throws
-async function open(t, { query = "", viewport = TESLA, now = NOON, faves } = {}) {
+// `listings` swaps in a different events.json for this one test
+async function open(t, { query = "", viewport = TESLA, now = NOON, faves, listings } = {}) {
   const session = await browser.createBrowserContext();
   const page = await session.newPage();
   const errors = [];
@@ -111,7 +112,12 @@ async function open(t, { query = "", viewport = TESLA, now = NOON, faves } = {})
   await page.setViewport(viewport);
   await page.setBypassServiceWorker(true);
   await page.setRequestInterception(true);
-  page.on("request", r => (/deezer|dzcdn|goatcounter|zgo\.at/.test(r.url()) ? r.abort() : r.continue()));
+  page.on("request", r => {
+    if (/deezer|dzcdn|itunes|mzstatic|goatcounter|zgo\.at/.test(r.url())) return r.abort();
+    if (listings && /\/events\.json/.test(r.url()))
+      return r.respond({ contentType: "application/json", body: JSON.stringify(listings) });
+    r.continue();
+  });
   if (faves) {
     await page.evaluateOnNewDocument(f => localStorage.setItem("topa.faves.v1", JSON.stringify(f)), faves);
   }
@@ -234,6 +240,46 @@ test("the car-only voice hint shows only in the Tesla", async t => {
   assert.match(await text(car, ".vhint"), /Navigate to/);
 });
 
+// ---- Shows people added (community/) ----
+
+test("an added show uses its venue's added details and has no Ventura Rocks link", async t => {
+  const vr = EVENTS.find(e => e.url && Date.parse(e.start) > pacific(NOON));
+  const listings = {
+    updated: "2026-10-24T09:00:00-07:00",
+    events: [
+      {
+        artist: "The Tide Pool Ramblers",
+        start: "2026-10-24T20:00:00-07:00",
+        end: null,
+        venue: "The New Spot",
+        address: "1 Main St, Ojai, CA 93023",
+        city: "Ojai",
+        tags: ["rock"],
+        url: "",
+        source: "community",
+        lat: 34.448,
+        lng: -119.243,
+      },
+      { ...vr, source: "ventura-rocks" },
+    ],
+    venues: { "The New Spot": { phone: "(805) 555-0123", website: "https://newspot.example" } },
+  };
+  const added = await open(t, { listings, query: "&view=Show:0" });
+  assert.equal(await text(added, "h1"), "The Tide Pool Ramblers");
+  assert.equal(await added.$('a[title="View on Ventura Rocks"]'), null);
+  assert.ok(await added.$('a[href="tel:8055550123"]'), "calls the added phone number");
+  assert.ok(await added.$('a[href="https://newspot.example"]'), "links the added website");
+  // distance works from the map spot that came with the show
+  await added.evaluate(() => {
+    USER = { lat: 34.448, lng: -119.243 };
+    render();
+  });
+  assert.match(await text(added, ".mrow .sub"), /here/);
+
+  const listed = await open(t, { listings, query: "&view=Show:1" });
+  assert.ok(await listed.$('a[title="View on Ventura Rocks"]'), "Ventura Rocks shows keep their link");
+});
+
 // ---- Layout ----
 
 test("phones get the TOPA header and a five-button tab bar", async t => {
@@ -250,7 +296,7 @@ test("phones get the TOPA header and a five-button tab bar", async t => {
 test("About opens and closes, and shows the version", async t => {
   const page = await open(t);
   await tap(page, "nav .about-tab");
-  assert.match(await text(page, ".aver"), /^v\d+\.\d+\.\d+$/);
+  assert.match(await text(page, ".aver a"), /^v\d+\.\d+\.\d+$/);
   await tap(page, ".ax");
   assert.equal(await page.$eval("#about", el => el.hidden), true);
 });

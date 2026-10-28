@@ -3,7 +3,7 @@
 //
 // TOPA service worker: lets the app open and show the last listings with no signal.
 // The page, its code and events.json load fresh when online and fall back to the saved copy when not.
-// Icons come from the cache first. Requests to other sites (Deezer) pass straight through.
+// Icons come from the cache first. Requests to other sites (Apple Music) pass straight through.
 
 // the cache is named after the app version (app.js registers this file as sw.js?v=<VERSION>)
 const VERSION = new URL(location.href).searchParams.get("v") || "dev";

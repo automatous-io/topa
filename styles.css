@@ -12,6 +12,7 @@
   --sunset: linear-gradient(135deg, #ff5f8f, #ff9a5a); /* pink into orange: the big play buttons */
   --on-acc: #1a0b14; /* text and icons sitting on pink */
   --fave: #ffc15e;
+  --community: #5ee0c1; /* teal: shows the community added */
 }
 * {
   box-sizing: border-box;
@@ -949,6 +950,68 @@ h2 {
   background: #ffc15e1f;
   font-weight: 700;
 }
+/* where a show came from: a small icon before the band name (teal @ = community, gray calendar = Ventura Rocks) */
+.srci {
+  display: inline-flex;
+  vertical-align: -0.1em;
+  margin-right: 7px;
+}
+.srci svg {
+  width: 0.85em;
+  height: 0.85em;
+}
+.srci.cm {
+  color: var(--community);
+}
+.srci.vr {
+  color: var(--mute);
+  opacity: 0.7;
+}
+.srci.af {
+  margin: 0 0 0 8px;
+}
+/* a band's own links under its name */
+.blinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+/* quiet "+ Add a show here" links at the bottom of band and venue pages */
+.addrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin: 28px 0 8px;
+}
+.addrow a {
+  color: var(--mute);
+  font-size: 14px;
+  text-decoration: none;
+}
+.addrow a:hover {
+  color: var(--ink);
+}
+a.pldz {
+  text-decoration: none;
+}
+/* About: where shows come from, one row per icon */
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+.legend > div {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 10px;
+  align-items: start;
+}
+.legend .srci {
+  margin: 0;
+  padding-top: 0.25em;
+}
 .seeall {
   display: inline-flex;
   align-items: center;
@@ -1010,6 +1073,24 @@ h2 {
   font-size: 17px;
   line-height: 1.5;
   color: #ddd;
+  /* slim dark scrollbar instead of the browser's light gray one */
+  scrollbar-width: thin;
+  scrollbar-color: #ffffff2e transparent;
+}
+.acard::-webkit-scrollbar {
+  width: 10px;
+}
+.acard::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 16px 0; /* clear of the rounded corners */
+}
+.acard::-webkit-scrollbar-thumb {
+  background: #ffffff2e;
+  border-radius: 10px;
+  border: 3px solid #1e1724; /* the card's color, for a thinner-looking thumb */
+}
+.acard::-webkit-scrollbar-thumb:hover {
+  background: #ffffff4d;
 }
 /* links read as bold white text, turning pink only on hover */
 .acard a:not(.chip) {
@@ -1116,6 +1197,111 @@ button.ainstall:hover {
   font-size: 26px;
   color: var(--mute);
 }
+/* About: the "Add your show" button uses the community teal */
+.ai-icon.cm {
+  background: var(--community);
+}
+/* About's second page: back link, title, the three steps */
+.aback {
+  color: var(--mute);
+  font: inherit;
+  font-size: 15px;
+  padding: 0;
+  margin-bottom: 14px;
+}
+.aback:hover {
+  color: var(--ink);
+}
+.atitle {
+  margin: 0 0 10px;
+  font-size: 26px;
+  color: var(--ink);
+}
+.asteps {
+  list-style: none;
+  counter-reset: step;
+  padding: 0;
+  margin: 18px 0 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.asteps li {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  column-gap: 12px;
+}
+.asteps li::before {
+  content: counter(step);
+  grid-row: span 2;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #5ee0c11f;
+  color: var(--community);
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.asteps b {
+  color: var(--ink);
+}
+.asteps span {
+  color: var(--mute);
+  font-size: 15px;
+}
+.anote {
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--mute);
+}
+/* About: "Add your show" card, one row per form */
+.aadd {
+  margin-top: 14px;
+  border-radius: 14px;
+  background: #ffffff0d;
+  border: 1px solid #ffffff14;
+  overflow: hidden;
+}
+.aadd a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  color: var(--ink);
+  text-decoration: none;
+}
+.aadd a + a {
+  border-top: 1px solid #ffffff12;
+}
+.aadd a:hover {
+  background: #ffffff0d;
+}
+.aadd .ai-text b {
+  font-size: 15px;
+}
+.aadd .ai-text small {
+  font-size: 13px;
+  font-weight: 400;
+}
+.aa-icon {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #5ee0c11f;
+  color: var(--community);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.aa-icon svg {
+  width: 20px;
+  height: 20px;
+}
 .alinks {
   display: flex;
   flex-wrap: wrap;
@@ -1131,15 +1317,17 @@ button.ainstall:hover {
   background: #ffffff2a;
 }
 .aver {
-  display: block;
-  width: fit-content;
-  margin: 10px auto 0;
+  margin: 10px 0 0;
+  text-align: center;
   font-size: 13px;
+  color: var(--mute);
+}
+.acard .aver a {
   font-weight: 700;
   color: var(--mute);
   text-decoration: none;
 }
-.aver:hover {
+.acard .aver a:hover {
   color: var(--acc);
 }
 .acopy {
@@ -1408,10 +1596,20 @@ button.ainstall:hover {
   color: var(--ink);
   background: #ffffff14;
 }
+/* Apple Music credit: a small third line under the band, links to the song */
 .pldz {
+  display: block;
+  width: fit-content;
+  margin-top: 3px;
   font-size: 11px;
-  color: #ffffff55;
+  color: #ffffff66;
   white-space: nowrap;
+}
+.pldz[hidden] {
+  display: none;
+}
+.pldz:hover {
+  color: var(--ink);
 }
 /* pull-to-refresh arrow: slides down from the top as you pull, spins while refreshing */
 #ptr {
@@ -2008,7 +2206,8 @@ main.back {
     height: 2px;
   }
   .pldz {
-    display: none;
+    font-size: 10px;
+    margin-top: 1px;
   }
   .plx {
     width: 44px;

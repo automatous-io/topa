@@ -1,0 +1,14 @@
+{
+  "name": "The Flying Spoon",
+  "address": "824 E Santa Maria St, Santa Paula, CA 93060",
+  "city": "Santa Paula",
+  "lat": 34.348761,
+  "lng": -119.061103,
+  "phone": "+18053925667",
+  "website": "https://www.instagram.com/theflyingspoonszp/",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "issue": 3
+}

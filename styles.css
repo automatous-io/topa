@@ -1543,6 +1543,11 @@ button.ainstall:hover {
   background: #fff;
   color: #000;
 }
+/* the other buttons turn white on hover; this one has a white circle, so it dims instead */
+.plbtns .pp:hover {
+  color: #000;
+  background: #e2dce8;
+}
 .plbtns .pp svg {
   width: 28px;
   height: 28px;
@@ -2192,7 +2197,8 @@ main.back {
     width: 46px;
     height: 46px;
   }
-  .plbtns .pp {
+  .plbtns .pp,
+  .plbtns .pp:hover {
     width: 44px;
     height: 44px;
     background: none;

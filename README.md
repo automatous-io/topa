@@ -2,7 +2,7 @@
 
 <h1 align="center">TOPA Local Music Finder</h1>
 
-*A personal project by local music lovers who wanted to find live local music nearby, pick a show fast, and have their Tesla navigate there by voice. The future is now!*
+*Made by local music lovers to find live music nearby and pick a show fast. Bands, fans, and venues add to it, so it keeps getting better.*
 
 **Who's playing locally tonight, and what do they sound like?** TOPA is a live music finder for Ventura County that I built for my Tesla's touchscreen, and then for phones. Open it, see upcoming shows, tap ▶ to hear a band, and go.
 
@@ -22,9 +22,12 @@ More in [`screenshots/`](screenshots/): every page on the Tesla screen (1920×12
 
 - **Today first.** It opens on today's shows ("Today" until 4pm, then "Tonight") with big start times, then lets you pick
   another day, the weekend, or a genre. Each row shows the band, venue, town and distance.
-- **Hear before you go.** Sunset-colored ▶ buttons play 30-second song previews. "Play all" runs through a whole night's lineup like a radio, and the player shows where and when each band is playing.
-- **Bands and venues.** Every band and venue has its own page: dates, lineup, call, website, and directions. The Venues
-  tab is a list showing each venue's town, distance, show count and next show.
+- **Hear before you go.** Sunset-colored ▶ buttons play 30-second song previews from Apple Music. "Play all" runs through a whole night's lineup like a radio, and the player shows where and when each band is playing.
+- **Bands and venues.** Every band and venue has its own page: dates, lineup, call, website, and directions, plus the
+  band's links and photo when it has sent them. The Venues tab lists each venue's town, distance, show count and next show.
+- **Anyone can add a show.** Bands, fans, and venues send shows, band info, and venue photos through short forms
+  (About → Add your show). Each one is checked before it goes live. Shows sent this way get a small **@**; shows from the
+  Ventura Rocks community calendar get a small calendar.
 - **Faves.** Tap any star to fave a band or venue, on a row or right on a band's photo. When a fave is playing on the day
   you're looking at, it's pinned at the top of Shows, and shows at a faved venue are tagged "★ Fave venue". The Faves tab
   switches between your bands and venues.
@@ -88,33 +91,45 @@ Built for glancing at a car screen, then refined for phones:
 
 ## How it works
 
-No backend, no API keys, no cost. It's a static site on GitHub Pages plus a scheduled GitHub Action.
+No backend, no API keys, no cost. It's a static site on GitHub Pages plus GitHub Actions.
 
 ```
-Ventura Rocks calendar (Tockify)
-        │  scripts/fetch_events.py, run by GitHub Actions 3× a day
-        ▼
+Ventura Rocks calendar (Tockify)        Bands, fans, venues
+        │                                 │  GitHub form → bot checks it → pull request → approved
+        │                                 ▼
+        │                            community/ (one small file per show, band or venue)
+        │                                 │
+        └──── scripts/fetch_events.py, 3× a day and on every approval ────┘
+                          ▼
    events.json  ──────────►  index.html + app.js (one page, no build step)
   (facts only)               ├─ loads events.json from the same site
-        │                    ├─ Deezer API (JSONP): artist photos + 30s previews
+        │                    ├─ Apple Music (iTunes Search API): 30s previews + album art
         │                    └─ sw.js: offline cache
    llms.txt  ─────────────►  AI assistants (Grok in the car, others)
   (plain English)
 ```
 
-1. **Listings.** [`scripts/fetch_events.py`](scripts/fetch_events.py) (Python standard library only) reads the calendar's public
-   `monthly` and `upcoming` pages, keeps only facts (band, time, venue, address, town, tags, link), merges and de-duplicates them,
-   writes every time in Pacific with a plain-English `when` ("Sat Oct 24, 7:00 PM") so people and AI assistants read it right,
-   and writes `events.json`, plus `llms.txt`: every upcoming show by day in plain English, with addresses and links, and a
-   note asking assistants to credit TOPA and Ventura Rocks. If the page won't parse, it exits with an error and leaves the old file alone.
-2. **Schedule.** [`.github/workflows/update-events.yml`](.github/workflows/update-events.yml) runs it around 7am, noon and 4pm Pacific
-   and commits `events.json` and `llms.txt` only when they changed (`llms.txt` also drops past days, so it changes at most
-   once a day otherwise).
-3. **The app.** `index.html` shows the last saved listings right away (so it opens instantly and works offline), then swaps in the
+1. **Listings.** [`scripts/fetch_events.py`](scripts/fetch_events.py) (Python standard library only) reads the Ventura Rocks
+   calendar's public `monthly` and `upcoming` pages and the shows people sent to TOPA (`community/`), keeps only facts (band,
+   time, venue, address, town, tags, link), and merges them. When both list the same show (same venue, day and band), the one
+   sent to TOPA wins. It writes every time in Pacific with a plain-English `when` ("Sat Oct 24, 7:00 PM"), then writes
+   `events.json` and `llms.txt`: every upcoming show by day in plain English, with addresses and links. If the calendar won't
+   parse, it exits with an error and leaves the old file alone.
+2. **Sending a show.** Each form in [`.github/ISSUE_TEMPLATE`](.github/ISSUE_TEMPLATE) opens a GitHub issue.
+   [`submission.yml`](.github/workflows/submission.yml) checks it with
+   [`scripts/submissions.py`](scripts/submissions.py) and either comments with what to fix or opens a pull request adding
+   one file under `community/`. Updates to a band or venue change only what's filled in, and the pull request lists just
+   those changes. Photos are shrunk and stripped of location data ([`scripts/photos.py`](scripts/photos.py)). Merging
+   publishes it.
+3. **Schedule.** [`.github/workflows/update-events.yml`](.github/workflows/update-events.yml) runs the fetch around 7am, noon
+   and 4pm Pacific, and right after a submission is merged. It commits `events.json` and `llms.txt` only when they changed,
+   and keeps the forms' venue lists current ([`scripts/forms.py`](scripts/forms.py)).
+4. **The app.** `index.html` shows the last saved listings right away (so it opens instantly and works offline), then swaps in the
    latest `events.json`. If the scheduled fetch ever fails, the old file stays in place and the "Updated" date stops moving.
-4. **Previews.** The app matches each band against Deezer's free API in the background, soonest shows first. A band only gets a
-   ▶ when the name matches exactly and there are playable clips. Cover and tribute acts and generic listings ("Open Mic") are skipped,
-   because they nearly always match the wrong artist. Matches are remembered on the device for 14 days.
+5. **Previews.** The app looks up each band on Apple Music's free search API in the background, soonest shows and what's on
+   screen first (Apple allows about 20 lookups a minute). A band only gets a ▶ when the name matches exactly and there are
+   playable clips. Cover and tribute acts and generic listings ("Open Mic") are skipped. A band can set the right Apple Music
+   artist, or turn previews off, through its band form. Matches are remembered on the device for 14 days.
 
 ## Run it locally
 
@@ -134,14 +149,15 @@ Two address-bar switches help with testing: `?tesla=1` turns on the car-only voi
 ## Tests
 
 ```sh
-npm install   # once; the only dependency is for testing (puppeteer-core)
-npm test
+npm install                          # once; the only dependency is for testing (puppeteer-core)
+npm test                             # the app, in headless Chrome
+python3 -m unittest discover tests   # forms, merging sources
 ```
 
 [`tests/app.test.mjs`](tests/app.test.mjs) opens the real app in headless Chrome and uses it like a person would: day and
 genre chips, search, starring bands and venues, the Faves tabs, opening a show and going back, the Tesla-only voice hint,
 and the phone layout. Each test gets a fresh browser session. Runs are repeatable: listings come from a saved copy
-([`tests/fixtures/events.json`](tests/fixtures/events.json)), the clock is pinned, and Deezer and visit counting are
+([`tests/fixtures/events.json`](tests/fixtures/events.json)), the clock is pinned, and Apple Music and visit counting are
 blocked. It uses your installed Chrome, or set `CHROME_PATH`.
 
 [`.github/workflows/test.yml`](.github/workflows/test.yml) runs the same tests on GitHub for every code change, so each
@@ -157,21 +173,30 @@ commit gets a ✓ or ✗ before it's tagged as a release.
 | `styles.css` | All styles; phone layout in the `max-width: 700px` block at the end |
 | `events.json` | Current listings, written by the fetch script |
 | `llms.txt` | The same listings in plain English for AI assistants, also written by the fetch script |
-| `scripts/fetch_events.py` | Pulls and cleans the calendar |
-| `.github/workflows/update-events.yml` | Runs the fetch on a schedule |
+| `scripts/fetch_events.py` | Pulls the calendar, merges in the shows sent to TOPA, writes `events.json` and `llms.txt` |
+| `scripts/community.py` | Reads and checks the shows, bands and venues people send |
+| `scripts/submissions.py` | Turns a filled-in form into a file for a pull request |
+| `scripts/forms.py` | Keeps the forms' venue lists current |
+| `scripts/photos.py` | Shrinks band and venue photos |
+| `community/` | Shows, bands and venues people sent, one file each |
+| `.github/ISSUE_TEMPLATE/` | The four forms: a show, a weekly show, a band, a venue |
+| `.github/workflows/submission.yml` | Checks each form and opens the pull request |
+| `.github/workflows/update-events.yml` | Runs the fetch on a schedule and after each approval |
 | `.github/workflows/test.yml` | Runs the tests on every code change |
 | `sw.js`, `manifest.json`, `icon-*.png` | Offline support and install icons |
 | `screenshots/` | Tesla and phone screenshots |
 | `.prettierrc.json` | Code formatting settings ([Prettier](https://prettier.io)) |
-| `tests/`, `package.json` | Browser tests (`npm test`) and their saved listings |
+| `tests/`, `package.json` | Browser tests (`npm test`), Python tests, and saved listings |
 | `LICENSE` | All rights reserved; what is and isn't covered |
 
 ## Credits
 
-- **Show listings** come from the [Ventura Rocks](https://www.venturarocks.com) public calendar.
+- **Show listings** come from the [Ventura Rocks](https://www.venturarocks.com) community calendar and from the bands, fans,
+  and venues who send them to TOPA.
 - **Visit counts** come from [GoatCounter](https://www.goatcounter.com): anonymous, no cookies, nothing personal.
-- **Artist photos and previews** come from [Deezer](https://www.deezer.com) through its public API.
+- **Previews and album art** come from [Apple Music](https://music.apple.com) through its public search API. Band and venue
+  photos are sent by the bands and venues themselves.
 
 ## License
 
-Copyright 2026 [Automatous](https://github.com/automatous-io). All rights reserved. The code is public to read as a portfolio piece, not to reuse; see [LICENSE](LICENSE). All show listings are from the public Ventura Rocks calendar; artist photos and previews are from Deezer.
+Copyright 2026 [Automatous](https://github.com/automatous-io). All rights reserved. The code is public to read as a portfolio piece, not to reuse; see [LICENSE](LICENSE). Show listings are from the Ventura Rocks community calendar and from bands, fans, and venues; previews and album art are from Apple Music.

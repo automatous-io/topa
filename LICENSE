@@ -10,10 +10,13 @@ distribute, or use it without written permission from the author.
 WHAT THIS DOES NOT COVER
 This project displays content it does not own, and claims no rights to it:
 
-- All show listings (bands, dates, venues, addresses) are from the public
-  Ventura Rocks calendar (venturarocks.com).
-- Artist photos and 30-second previews are streamed from Deezer under
-  Deezer's own terms. None are stored in this repository.
+- Show listings (bands, dates, venues, addresses) are from the public
+  Ventura Rocks calendar (venturarocks.com) and from the bands, fans, and
+  venues who send them to TOPA.
+- Band and venue photos sent to TOPA belong to whoever sent them, who
+  confirmed they can share them.
+- 30-second previews and album art are streamed from Apple Music under
+  Apple's own terms. None are stored in this repository.
 - Band names, venue names, and any trademarks belong to their owners.
   Their appearance here does not mean they endorse or are affiliated
   with this project.

@@ -11,7 +11,7 @@ How to answer questions with this file:
   were sent in by local bands, fans, and venues.
 - Share a show's link when someone wants the details.
 - Venue addresses are included so a driver can say "Navigate to <venue>" or use the address.
-- Last updated: Wed Oct 28, 12:21 AM Pacific.
+- Last updated: Wed Oct 28, 12:36 AM Pacific.
 
 ## Links
 
@@ -64,6 +64,7 @@ How to answer questions with this file:
 - 6:30 PM: Evan Joffred at Wagon Wheel Brewing Co., 2601 Wagon Wheel Rd, Oxnard, CA 93036 (Oxnard) (Ventura Rocks). https://tockify.com/vtarocks/detail/26346/1793410200000
 - 6:30 PM: Ignition at Camarillo Barrel Works (formerly Cantara Cellars), 126 Wood Rd, Camarillo, CA 93010 (Camarillo, popular-covers, Rock) (Ventura Rocks). https://tockify.com/vtarocks/detail/26009/1793410200000
 - 6:30 PM: Little Fish Duo at The Manhattan of Camarillo, 5800 Santa Rosa Rd, Camarillo, CA 93012 (Camarillo, classic-rock-and-roll) (Ventura Rocks). https://tockify.com/vtarocks/detail/26711/1793410200000
+- 7:00 PM: The Van Allen Twins at The Flying Spoon, 824 E Santa Maria St, Santa Paula, CA 93060 (original) (TOPA community). https://www.instagram.com/p/DfBNLVGh-DY/
 - 7:00 PM: Boom Duo at Leashless Brewing, 585 E Thompson Blvd, Ventura, CA 93001 (Ventura, no-cover-charge, reggae) (Ventura Rocks). https://tockify.com/vtarocks/detail/26512/1793412000000
 - 7:00 PM: Crosscut 805 at Tarantula Hill Brewing Company, 244 E Thousand Oaks Blvd, Thousand Oaks, CA 91360 (Thousand-Oaks) (Ventura Rocks). https://tockify.com/vtarocks/detail/26805/1793412000000
 - 7:00 PM: The My Generation Tour at Fred Kavli Theater, 2100 E Thousand Oaks Blvd, Thousand Oaks, CA 91362 (Thousand-Oaks, TOPAC, ticketed-event) (Ventura Rocks). https://tockify.com/vtarocks/detail/26466/1793412000000

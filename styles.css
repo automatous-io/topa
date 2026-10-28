@@ -970,12 +970,14 @@ h2 {
 .srci.af {
   margin: 0 0 0 8px;
 }
-/* a band's own links under its name */
-.blinks {
-  display: flex;
+/* a band's play button, then its link pills, in one row */
+.hero .acts.blinks {
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
+  align-items: center;
+}
+.blinks .chip {
+  color: var(--ink);
+  text-decoration: none;
 }
 /* quiet "+ Add a show here" links at the bottom of band and venue pages */
 .addrow {
@@ -2138,6 +2140,14 @@ main.back {
   .hplay {
     width: 56px;
     height: 56px;
+  }
+  /* smaller pills so play and three links fit one line */
+  .hero .acts.blinks {
+    gap: 8px;
+  }
+  .hero .acts.blinks .chip {
+    font-size: 14px;
+    padding: 7px 12px;
   }
   .hplay svg {
     width: 28px;

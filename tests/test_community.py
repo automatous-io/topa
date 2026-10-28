@@ -273,6 +273,12 @@ class Loading(unittest.TestCase):
         self.assertEqual(bands["Saltgrass"]["links"], {"website": "https://saltgrass.band"})
         self.assertIn("The New Spot", c.known_venues(self.root))
 
+    def test_other_names_point_to_the_band(self):
+        self.put("band", "b.json", {"name": "Saltgrass", "aliases": ["The Saltgrass Band"], "genres": ["surf"]})
+        _, bands, _ = c.load(self.root, today=TODAY)
+        self.assertEqual(bands["The Saltgrass Band"]["alias_of"], "Saltgrass")
+        self.assertNotIn("alias_of", bands["Saltgrass"])
+
     def test_own_photos_fill_in_but_a_venue_photo_wins(self):
         for path in ("photos/venues/the-new-spot.jpg", "photos/venues/harbor-lights-tavern.jpg"):
             os.makedirs(os.path.join(self.root, os.path.dirname(path)), exist_ok=True)

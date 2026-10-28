@@ -295,6 +295,24 @@ test("a venue someone added shows up before its first show", async t => {
   assert.ok(await page.$(".addrow a"), "links to add a show there");
 });
 
+test("a band someone added shows up before its first show, but not under its other names", async t => {
+  const listings = {
+    updated: "2026-10-24T09:00:00-07:00",
+    events: EVENTS.slice(0, 3),
+    bands: {
+      "Quiet Ramblers": { genres: ["folk"], links: { website: "https://example.com" } },
+      "The Quiet Ramblers": { genres: ["folk"], alias_of: "Quiet Ramblers" },
+    },
+  };
+  const list = await open(t, { listings, query: "&view=Bands" });
+  const tiles = await list.$$eval(".agrid .tile b", els => els.map(e => e.textContent));
+  assert.ok(tiles.includes("Quiet Ramblers"));
+  assert.ok(!tiles.includes("The Quiet Ramblers"), "an alias isn't its own band");
+  const page = await open(t, { listings, query: "&view=" + encodeURIComponent("Band:Quiet Ramblers") });
+  assert.match(await text(page, ".hero small"), /FOLK/);
+  assert.equal(await text(page, ".blinks .chip"), "Website");
+});
+
 // ---- Layout ----
 
 test("phones get the TOPA header and a five-button tab bar", async t => {

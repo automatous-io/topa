@@ -7,7 +7,7 @@
 
 // ---- Settings and state ----
 // the app's version: shown in About, and it names the offline cache, so bumping it refreshes every device
-const VERSION = "1.1.0";
+const VERSION = "1.2.0";
 const params = new URLSearchParams(location.search);
 
 // Is this the car's browser? Some versions say "Tesla" in the user agent, but current ones just say
@@ -191,6 +191,11 @@ const venueSpot = name => {
     lng: v.lng ?? null,
   };
 };
+// bands people added that have no shows yet, listed anyway (not their other names): [name, []]
+const emptyBands = () =>
+  Object.keys(EXTRA.bands)
+    .filter(n => !EXTRA.bands[n].alias_of && !EVENTS.some(e => bandName(e) === n))
+    .map(n => [n, []]);
 // venues people added that have no shows yet, listed anyway: [name, []]
 const emptyVenues = () =>
   Object.keys(EXTRA.venues)
@@ -782,7 +787,10 @@ const updatedLabel = () =>
 
 function searchResults(k, L) {
   const hit = s => k.every(x => s.toLowerCase().includes(x));
-  const B = [...groupBy(EVENTS, bandName)].filter(([n, l]) => hit(n + " " + l[0].tags.join(" "))),
+  const tagsOf = (n, l) => (l[0] ? l[0].tags : (EXTRA.bands[n] && EXTRA.bands[n].genres) || []);
+  const B = [...groupBy(EVENTS, bandName), ...emptyBands()].filter(([n, l]) =>
+      hit(n + " " + tagsOf(n, l).join(" ")),
+    ),
     V = [...groupBy(EVENTS, e => e.venue), ...emptyVenues()]
       .filter(([n, l]) => hit(venueName(n) + " " + (l[0] || venueSpot(n)).city))
       .sort(
@@ -794,7 +802,7 @@ function searchResults(k, L) {
       ? sec(
           "Bands",
           B.length,
-          `<div class="row">${B.map(([n, l]) => `<button class="tile" data-band="${esc(n)}">${bandTileArt(n)}<b>${esc(n)}</b><small>${nextLabel(l.find(isStillOn) || l[0])}${l.filter(isStillOn).length > 1 ? " · " + l.filter(isStillOn).length + " shows" : ""}</small></button>`).join("")}</div>`,
+          `<div class="row">${B.map(([n, l]) => `<button class="tile" data-band="${esc(n)}">${bandTileArt(n)}<b>${esc(n)}</b><small>${l.length ? nextLabel(l.find(isStillOn) || l[0]) + (l.filter(isStillOn).length > 1 ? " · " + l.filter(isStillOn).length + " shows" : "") : "No shows yet"}</small></button>`).join("")}</div>`,
         )
       : "") +
     (V.length ? sec("Venues", V.length, V.map(([n, l]) => venueRow(n, l)).join("")) : "") +
@@ -823,13 +831,15 @@ const showCount = n => `${n} upcoming show${n === 1 ? "" : "s"}`;
 function bandsPage() {
   const filter = bandFilter.toLowerCase();
   // shows that already ended today don't count, so "next show" is always still ahead
-  const bands = [...groupBy(EVENTS.filter(isStillOn), bandName)].filter(([n]) =>
+  const bands = [...groupBy(EVENTS.filter(isStillOn), bandName), ...emptyBands()].filter(([n]) =>
     n.toLowerCase().includes(filter),
   );
+  // bands with no shows yet go last when sorting by soonest
+  const when = L => (L[0] ? L[0].startMs : Infinity);
   bands.sort(
     bsort === "az"
       ? (a, b) => a[0].localeCompare(b[0])
-      : (a, b) => a[1][0].startMs - b[1][0].startMs || a[0].localeCompare(b[0]),
+      : (a, b) => when(a[1]) - when(b[1]) || a[0].localeCompare(b[0]),
   );
   const sort = sortButton(
     bsort === "soon" ? "Soonest" : "A–Z",
@@ -837,7 +847,7 @@ function bandsPage() {
   );
   const tile = ([n, L]) =>
     `<button class="tile" data-band="${esc(n)}">${bandTileArt(n)}<b>${esc(n)}</b>` +
-    `<small>${nextLabel(L[0])}${L.length > 1 ? " · " + L.length + " shows" : ""}</small></button>`;
+    `<small>${L.length ? nextLabel(L[0]) + (L.length > 1 ? " · " + L.length + " shows" : "") : "No shows yet"}</small></button>`;
   return (
     topBar(
       "Bands",
@@ -849,7 +859,7 @@ function bandsPage() {
   );
 }
 
-// the links a band added about itself (website, Instagram, Bandcamp…), as small chips under its name
+// the links a band added about itself (website, Instagram, Bandcamp…), as pills after its play button
 const LINK_NAMES = {
   website: "Website",
   instagram: "Instagram",
@@ -867,7 +877,7 @@ const bandLinks = name => {
       k =>
         `<a class="chip" href="${esc(safeUrl(links[k]))}" target="_blank" rel="noopener">${LINK_NAMES[k]}</a>`,
     );
-  return chips.length ? `<div class="blinks">${chips.join("")}</div>` : "";
+  return chips.join("");
 };
 
 // "+ Add a show" links at the bottom of band and venue pages, with the form filled in
@@ -907,12 +917,13 @@ const addLinks = list =>
 
 function bandPage(name) {
   const L = EVENTS.filter(e => bandName(e) === name);
-  const genres = L[0] && L[0].tags.length ? " · " + esc(L[0].tags.join(", ").toUpperCase()) : "";
+  const tags = L[0] && L[0].tags.length ? L[0].tags : (EXTRA.bands[name] && EXTRA.bands[name].genres) || [];
+  const genres = tags.length ? " · " + esc(tags.join(", ").toUpperCase()) : "";
   return (
     `<div class="hero">${art(name, "round")}<div class="hx">` +
-    `<small>ARTIST${genres}</small><h1>${esc(name)}</h1><p>${showCount(L.length)}</p>` +
-    `<div class="acts" style="align-items:center">${heroPlayButton(name)}</div>` +
-    `${bandLinks(name)}</div>${starButton(SAVED.bands.includes(name), `data-sb="${esc(name)}"`, 1)}</div>` +
+    `<small>ARTIST${genres}</small><h1>${esc(name)}</h1><p>${L.length ? showCount(L.length) : "No shows yet"}</p>` +
+    `<div class="acts blinks">${heroPlayButton(name)}${bandLinks(name)}</div>` +
+    `</div>${starButton(SAVED.bands.includes(name), `data-sb="${esc(name)}"`, 1)}</div>` +
     L.map(venueDateRow).join("") +
     addLinks([
       ["add-show", "Add a show", { band: name }],
@@ -1021,7 +1032,7 @@ function showPage(id) {
 
 function favesPage() {
   const upcoming = EVENTS.filter(isStillOn);
-  const bands = [...groupBy(upcoming, bandName)].filter(([n]) => SAVED.bands.includes(n));
+  const bands = [...groupBy(upcoming, bandName), ...emptyBands()].filter(([n]) => SAVED.bands.includes(n));
   const venues = SAVED.venues.map(n => [n, upcoming.filter(e => e.venue === n)]);
   if (!bands.length && !venues.length)
     return (
@@ -1030,6 +1041,12 @@ function favesPage() {
     );
   const bandCard = ([n, L]) => {
     const next = L[0];
+    if (!next)
+      return (
+        `<div class="card" data-band="${esc(n)}">${artWithPlay(n, "round")}<div class="ci">` +
+        `<button class="cn" data-band="${esc(n)}">${esc(n)}</button><span>No shows yet</span>` +
+        `</div>${starButton(true, `data-sb="${esc(n)}"`)}</div>`
+      );
     const dist = distanceLabel(next);
     return (
       `<div class="card" data-show="${next.id}">${artWithPlay(n, "round")}<div class="ci">` +
@@ -1231,11 +1248,11 @@ const GENERIC =
 
 const bandEvents = h => EVENTS.filter(x => bandName(x) === h);
 
-// bands worth looking up
+// bands worth looking up: ones with shows, or a profile someone added
 const canMatch = h => {
   const L = bandEvents(h);
   return (
-    L.length > 0 &&
+    (L.length > 0 || !!EXTRA.bands[h]) &&
     normName(h).length > 2 &&
     !GENERIC.test(h) &&
     !L.some(

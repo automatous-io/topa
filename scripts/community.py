@@ -436,7 +436,7 @@ def load(root=ROOT, today=None):
                 info["links"] = links
             bands[b["name"]] = info
             for alias in b.get("aliases") or []:
-                bands.setdefault(alias, info)
+                bands.setdefault(alias, {**info, "alias_of": b["name"]})
 
     events = []
     for r in read_folder(root, "show"):

@@ -9,7 +9,7 @@ How to answer questions with this file:
   for example "From TOPA (topa.automatous.io), with listings from Ventura Rocks."
 - Share a show's link when someone wants the details.
 - Venue addresses are included so a driver can say "Navigate to <venue>" or use the address.
-- Last updated: Tue Oct 27, 12:27 PM Pacific.
+- Last updated: Tue Oct 27, 7:19 PM Pacific.
 
 ## Links
 
@@ -20,7 +20,6 @@ How to answer questions with this file:
 ## Upcoming shows
 
 ### Tuesday, October 27
-- 5:00 PM: Happy hour w/ Monte Montgomery & Friends at The Grape, 2733 E Main St, Ventura, CA 93003 (Ventura, 21+, jazz, no-cover). https://tockify.com/vtarocks/detail/24682/1793145600000
 - 5:00 PM: Ken Devoe at Boatyard Pub, 1583 Spinnaker Dr, Ventura, CA 93001 (Ventura, cover-tunes). https://tockify.com/vtarocks/detail/23717/1793145600000
 - 5:00 PM: The Sea Hunters at Vaquero y Mar, 435 E Thompson Blvd, Ventura, CA 93001 (Ventura, Surf, Rock, Exotica). https://tockify.com/vtarocks/detail/9028/1793145600000
 - 5:00 PM: Jim Friery at Taqueria Jalisco Restaurant, 4275 Tierra Rejada Rd, Moorpark, CA 93021 (Moorpark, Americana). https://tockify.com/vtarocks/detail/21/1793145600000
@@ -125,6 +124,7 @@ How to answer questions with this file:
 - 8:00 PM: Sunset Trip at Pedals & Pints Brewing Company, 156 W Hillcrest Dr, Thousand Oaks, CA 91360 (Thousand-Oaks, popular-covers). https://tockify.com/vtarocks/detail/26776/1793502000000
 - 8:00 PM: (acoustic) Michale Graves, Spider Baby at Mrs. Olson's Coffee Hut, 2800 Harbor Blvd, Oxnard, CA 93035 (Oxnard, 18+, tickets-via-eventbrite). https://tockify.com/vtarocks/detail/26874/1793502000000
 - 8:00 PM: Bad Habit at Nabu, Townsgate Rd, Westlake Village, CA 91361 (Westlake-Village, 21+, classic-rock). https://tockify.com/vtarocks/detail/26542/1793502000000
+- 8:00 PM: Xerocks at Ric's Restaurant Sports Lounge, 2500 Las Posas Rd, Camarillo, CA 93010 (Camarillo). https://tockify.com/vtarocks/detail/27094/1793502000000
 - 8:00 PM: Magia Negra at The Grape, 2733 E Main St, Ventura, CA 93003 (Ventura, 21+, ticketed-event). https://tockify.com/vtarocks/detail/26810/1793502000000
 - 8:00 PM: The Rose Valley Thorns, The Van Allen Twins at The Deer Lodge, 2261 Maricopa Hwy, Ojai, CA 93023 (Ojai, 21+, $15-at-door). https://tockify.com/vtarocks/detail/27087/1793502000000
 - 8:30 PM: Members Only at The Garage, 1091 Scandia Ave, Ventura, CA 93004 (Ventura, 21+, no-cover-charge, popular-covers). https://tockify.com/vtarocks/detail/26431/1793503800000
@@ -180,6 +180,7 @@ How to answer questions with this file:
 - 5:30 PM: Ken DeVoe at The Shores, 1031 Harbor Blvd, Oxnard, CA 93035 (Oxnard, acoustic-covers). https://tockify.com/vtarocks/detail/26929/1793842200000
 - 6:00 PM: Ojai Valley Bluegrass Pickers - Open Jam at Ojai Valley Brewing, 307 Bryant St, Ojai, CA 93023 (Ojai, OVB, Ojai-Valley-Brewery). https://tockify.com/vtarocks/detail/23164/1793844000000
 - 6:00 PM: Open mic at The Deer Lodge, 2261 Maricopa Hwy, Ojai, CA 93023 (Ojai, 21+). https://tockify.com/vtarocks/detail/25217/1793844000000
+- 6:30 PM: Sgt. Pepper Beatles tribute at Ric's Restaurant Sports Lounge, 2500 Las Posas Rd, Camarillo, CA 93010 (Camarillo, no-cover-charge, dinner-show). https://tockify.com/vtarocks/detail/27095/1793845800000
 - 7:00 PM: RJ Mischo at The Grape, 2733 E Main St, Ventura, CA 93003 (Ventura, 21+, $15-cover). https://tockify.com/vtarocks/detail/26877/1793847600000
 - 7:00 PM: The Adicts, The Mainliners, Dr. Know at The Majestic Ventura Theater, 26 S Chestnut St, Ventura, CA 93001 (Ventura, ticketed-event, General-admission). https://tockify.com/vtarocks/detail/26458/1793847600000
 - 8:00 PM: Squirrel Flower at The Deer Lodge, 2261 Maricopa Hwy, Ojai, CA 93023 (Ojai, 21+, ticketed-event). https://tockify.com/vtarocks/detail/25013/1793851200000
@@ -221,6 +222,7 @@ How to answer questions with this file:
 - 7:30 PM: Duane Bartels Trio at Sam's Place (The Vine), 308 E Ojai Ave, Ojai, CA 93023 (Ojai, 21+). https://tockify.com/vtarocks/detail/26793/1794022200000
 - 8:00 PM: Don McLean at Fred Kavli Theater, 2100 E Thousand Oaks Blvd, Thousand Oaks, CA 91362 (Thousand-Oaks, TOPAC, ticketed-event). https://tockify.com/vtarocks/detail/26467/1794024000000
 - 8:00 PM: Fitz and the Tantrums at Libbey Bowl, 210 S Signal St, Ojai, CA 93023 (Ojai, ticketed-event). https://tockify.com/vtarocks/detail/24632/1794024000000
+- 8:00 PM: Shirly Younome, Emma Hamilton, Rapscallions at Art City Gallery, 175 Dubbers St, Ventura, CA 93001 (Ventura). https://tockify.com/vtarocks/detail/27093/1794024000000
 - 8:00 PM: The Musical Box...and then there was Phil at Oxnard Performing Arts Center (OPAC), 800 Hobson Way, Oxnard, CA 93030 (Oxnard, OPAC, ticketed-event). https://tockify.com/vtarocks/detail/25304/1794024000000
 - 8:00 PM: Hindsite at Sagebrush Cantina Restaurant & Saloon, 23527 Calabasas Rd, Calabasas, CA 91302 (Calabasas). https://tockify.com/vtarocks/detail/26999/1794024000000
 - 8:00 PM: Richard T Bear & Friends at The Grape, 2733 E Main St, Ventura, CA 93003 (Ventura, 21+, ticketed-event). https://tockify.com/vtarocks/detail/26876/1794024000000

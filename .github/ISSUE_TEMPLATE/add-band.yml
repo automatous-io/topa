@@ -88,5 +88,5 @@ body:
     attributes:
       label: Permission
       options:
-        - label: I'm in this band or work with it, and any photo I added is ours to share.
+        - label: I'm in this band or work with it. Any photo I added is ours to share, and TOPA can share all of this to help people find local live music.
           required: true

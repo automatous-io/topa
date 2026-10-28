@@ -165,5 +165,5 @@ body:
     attributes:
       label: Permission
       options:
-        - label: I work at this venue, or I know it hosts live music and these details are right. Any photo I added is mine to share.
+        - label: I work at this venue, or I know it hosts live music and these details are right. Any photo I added is mine to share, and TOPA can share all of this to help people find local live music.
           required: true

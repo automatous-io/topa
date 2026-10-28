@@ -164,5 +164,5 @@ body:
     attributes:
       label: Permission
       options:
-        - label: I'm with the band or venue, or I know this show is happening and it's OK to list it.
+        - label: I'm with the band or venue, or I know this show is happening. It's OK to list it, and TOPA can share it to help people find local live music.
           required: true

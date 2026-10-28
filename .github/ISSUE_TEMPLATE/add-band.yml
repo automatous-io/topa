@@ -1,0 +1,92 @@
+name: Add or update a band
+description: Genres, hometown and links for a band or artist on TOPA.
+title: "Add a band"
+labels: ["submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Fill in what you have; only the name is needed.
+        **Changing something later?** Send this form again with the band's name and just what's changing. Anything left blank stays as it is; type **remove** to clear a field.
+  - type: input
+    id: name
+    attributes:
+      label: Band or artist name
+      description: Exactly as it's listed for shows.
+      placeholder: The Tide Pool Ramblers
+    validations:
+      required: true
+  - type: input
+    id: aliases
+    attributes:
+      label: Other names it's listed under
+      description: Separate with commas.
+      placeholder: Tide Pool Ramblers
+  - type: input
+    id: genres
+    attributes:
+      label: Genres
+      description: Separate with commas.
+      placeholder: rock, soul
+  - type: input
+    id: town
+    attributes:
+      label: Hometown
+      placeholder: Ventura
+  - type: input
+    id: website
+    attributes:
+      label: Website
+      placeholder: https://
+  - type: input
+    id: instagram
+    attributes:
+      label: Instagram
+      placeholder: "@tidepoolramblers"
+  - type: input
+    id: facebook
+    attributes:
+      label: Facebook
+      placeholder: https://facebook.com/...
+  - type: input
+    id: bandcamp
+    attributes:
+      label: Bandcamp
+      placeholder: https://tidepoolramblers.bandcamp.com
+  - type: input
+    id: spotify
+    attributes:
+      label: Spotify
+      placeholder: https://open.spotify.com/artist/...
+  - type: input
+    id: youtube
+    attributes:
+      label: YouTube
+      placeholder: https://youtube.com/@...
+  - type: input
+    id: soundcloud
+    attributes:
+      label: SoundCloud
+      placeholder: https://soundcloud.com/...
+  - type: input
+    id: apple
+    attributes:
+      label: Apple Music artist link
+      description: TOPA plays 30-second previews from Apple Music. If it picked the wrong artist, paste your artist link from music.apple.com, or type "none" to turn previews off.
+      placeholder: https://music.apple.com/us/artist/your-band/12345
+  - type: textarea
+    id: photo
+    attributes:
+      label: Photo
+      description: Drag a photo of the band into this box (JPG or PNG). Square photos look best. Only photos you took or have the rights to share.
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else?
+  - type: checkboxes
+    id: ok
+    attributes:
+      label: Permission
+      options:
+        - label: I'm in this band or work with it, and any photo I added is ours to share.
+          required: true

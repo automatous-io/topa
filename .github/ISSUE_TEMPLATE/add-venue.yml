@@ -1,0 +1,168 @@
+name: Add or update a venue
+description: A place with live music that TOPA doesn't have yet, or new details for one it has.
+title: "Add a venue"
+labels: ["submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Add the venue first, then its shows.
+        **Changing a venue TOPA has?** Pick it, then fill in just what's changing. Anything left blank stays as it is; type **remove** to clear a field.
+  # venues:start
+  # written by scripts/forms.py; edits here get replaced
+  - type: dropdown
+    id: pick
+    attributes:
+      label: Venue
+      description: Pick the venue to change it, or pick **New venue** and type its name below.
+      options:
+        - "New venue (type its name below)"
+        - "American Pie Coffee House"
+        - "Aqua Bar at Crowne Plaza Hotel"
+        - "Art City Gallery"
+        - "Beatrice Wood Center for the Arts"
+        - "Boatyard Pub"
+        - "Bombay Bar & Grill"
+        - "Breakers Sports Bar & Grill"
+        - "Cafe Fiore"
+        - "Camarillo Barrel Works (formerly Cantara Cellars)"
+        - "Camp Comfort"
+        - "Carrara's"
+        - "Chuy's Mesquite Broiler"
+        - "Cisco's"
+        - "Constitution Park"
+        - "Crown and Anchor"
+        - "Crowne Plaza"
+        - "Dave and Busters"
+        - "The Deer Lodge"
+        - "Downtown Ventura"
+        - "Downtown Ventura Stage"
+        - "Duke's Beach Grill"
+        - "El Capitan Fresh Mexican Grill and Seafood"
+        - "Farmer and the Cook"
+        - "Fermentation House (Four Brix)"
+        - "Feros Ferio Winery"
+        - "The Fishermen's Catch"
+        - "Fred Kavli Theater"
+        - "The Garage"
+        - "Giessinger Winery"
+        - "The Grape"
+        - "Harbor Cove Cafe"
+        - "Heritage Square"
+        - "The Hive Bar and Lounge"
+        - "The Hub"
+        - "Institution Ale Company"
+        - "Keynote Lounge"
+        - "Kimber Park"
+        - "KJ's (formerly Gibsons, formerly The Twist on Main....)"
+        - "Latitude 34"
+        - "Leashless Brewing"
+        - "Libbey Bowl"
+        - "Lucky Fools Pub"
+        - "Magnavino Cellars | Public Realm Brewing"
+        - "The Majestic Ventura Theater"
+        - "The Manhattan of Camarillo"
+        - "Margarita Villa"
+        - "Mrs. Olson's Coffee Hut"
+        - "Mystery Shop"
+        - "The Mystery Shop"
+        - "Nabu"
+        - "Namba Arts"
+        - "Nectar of the Dogs Wine"
+        - "Ojai Ranch House"
+        - "Ojai Underground Exchange"
+        - "Ojai Valley Brewing"
+        - "The Original Pizza Cookery"
+        - "Oxnard Performing Arts Center (OPAC)"
+        - "Parque 1055"
+        - "PC's Bar & Grill"
+        - "Pedals & Pints Brewing Company"
+        - "Plan B Winery"
+        - "Prime Steakhouse & Wine Bar"
+        - "Public Realm Brewery"
+        - "Red Tandem Brewery"
+        - "Ric's Restaurant Sports Lounge"
+        - "Rincon Brewery"
+        - "Rock & Roll Pizza (Harley's Valley Bowl"
+        - "Rocks & Drams"
+        - "Room Eleven"
+        - "Sagebrush Cantina Restaurant & Saloon"
+        - "Sam's Place (The Vine)"
+        - "Samuelson Chapel"
+        - "Sans Souci"
+        - "Scherr Forum Theatre"
+        - "The Shores"
+        - "Simi Valley Cultural Arts Center"
+        - "Strey Cellars"
+        - "Studio Channel Islands"
+        - "Suburbia Park"
+        - "Sunland Vintage Winery"
+        - "Surfside Seafood"
+        - "Taqueria Jalisco Restaurant"
+        - "Tarantula Hill Brewing Company"
+        - "Thousand Oaks Performing Arts Center"
+        - "Tony's Pizzaria"
+        - "Topa Topa Brewing"
+        - "Topa Topa Brewing Co. (Topa-Ventura downtown)"
+        - "Trois le Fou & Lester Wineries"
+        - "Twisted Oak Tavern and Brewery"
+        - "Vaquero y Mar"
+        - "Ventura College Performing Arts Center"
+        - "Ventura Harbor Village stage"
+        - "Ventura Music Hall - VMH"
+        - "Wagon Wheel Brewing Co."
+        - "Winchesters Grill & Saloon"
+        - "The Yard"
+    validations:
+      required: true
+  # venues:end
+  - type: input
+    id: name
+    attributes:
+      label: Name of the new venue
+      description: Only for a new venue.
+      placeholder: The Driftwood Room
+  - type: input
+    id: address
+    attributes:
+      label: Street address
+      description: Needed for a new venue.
+      placeholder: 123 Main St, Ventura, CA 93001
+  - type: input
+    id: city
+    attributes:
+      label: Town
+      description: Needed for a new venue.
+      placeholder: Ventura
+  - type: input
+    id: coords
+    attributes:
+      label: Map location
+      description: Paste the venue's Google Maps link, or its coordinates. This is how TOPA works out distance.
+      placeholder: https://www.google.com/maps/place/... or 34.28, -119.29
+  - type: input
+    id: phone
+    attributes:
+      label: Phone
+      placeholder: (805) 555-0123
+  - type: input
+    id: website
+    attributes:
+      label: Website
+      placeholder: https://
+  - type: textarea
+    id: photo
+    attributes:
+      label: Photo
+      description: Drag a photo of the venue into this box (JPG or PNG); the outside or the stage both work. It replaces any photo TOPA has. Only photos you took or have the rights to share.
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else?
+  - type: checkboxes
+    id: ok
+    attributes:
+      label: Permission
+      options:
+        - label: I work at this venue, or I know it hosts live music and these details are right. Any photo I added is mine to share.
+          required: true

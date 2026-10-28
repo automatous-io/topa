@@ -1,0 +1,86 @@
+#
+# Copyright 2026 AUTOMATOUS.IO. All rights reserved. See LICENSE.
+#
+# Turns a filled-in TOPA form (an issue from .github/ISSUE_TEMPLATE) into a PR that adds or changes one file under
+# community/, or comments with what to fix (editing the issue checks it again). Merging publishes it.
+#
+# Needs: Settings > Actions > General > "Allow GitHub Actions to create and approve pull requests".
+# PRs opened here don't trigger other workflows; the checks run here.
+name: Submission
+on:
+  issues:
+    types: [opened, edited, reopened]
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+concurrency: submission-${{ github.event.issue.number }}
+jobs:
+  submit:
+    if: github.event.issue.state == 'open'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # issue text goes in through env, never into the script
+      - name: Read and check the form
+        id: form
+        env:
+          BODY: ${{ github.event.issue.body }}
+          AUTHOR: ${{ github.event.issue.user.login }}
+          NUMBER: ${{ github.event.issue.number }}
+        run: |
+          printf '%s' "$BODY" > "$RUNNER_TEMP/body.md"
+          python scripts/submissions.py --body-file "$RUNNER_TEMP/body.md" --author "$AUTHOR" --issue "$NUMBER" \
+            --write --report "$RUNNER_TEMP/report.md" --github-output "$GITHUB_OUTPUT"
+
+      - name: Say what to fix
+        if: steps.form.outputs.kind != '' && steps.form.outputs.ok != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ github.event.issue.number }}
+        run: gh issue comment "$NUMBER" --body-file "$RUNNER_TEMP/report.md"
+
+      - name: Open or update the pull request
+        if: steps.form.outputs.ok == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ github.event.issue.number }}
+          FILE: ${{ steps.form.outputs.path }}
+          TITLE: ${{ steps.form.outputs.title }}
+          PHOTO: ${{ steps.form.outputs.photo }}
+          PHOTO_URL: ${{ steps.form.outputs.photo_url }}
+        run: |
+          branch="submission/$NUMBER"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
+          git add -- "$FILE"
+          # shrink the photo (and strip its GPS) and add it to the same PR
+          if [ -n "$PHOTO_URL" ]; then
+            pip install --quiet pillow
+            if ! python scripts/photos.py --url "$PHOTO_URL" --out "$PHOTO" 2> "$RUNNER_TEMP/photo.txt"; then
+              gh issue comment "$NUMBER" --body "Thanks! I couldn't use the photo ($(cat "$RUNNER_TEMP/photo.txt")). Try a JPG or PNG, then edit this issue."
+              exit 0
+            fi
+            git add -- "$PHOTO"
+          fi
+          if git diff --cached --quiet; then
+            gh issue comment "$NUMBER" --body "Thanks! TOPA already has exactly this, so there's nothing to change."
+            exit 0
+          fi
+          git commit -m "$TITLE (#$NUMBER)"
+          # each edit of the issue replaces the branch
+          git push --force origin "$branch"
+          { cat "$RUNNER_TEMP/report.md"; echo; echo "Closes #$NUMBER"; } > "$RUNNER_TEMP/pr.md"
+          pr=$(gh pr list --head "$branch" --state open --json number --jq '.[0].number')
+          if [ -n "$pr" ]; then
+            gh pr edit "$pr" --title "$TITLE" --body-file "$RUNNER_TEMP/pr.md"
+            gh issue comment "$NUMBER" --body "Thanks! The review (#$pr) is updated with your changes."
+          else
+            url=$(gh pr create --head "$branch" --base main --title "$TITLE" --body-file "$RUNNER_TEMP/pr.md")
+            gh issue comment "$NUMBER" --body "Thanks! It looks good and is waiting for review: $url. Once it's approved, it shows up on TOPA within a few minutes."
+          fi

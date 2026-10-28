@@ -1,0 +1,193 @@
+name: Add a weekly show
+description: A show on the same day every week, like an open mic or a residency.
+title: "Add a weekly show"
+labels: ["submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Weekly shows can be listed up to 6 months at a time. Near the end, submit this form again to keep the show going.
+  - type: input
+    id: band
+    attributes:
+      label: Band, artist or event
+      placeholder: Tuesday Open Mic
+    validations:
+      required: true
+  # venues:start
+  # written by scripts/forms.py; edits here get replaced
+  - type: dropdown
+    id: venue
+    attributes:
+      label: Venue
+      description: Pick the venue. Not listed? Add it first with **Add or update a venue**, then come back.
+      options:
+        - "American Pie Coffee House"
+        - "Aqua Bar at Crowne Plaza Hotel"
+        - "Art City Gallery"
+        - "Beatrice Wood Center for the Arts"
+        - "Boatyard Pub"
+        - "Bombay Bar & Grill"
+        - "Breakers Sports Bar & Grill"
+        - "Cafe Fiore"
+        - "Camarillo Barrel Works (formerly Cantara Cellars)"
+        - "Camp Comfort"
+        - "Carrara's"
+        - "Chuy's Mesquite Broiler"
+        - "Cisco's"
+        - "Constitution Park"
+        - "Crown and Anchor"
+        - "Crowne Plaza"
+        - "Dave and Busters"
+        - "The Deer Lodge"
+        - "Downtown Ventura"
+        - "Downtown Ventura Stage"
+        - "Duke's Beach Grill"
+        - "El Capitan Fresh Mexican Grill and Seafood"
+        - "Farmer and the Cook"
+        - "Fermentation House (Four Brix)"
+        - "Feros Ferio Winery"
+        - "The Fishermen's Catch"
+        - "Fred Kavli Theater"
+        - "The Garage"
+        - "Giessinger Winery"
+        - "The Grape"
+        - "Harbor Cove Cafe"
+        - "Heritage Square"
+        - "The Hive Bar and Lounge"
+        - "The Hub"
+        - "Institution Ale Company"
+        - "Keynote Lounge"
+        - "Kimber Park"
+        - "KJ's (formerly Gibsons, formerly The Twist on Main....)"
+        - "Latitude 34"
+        - "Leashless Brewing"
+        - "Libbey Bowl"
+        - "Lucky Fools Pub"
+        - "Magnavino Cellars | Public Realm Brewing"
+        - "The Majestic Ventura Theater"
+        - "The Manhattan of Camarillo"
+        - "Margarita Villa"
+        - "Mrs. Olson's Coffee Hut"
+        - "Mystery Shop"
+        - "The Mystery Shop"
+        - "Nabu"
+        - "Namba Arts"
+        - "Nectar of the Dogs Wine"
+        - "Ojai Ranch House"
+        - "Ojai Underground Exchange"
+        - "Ojai Valley Brewing"
+        - "The Original Pizza Cookery"
+        - "Oxnard Performing Arts Center (OPAC)"
+        - "Parque 1055"
+        - "PC's Bar & Grill"
+        - "Pedals & Pints Brewing Company"
+        - "Plan B Winery"
+        - "Prime Steakhouse & Wine Bar"
+        - "Public Realm Brewery"
+        - "Red Tandem Brewery"
+        - "Ric's Restaurant Sports Lounge"
+        - "Rincon Brewery"
+        - "Rock & Roll Pizza (Harley's Valley Bowl"
+        - "Rocks & Drams"
+        - "Room Eleven"
+        - "Sagebrush Cantina Restaurant & Saloon"
+        - "Sam's Place (The Vine)"
+        - "Samuelson Chapel"
+        - "Sans Souci"
+        - "Scherr Forum Theatre"
+        - "The Shores"
+        - "Simi Valley Cultural Arts Center"
+        - "Strey Cellars"
+        - "Studio Channel Islands"
+        - "Suburbia Park"
+        - "Sunland Vintage Winery"
+        - "Surfside Seafood"
+        - "Taqueria Jalisco Restaurant"
+        - "Tarantula Hill Brewing Company"
+        - "Thousand Oaks Performing Arts Center"
+        - "Tony's Pizzaria"
+        - "Topa Topa Brewing"
+        - "Topa Topa Brewing Co. (Topa-Ventura downtown)"
+        - "Trois le Fou & Lester Wineries"
+        - "Twisted Oak Tavern and Brewery"
+        - "Vaquero y Mar"
+        - "Ventura College Performing Arts Center"
+        - "Ventura Harbor Village stage"
+        - "Ventura Music Hall - VMH"
+        - "Wagon Wheel Brewing Co."
+        - "Winchesters Grill & Saloon"
+        - "The Yard"
+        - "Not listed (add it first with Add or update a venue)"
+    validations:
+      required: true
+  # venues:end
+  - type: dropdown
+    id: weekday
+    attributes:
+      label: Day of the week
+      options:
+        - Monday
+        - Tuesday
+        - Wednesday
+        - Thursday
+        - Friday
+        - Saturday
+        - Sunday
+    validations:
+      required: true
+  - type: input
+    id: start
+    attributes:
+      label: Start time
+      placeholder: 7pm
+    validations:
+      required: true
+  - type: input
+    id: end
+    attributes:
+      label: End time
+      placeholder: 10pm
+  - type: input
+    id: first
+    attributes:
+      label: First date
+      placeholder: 11/3 or 2026-11-03
+    validations:
+      required: true
+  - type: input
+    id: until
+    attributes:
+      label: Last date
+      description: Up to 6 months after the first date.
+      placeholder: 2027-04-27
+    validations:
+      required: true
+  - type: input
+    id: skip
+    attributes:
+      label: Skip these dates
+      description: Weeks it's not happening, separated by commas.
+      placeholder: 11/24, 12/29
+  - type: input
+    id: tags
+    attributes:
+      label: Genres and tags
+      description: Separate with commas.
+      placeholder: open mic, acoustic, free
+  - type: input
+    id: link
+    attributes:
+      label: Link for the show
+      placeholder: https://
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else?
+  - type: checkboxes
+    id: ok
+    attributes:
+      label: Permission
+      options:
+        - label: I'm with the band or venue, or I know this show is happening and it's OK to list it.
+          required: true

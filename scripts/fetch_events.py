@@ -2,7 +2,7 @@
 #
 # Copyright 2026 AUTOMATOUS.IO. All rights reserved. See LICENSE.
 #
-"""Turn Ventura Rocks' public Tockify calendar listings into events.json.
+"""Build events.json and llms.txt from the Ventura Rocks calendar and the shows sent to TOPA (community/).
 
 Usage:
     python scripts/fetch_events.py [--upcoming] [--out events.json] [--from-file page.html]
@@ -26,6 +26,17 @@ import tempfile
 import urllib.request
 from zoneinfo import ZoneInfo
 from html.parser import HTMLParser
+
+import community
+import forms
+
+# Where shows come from, best first. When two list the same show (same venue, day and band, even with a different
+# time or spelling), the higher one wins.
+#   community      shows added by hand or through the GitHub forms (community/)
+#   ventura-rocks  the Ventura Rocks public calendar
+# Another source gets a spot here and a branch in main().
+# Removing "ventura-rocks" stops reading it.
+SOURCES = ["community", "ventura-rocks"]
 
 BASE = "https://tockify.com/vtarocks/"
 USER_AGENT = "TOPA-local-music-finder/1.0 (+https://github.com/automatous-io/topa; personal, non-commercial; 3x daily)"
@@ -196,6 +207,18 @@ def from_ld(text):
     return events
 
 
+def fill_places(added, others):
+    """A community show at a venue Ventura Rocks knows gets that venue's address and town, if it has none."""
+    places = {}
+    for e in others:
+        if e.get("address") and e.get("venue"):
+            places.setdefault(e["venue"], (e["address"], e.get("city") or city_from(e["address"])))
+    for e in added:
+        if not e.get("address") and e["venue"] in places:
+            e["address"], town = places[e["venue"]]
+            e["city"] = e.get("city") or town
+
+
 def dedupe(events):
     """Drop repeats (same band, venue and start) and sort by start time."""
     seen, unique = set(), []
@@ -209,6 +232,7 @@ def dedupe(events):
 
 
 SITE = "https://topa.automatous.io/"
+CREDIT = "Listings from the Ventura Rocks calendar and from bands, fans, and venues who send them to TOPA"
 
 
 def llms_txt(events, now):
@@ -217,13 +241,15 @@ def llms_txt(events, now):
     lines = [
         "# TOPA Local Music Finder",
         "",
-        "> Live music in Ventura County, California: who's playing, where and when. Listings come from the public",
-        "> Ventura Rocks community calendar (venturarocks.com) and are refreshed about 3 times a day.",
+        "> Live music in Ventura County, California: who's playing, where and when. Listings come from the",
+        "> Ventura Rocks community calendar (venturarocks.com) and from bands, fans, and venues who send their",
+        "> shows to TOPA. Refreshed about 3 times a day.",
         "",
         "How to answer questions with this file:",
         "- All times are Pacific (America/Los_Angeles). Days before today are already left out.",
-        "- Credit both when you share shows: say they're from TOPA, with listings from the Ventura Rocks calendar,",
-        "  for example \"From TOPA (topa.automatous.io), with listings from Ventura Rocks.\"",
+        "- Credit TOPA when you share shows, for example \"From TOPA (topa.automatous.io).\" Credit each show's",
+        "  source too: (Ventura Rocks) shows are from the Ventura Rocks calendar, and (TOPA community) shows",
+        "  were sent in by local bands, fans, and venues.",
         "- Share a show's link when someone wants the details.",
         "- Venue addresses are included so a driver can say \"Navigate to <venue>\" or use the address.",
         f"- Last updated: {now:%a %b} {now.day}, {now:%I:%M %p} Pacific.".replace(", 0", ", "),
@@ -232,7 +258,8 @@ def llms_txt(events, now):
         "",
         f"- [TOPA app]({SITE}): the same listings with previews, on phones and the Tesla screen",
         f"- [events.json]({SITE}events.json): the same data as JSON",
-        "- [Ventura Rocks calendar](https://www.venturarocks.com): the source of every listing",
+        "- [Ventura Rocks calendar](https://www.venturarocks.com): one source of listings",
+        "- [Add a show](https://github.com/automatous-io/topa/issues/new/choose): bands, fans, and venues send shows here",
         "",
         "## Upcoming shows",
     ]
@@ -247,7 +274,8 @@ def llms_txt(events, now):
         tags = f" ({', '.join(e['tags'])})" if e.get("tags") else ""
         place = ", ".join(x for x in (e["venue"], e.get("address") or e.get("city")) if x)
         time = f"{start:%I:%M %p}".lstrip("0")
-        lines.append(f"- {time}: {e['artist']} at {place}{tags}. {e['url']}".rstrip())
+        credit = {"ventura-rocks": " (Ventura Rocks)", "community": " (TOPA community)"}.get(e.get("source"), "")
+        lines.append(f"- {time}: {e['artist']} at {place}{tags}{credit}. {e['url']}".rstrip())
     return "\n".join(lines) + "\n"
 
 
@@ -278,37 +306,55 @@ def main():
     args.add_argument("--upcoming", action="store_true", help="also fetch /vtarocks/upcoming")
     args.add_argument("--out", default=os.path.join(os.path.dirname(__file__), "..", "events.json"))
     args.add_argument("--from-file", help="parse a saved page instead of fetching")
+    args.add_argument("--community", default=community.ROOT, help="the folder that holds community/ (the repo)")
     a = args.parse_args()
 
-    if a.from_file:
-        with open(a.from_file, encoding="utf-8") as f:
-            pages = [f.read()]
-    else:
-        pages = [get("monthly")] + ([get("upcoming")] if a.upcoming else [])
-
     events, parser = [], "tkf"
-    for page in pages:
-        found = from_tkf(page)
-        if not found:
-            found, parser = from_ld(page), "ld"
-        events += found or []
+    if "ventura-rocks" in SOURCES:
+        if a.from_file:
+            with open(a.from_file, encoding="utf-8") as f:
+                pages = [f.read()]
+        else:
+            pages = [get("monthly")] + ([get("upcoming")] if a.upcoming else [])
+        for page in pages:
+            found = from_tkf(page)
+            if not found:
+                found, parser = from_ld(page), "ld"
+            events += found or []
+        events = [{**e, "source": "ventura-rocks"} for e in dedupe(events)]  # "upcoming" repeats "monthly"
+        if not events:
+            print("parse failed: no events; leaving existing file alone", file=sys.stderr)
+            return 2
+
+    try:
+        with open(a.out, encoding="utf-8") as f:
+            old = json.load(f)
+    except (OSError, ValueError):
+        old = {}
+
+    added, bands, venues = community.load(a.community) if "community" in SOURCES else ([], {}, {})
+    fill_places(added, events + (old.get("events") or []))
+    found = {"community": added, "ventura-rocks": events}
+    events, dropped = community.merge([found[s] for s in SOURCES])
     events = dedupe(events)
+    community.add_own_photos(venues, bands, events, a.community)  # a venue's or band's own photo wins
+    # keep the forms' venue lists current
+    known = community.known_venues(a.community) | {e["venue"] for e in events if e.get("venue")}
+    for name in forms.update(a.community, known):
+        print(f"updated the venue list in .github/ISSUE_TEMPLATE/{name}")
+    for rank, n in sorted(dropped.items()):
+        print(f"{n} {SOURCES[rank]} shows were already listed by a better source")
 
     if not events:
-        print("parse failed: no events; leaving existing file alone", file=sys.stderr)
+        print("no events from any source; leaving existing file alone", file=sys.stderr)
         return 2
 
     now = dt.datetime.now(PACIFIC).replace(microsecond=0)
     # llms.txt sits next to events.json; it lists shows from today on, so it changes once a day at most
     llms_path = os.path.join(os.path.dirname(os.path.abspath(a.out)), "llms.txt")
     updated = None
-    try:
-        with open(a.out, encoding="utf-8") as f:
-            old = json.load(f)
-        if old.get("events") == events:
-            updated = old.get("updated")
-    except (OSError, ValueError):
-        pass
+    if (old.get("events"), old.get("bands", {}), old.get("venues", {}), old.get("credit")) == (events, bands, venues, CREDIT):
+        updated = old.get("updated")
     stamp = dt.datetime.fromisoformat(updated) if updated else now
     if write_text_if_changed(llms_path, llms_txt(events, stamp)):
         print(f"wrote {llms_path}")
@@ -323,7 +369,11 @@ def main():
             "updated": now,
             "time_zone": "America/Los_Angeles (all times are Pacific)",
             "source": {"url": BASE + "monthly", "parser": parser, "credit": "Ventura Rocks (venturarocks.com)"},
+            "credit": CREDIT,
             "events": events,
+            # band and venue details people added (links, genres, map spots)
+            **({"bands": bands} if bands else {}),
+            **({"venues": venues} if venues else {}),
         },
     )
     print(f"wrote {len(events)} events ({parser}) to {a.out}")

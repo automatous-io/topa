@@ -1,0 +1,167 @@
+name: Add a show
+description: List one show on TOPA. It goes live once it's reviewed.
+title: "Add a show"
+labels: ["submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for adding to TOPA! Fill this in and a bot checks it in about a minute. If something needs fixing, it says so here; otherwise it gets sent for review, and the show goes live once it's approved.
+        Plays every week? Use **Add a weekly show** instead.
+  - type: input
+    id: band
+    attributes:
+      label: Band or artist
+      placeholder: The Tide Pool Ramblers
+    validations:
+      required: true
+  # venues:start
+  # written by scripts/forms.py; edits here get replaced
+  - type: dropdown
+    id: venue
+    attributes:
+      label: Venue
+      description: Pick the venue. Not listed? Add it first with **Add or update a venue**, then come back.
+      options:
+        - "American Pie Coffee House"
+        - "Aqua Bar at Crowne Plaza Hotel"
+        - "Art City Gallery"
+        - "Beatrice Wood Center for the Arts"
+        - "Boatyard Pub"
+        - "Bombay Bar & Grill"
+        - "Breakers Sports Bar & Grill"
+        - "Cafe Fiore"
+        - "Camarillo Barrel Works (formerly Cantara Cellars)"
+        - "Camp Comfort"
+        - "Carrara's"
+        - "Chuy's Mesquite Broiler"
+        - "Cisco's"
+        - "Constitution Park"
+        - "Crown and Anchor"
+        - "Crowne Plaza"
+        - "Dave and Busters"
+        - "The Deer Lodge"
+        - "Downtown Ventura"
+        - "Downtown Ventura Stage"
+        - "Duke's Beach Grill"
+        - "El Capitan Fresh Mexican Grill and Seafood"
+        - "Farmer and the Cook"
+        - "Fermentation House (Four Brix)"
+        - "Feros Ferio Winery"
+        - "The Fishermen's Catch"
+        - "Fred Kavli Theater"
+        - "The Garage"
+        - "Giessinger Winery"
+        - "The Grape"
+        - "Harbor Cove Cafe"
+        - "Heritage Square"
+        - "The Hive Bar and Lounge"
+        - "The Hub"
+        - "Institution Ale Company"
+        - "Keynote Lounge"
+        - "Kimber Park"
+        - "KJ's (formerly Gibsons, formerly The Twist on Main....)"
+        - "Latitude 34"
+        - "Leashless Brewing"
+        - "Libbey Bowl"
+        - "Lucky Fools Pub"
+        - "Magnavino Cellars | Public Realm Brewing"
+        - "The Majestic Ventura Theater"
+        - "The Manhattan of Camarillo"
+        - "Margarita Villa"
+        - "Mrs. Olson's Coffee Hut"
+        - "Mystery Shop"
+        - "The Mystery Shop"
+        - "Nabu"
+        - "Namba Arts"
+        - "Nectar of the Dogs Wine"
+        - "Ojai Ranch House"
+        - "Ojai Underground Exchange"
+        - "Ojai Valley Brewing"
+        - "The Original Pizza Cookery"
+        - "Oxnard Performing Arts Center (OPAC)"
+        - "Parque 1055"
+        - "PC's Bar & Grill"
+        - "Pedals & Pints Brewing Company"
+        - "Plan B Winery"
+        - "Prime Steakhouse & Wine Bar"
+        - "Public Realm Brewery"
+        - "Red Tandem Brewery"
+        - "Ric's Restaurant Sports Lounge"
+        - "Rincon Brewery"
+        - "Rock & Roll Pizza (Harley's Valley Bowl"
+        - "Rocks & Drams"
+        - "Room Eleven"
+        - "Sagebrush Cantina Restaurant & Saloon"
+        - "Sam's Place (The Vine)"
+        - "Samuelson Chapel"
+        - "Sans Souci"
+        - "Scherr Forum Theatre"
+        - "The Shores"
+        - "Simi Valley Cultural Arts Center"
+        - "Strey Cellars"
+        - "Studio Channel Islands"
+        - "Suburbia Park"
+        - "Sunland Vintage Winery"
+        - "Surfside Seafood"
+        - "Taqueria Jalisco Restaurant"
+        - "Tarantula Hill Brewing Company"
+        - "Thousand Oaks Performing Arts Center"
+        - "Tony's Pizzaria"
+        - "Topa Topa Brewing"
+        - "Topa Topa Brewing Co. (Topa-Ventura downtown)"
+        - "Trois le Fou & Lester Wineries"
+        - "Twisted Oak Tavern and Brewery"
+        - "Vaquero y Mar"
+        - "Ventura College Performing Arts Center"
+        - "Ventura Harbor Village stage"
+        - "Ventura Music Hall - VMH"
+        - "Wagon Wheel Brewing Co."
+        - "Winchesters Grill & Saloon"
+        - "The Yard"
+        - "Not listed (add it first with Add or update a venue)"
+    validations:
+      required: true
+  # venues:end
+  - type: input
+    id: date
+    attributes:
+      label: Date
+      placeholder: 11/7 or 2026-11-07
+    validations:
+      required: true
+  - type: input
+    id: start
+    attributes:
+      label: Start time
+      placeholder: 7pm
+    validations:
+      required: true
+  - type: input
+    id: end
+    attributes:
+      label: End time
+      placeholder: 10pm
+  - type: input
+    id: tags
+    attributes:
+      label: Genres and tags
+      description: Separate with commas.
+      placeholder: rock, blues, 21+, free
+  - type: input
+    id: link
+    attributes:
+      label: Link for the show
+      description: Tickets, the event page or the band's post about it.
+      placeholder: https://
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else?
+  - type: checkboxes
+    id: ok
+    attributes:
+      label: Permission
+      options:
+        - label: I'm with the band or venue, or I know this show is happening and it's OK to list it.
+          required: true

@@ -5,9 +5,11 @@ name: Tests
 on:
   push:
     branches: [main]
-    # the 3x-daily listings update and docs-only changes don't need a test run
-    paths-ignore: ["events.json", "screenshots/**", "**.md"]
+    # listings, submissions and docs don't need a test run
+    paths-ignore: ["events.json", "llms.txt", "community/**", "screenshots/**", "**.md"]
+  # submission PRs only touch community/, and GitHub skips tests on bot-opened PRs anyway
   pull_request:
+    paths-ignore: ["community/**"]
   workflow_dispatch:
 
 jobs:

@@ -180,6 +180,22 @@ async function fetchListings() {
 let EXTRA = { bands: {}, venues: {} };
 const setExtra = x => (EXTRA = { bands: (x && x.bands) || {}, venues: (x && x.venues) || {} });
 const addedVenue = name => EXTRA.venues[name] || {};
+// an added venue as a stand-in show, for venues with nothing scheduled yet (town, address, map spot)
+const venueSpot = name => {
+  const v = addedVenue(name);
+  return {
+    venue: name,
+    city: v.city || "",
+    address: v.address || "",
+    lat: v.lat ?? null,
+    lng: v.lng ?? null,
+  };
+};
+// venues people added that have no shows yet, listed anyway: [name, []]
+const emptyVenues = () =>
+  Object.keys(EXTRA.venues)
+    .filter(n => !EVENTS.some(e => e.venue === n))
+    .map(n => [n, []]);
 
 // show the saved copy right away (works offline), then swap in the latest events.json
 async function load() {
@@ -554,15 +570,17 @@ const nextLabel = e => {
 
 // a venue in a list: name, town, distance and show count, its next show, and a fave star
 const venueRow = (n, L) => {
-  const next = L.find(isStillOn) || L[0];
-  const meta = [next.city, distanceLabel(next), countLabel(L.length, "show")]
+  const next = L.find(isStillOn) || L[0] || venueSpot(n);
+  const meta = [next.city, distanceLabel(next), L.length ? countLabel(L.length, "show") : "No shows yet"]
     .filter(Boolean)
     .map(esc)
     .join(" · ");
   return (
     `<div class="rw vrow" data-venue="${esc(n)}">${venueArt(n)}` +
     `<div class="rb"><b>${esc(venueName(n))}</b><span class="vmeta">${meta}</span></div>` +
-    `<div class="vnext"><span class="vwhen">${nextLabel(next)}</span><span class="vwho">${esc(next.artist)}</span></div>` +
+    (L.length
+      ? `<div class="vnext"><span class="vwhen">${nextLabel(next)}</span><span class="vwho">${esc(next.artist)}</span></div>`
+      : `<div class="vnext"></div>`) +
     `${starButton(SAVED.venues.includes(n), `data-sv="${esc(n)}"`)}</div>`
   );
 };
@@ -765,9 +783,11 @@ const updatedLabel = () =>
 function searchResults(k, L) {
   const hit = s => k.every(x => s.toLowerCase().includes(x));
   const B = [...groupBy(EVENTS, bandName)].filter(([n, l]) => hit(n + " " + l[0].tags.join(" "))),
-    V = [...groupBy(EVENTS, e => e.venue)]
-      .filter(([n, l]) => hit(venueName(n) + " " + l[0].city))
-      .sort((a, b) => (milesTo(a[1][0]) ?? 1e9) - (milesTo(b[1][0]) ?? 1e9));
+    V = [...groupBy(EVENTS, e => e.venue), ...emptyVenues()]
+      .filter(([n, l]) => hit(venueName(n) + " " + (l[0] || venueSpot(n)).city))
+      .sort(
+        (a, b) => (milesTo(a[1][0] || venueSpot(a[0])) ?? 1e9) - (milesTo(b[1][0] || venueSpot(b[0])) ?? 1e9),
+      );
   const sec = (t, n, body) => `<section><h2>${t} <span class="cnt">${n}</span></h2>${body}</section>`;
   return (
     (B.length
@@ -903,15 +923,17 @@ function bandPage(name) {
 
 function venuesPage() {
   const filter = venueFilter.toLowerCase();
-  const venues = [...groupBy(showsInRange().filter(isStillOn), e => e.venue)].filter(([n, L]) =>
-    (venueName(n) + " " + L[0].city).toLowerCase().includes(filter),
-  );
+  const place = ([n, L]) => L[0] || venueSpot(n);
+  const venues = [
+    ...groupBy(showsInRange().filter(isStillOn), e => e.venue),
+    ...emptyVenues().filter(x => inRadius(place(x))),
+  ].filter(x => (venueName(x[0]) + " " + place(x).city).toLowerCase().includes(filter));
   // "Nearest" needs a location; without one the list starts A–Z
   const order = USER.county && vsort === "near" ? "az" : vsort;
   venues.sort(
     order === "az"
       ? (a, b) => venueName(a[0]).localeCompare(venueName(b[0]))
-      : (a, b) => (milesTo(a[1][0]) ?? 1e9) - (milesTo(b[1][0]) ?? 1e9),
+      : (a, b) => (milesTo(place(a)) ?? 1e9) - (milesTo(place(b)) ?? 1e9),
   );
   const sort = sortButton(
     order === "near" ? "Nearest" : "A–Z",
@@ -932,7 +954,7 @@ function venuesPage() {
 
 function venuePage(key) {
   const L = EVENTS.filter(e => e.venue === key || venueName(e.venue) === key);
-  const v = L[0];
+  const v = L[0] || (EXTRA.venues[key] ? venueSpot(key) : null);
   if (!v) return `<p class="empty">No upcoming shows at ${esc(key)}.</p>`;
   // plain time order: Today/Tonight, This week (next 7 days), Later
   const upcoming = L.filter(isStillOn).sort((a, b) => a.startMs - b.startMs);
@@ -949,7 +971,8 @@ function venuePage(key) {
     `<div class="hero">${venueArt(v.venue)}<div class="hx">` +
     `<small>VENUE · ${esc(v.city.toUpperCase())}${dist ? " · " + dist.toUpperCase() : ""}</small>` +
     `<h1>${esc(venueName(v.venue))}</h1>` +
-    `<div class="mrow">${playAllButton("Play lineup")}${venueActions(v)}<span class="sub">${showCount(L.length)}</span></div>${voiceHint(v)}` +
+    `<div class="mrow">${L.length ? playAllButton("Play lineup") : ""}${venueActions(v)}` +
+    `<span class="sub">${L.length ? showCount(L.length) : "No shows yet"}</span></div>${voiceHint(v)}` +
     `</div>${starButton(SAVED.venues.includes(v.venue), `data-sv="${esc(v.venue)}"`, 1)}</div>` +
     section(todayWord(), tonight) +
     section("This week", thisWeek, tonight.length) +
@@ -1017,7 +1040,7 @@ function favesPage() {
     );
   };
   const venueCard = ([n, L]) => {
-    const v = L[0] || { venue: n, city: "", address: "", lat: null };
+    const v = L[0] || venueSpot(n);
     const where = [v.city, distanceLabel(v)].filter(Boolean).map(esc).join(" · ");
     return (
       `<div class="card vcard">${venueArt(n)}<div class="ci">` +

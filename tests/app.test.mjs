@@ -280,6 +280,21 @@ test("an added show uses its venue's added details and has no Ventura Rocks link
   assert.ok(await listed.$('a[title="View on Ventura Rocks"]'), "Ventura Rocks shows keep their link");
 });
 
+test("a venue someone added shows up before its first show", async t => {
+  const listings = {
+    updated: "2026-10-24T09:00:00-07:00",
+    events: EVENTS.slice(0, 3),
+    venues: {
+      "The Quiet Room": { city: "Santa Paula", address: "1 Main St, Santa Paula", lat: 34.35, lng: -119.06 },
+    },
+  };
+  const list = await open(t, { listings, query: "&view=Venues" });
+  assert.match(await list.$eval("#main", el => el.textContent), /The Quiet Room.*No shows yet/);
+  const page = await open(t, { listings, query: "&view=" + encodeURIComponent("Venue:The Quiet Room") });
+  assert.equal(await text(page, "h1"), "The Quiet Room");
+  assert.ok(await page.$(".addrow a"), "links to add a show there");
+});
+
 // ---- Layout ----
 
 test("phones get the TOPA header and a five-button tab bar", async t => {

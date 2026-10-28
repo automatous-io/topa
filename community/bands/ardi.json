@@ -1,0 +1,20 @@
+{
+  "name": "Ardi",
+  "aliases": [],
+  "genres": [
+    "rock"
+  ],
+  "town": "Ventura",
+  "links": {
+    "instagram": "https://instagram.com/ardiofficialmusic",
+    "bandcamp": "https://ardi2.bandcamp.com/music",
+    "spotify": "https://open.spotify.com/artist/5l3Zmxwl44b9IyMxBFNceS"
+  },
+  "apple": "1522573994",
+  "photo": "",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "issue": 7
+}

@@ -506,7 +506,7 @@ const ridge = () =>
 const wordmark = id => `<span class="wmk wmk-${id}">${ridge()}<span class="wm-name">TOPA</span></span>`;
 
 const starButton = (on, attr, big) =>
-  `<button class="star${on ? " on" : ""}${big ? " big" : ""}" ${attr} aria-label="${on ? "Unfave" : "Fave"}" title="${on ? "Unfave" : "Fave"}">${on ? "★" : "☆"}</button>`;
+  `<button class="star${on ? " on" : ""}${big ? " big" : ""}" ${attr} aria-label="${on ? "Unfave" : "Fave"}" title="${on ? "Unfave" : "Fave"}">${svg("Faves")}</button>`;
 
 // ---- Page history ----
 // every page change goes into the browser history, so swipe-back and the browser's back arrow work

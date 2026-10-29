@@ -6,6 +6,20 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
 
 ---
 
+## 2.4.0
+
+**A new About page.**
+
+- About opens with a big TOPA header, then two buttons: Add to TOPA and Get the app. Where shows come from and the
+  fine print sit below.
+- Add to TOPA is its own page with a teal header: four tiles (show, weekly show, band, venue), what to do if you're
+  already listed, and how it works in three steps.
+- Close and back stay at the top while you scroll.
+- The opening splash's "Local Music Finder" matches About: coral capitals.
+- Same look on phones and in the car.
+
+---
+
 ## 2.3.1
 
 **Venue details come only from venue profiles.**

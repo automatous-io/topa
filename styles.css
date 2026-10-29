@@ -3642,3 +3642,158 @@ a.vt.dir:hover {
     height: 54px;
   }
 }
+
+/* ---- opening splash: about 1.4s, then fades away (index.html decides whether it plays) ---- */
+#splash {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: var(--panel);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: spl-out 0.35s 1.25s ease-in forwards;
+}
+.nosplash #splash {
+  display: none;
+}
+.spl {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.spl-art {
+  position: relative;
+  width: 170px;
+  height: 90px;
+}
+.spl-art svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.spl-bars {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  animation: spl-fade 0.15s 0.45s ease forwards;
+}
+.spl-bars span {
+  width: 7%;
+  height: 100%;
+  border-radius: 99px;
+  background: var(--acc);
+  transform-origin: bottom;
+  transform: scaleY(0.12);
+  animation: spl-bar 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.spl-bars span:nth-child(2) {
+  animation-delay: 0.03s;
+}
+.spl-bars span:nth-child(3) {
+  animation-delay: 0.06s;
+}
+.spl-bars span:nth-child(4) {
+  animation-delay: 0.09s;
+}
+.spl-bars span:nth-child(5) {
+  animation-delay: 0.12s;
+}
+.spl-bars span:nth-child(6) {
+  animation-delay: 0.15s;
+}
+.spl-bars span:nth-child(7) {
+  animation-delay: 0.18s;
+}
+.spl-ridge {
+  stroke: var(--acc);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+  animation: spl-draw 0.4s 0.35s cubic-bezier(0.6, 0, 0.2, 1) forwards;
+}
+.spl-name {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 64px;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  margin-right: -0.1em;
+  color: var(--ink);
+  opacity: 0;
+  animation: spl-rise 0.35s 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+.spl-tag {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--mute);
+  opacity: 0;
+  animation: spl-fade-in 0.25s 0.8s ease forwards;
+}
+@keyframes spl-bar {
+  0% {
+    transform: scaleY(0.12);
+  }
+  25% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.3);
+  }
+  75% {
+    transform: scaleY(0.85);
+  }
+  100% {
+    transform: scaleY(var(--h));
+  }
+}
+@keyframes spl-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes spl-fade {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes spl-fade-in {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes spl-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes spl-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+/* the car: same opening, bigger */
+@media (min-width: 701px) {
+  .spl-art {
+    width: 250px;
+    height: 132px;
+  }
+  .spl-name {
+    font-size: 96px;
+  }
+  .spl-tag {
+    font-size: 20px;
+  }
+}

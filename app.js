@@ -7,7 +7,7 @@
 
 // ---- Settings and state ----
 // the app's version: shown in About, and it names the offline cache, so bumping it refreshes every device
-const VERSION = "2.0.0";
+const VERSION = "2.1.0";
 const params = new URLSearchParams(location.search);
 
 // Is this the car's browser? Some versions say "Tesla" in the user agent, but current ones just say
@@ -2136,6 +2136,9 @@ document.getElementById("main").addEventListener("scroll", markScrolled, { passi
 })();
 
 // ---- Start ----
+// a tap skips the opening splash
+document.getElementById("splash").onclick = ev => (ev.currentTarget.style.display = "none");
+
 try {
   history.replaceState({ v: view, prev }, "", urlFor(view));
 } catch (_) {}

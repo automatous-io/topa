@@ -6,6 +6,16 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
 
 ---
 
+## 2.2.1
+
+**Fixes.**
+
+- No more empty strip under the tab bar when TOPA is opened from an iPhone home screen, and the tab bar is a bit
+  shorter.
+- Show pages: the time at the top is in capitals like everywhere else, and the distance lines up when there's no ▶.
+
+---
+
 ## 2.2.0
 
 **Band links on show pages, a Share button, and matching stars.**

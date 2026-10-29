@@ -112,9 +112,11 @@ Ventura Rocks calendar (Tockify)        Bands, fans, venues
 1. **Listings.** [`scripts/fetch_events.py`](scripts/fetch_events.py) (Python standard library only) reads the Ventura Rocks
    calendar's public `monthly` and `upcoming` pages and the shows people sent to TOPA (`community/`), keeps only facts (band,
    time, venue, address, town, tags, link), and merges them. When both list the same show (same venue, day and band), the one
-   sent to TOPA wins. It writes every time in Pacific with a plain-English `when` ("Sat Oct 24, 7:00 PM"), then writes
-   `events.json` and `llms.txt`: every upcoming show by day in plain English, with addresses and links. If the calendar won't
-   parse, it exits with an error and leaves the old file alone.
+   sent to TOPA wins. Each show gets its venue's map spot from `community/venues/`; a venue without one gets it from its
+   address through the free US Census geocoder, saved in `spots.json` so each address is looked up once. It writes every
+   time in Pacific with a plain-English `when` ("Sat Oct 24, 7:00 PM"), then writes `events.json` and `llms.txt`: every
+   upcoming show by day in plain English, with addresses and links. If the calendar won't parse, it exits with an error and
+   leaves the old file alone.
 2. **Sending a show.** Each form in [`.github/ISSUE_TEMPLATE`](.github/ISSUE_TEMPLATE) opens a GitHub issue.
    [`submission.yml`](.github/workflows/submission.yml) checks it with
    [`scripts/submissions.py`](scripts/submissions.py) and either comments with what to fix or opens a pull request adding
@@ -122,7 +124,7 @@ Ventura Rocks calendar (Tockify)        Bands, fans, venues
    those changes. Photos are shrunk and stripped of location data ([`scripts/photos.py`](scripts/photos.py)). Merging
    publishes it.
 3. **Schedule.** [`.github/workflows/update-events.yml`](.github/workflows/update-events.yml) runs the fetch around 7am, noon
-   and 4pm Pacific, and right after a submission is merged. It commits `events.json` and `llms.txt` only when they changed,
+   and 4pm Pacific, and right after a submission is merged. It commits `events.json`, `llms.txt` and `spots.json` only when they changed,
    and keeps the forms' venue lists current ([`scripts/forms.py`](scripts/forms.py)).
 4. **The app.** `index.html` shows the last saved listings right away (so it opens instantly and works offline), then swaps in the
    latest `events.json`. If the scheduled fetch ever fails, the old file stays in place and the "Updated" date stops moving.
@@ -169,17 +171,18 @@ commit gets a ✓ or ✗ before it's tagged as a release.
 |---|---|
 | `index.html` | The page shell |
 | `app.js` | The app: listings, pages, previews, player (sections marked inside) |
-| `data.js` | Venue coordinates, phone numbers and websites, plus the genre map |
+| `data.js` | Town centers and the genre map |
 | `styles.css` | All styles; phone rules in the `max-width: 700px` blocks |
 | `fonts/` | Oswald and Figtree, with their licenses |
 | `events.json` | Current listings, written by the fetch script |
 | `llms.txt` | The same listings in plain English for AI assistants, also written by the fetch script |
+| `spots.json` | Map spots looked up from listing addresses, also written by the fetch script |
 | `scripts/fetch_events.py` | Pulls the calendar, merges in the shows sent to TOPA, writes `events.json` and `llms.txt` |
 | `scripts/community.py` | Reads and checks the shows, bands and venues people send |
 | `scripts/submissions.py` | Turns a filled-in form into a file for a pull request |
 | `scripts/forms.py` | Keeps the forms' venue lists current |
 | `scripts/photos.py` | Shrinks band and venue photos |
-| `community/` | Shows, bands and venues people sent, one file each |
+| `community/` | Shows, bands and venues, sent in or added by TOPA, one file each |
 | `.github/ISSUE_TEMPLATE/` | The four forms: a show, a weekly show, a band, a venue |
 | `.github/workflows/submission.yml` | Checks each form and opens the pull request |
 | `.github/workflows/update-events.yml` | Runs the fetch on a schedule and after each approval |

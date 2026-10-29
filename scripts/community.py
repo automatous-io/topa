@@ -148,63 +148,27 @@ def own_photo_path(kind, name):
 
 
 def known_venues(root=ROOT):
-    """Every venue name TOPA knows: data.js, community/venues/, and any venue in the current listings."""
+    """Every venue name TOPA knows: community/venues/ and any venue in the current listings."""
     names = set()
     try:
         with open(os.path.join(root, "events.json"), encoding="utf-8") as f:
             names.update(e["venue"] for e in json.load(f).get("events") or [] if e.get("venue"))
     except (OSError, ValueError, KeyError, TypeError):
         pass
-    try:
-        with open(os.path.join(root, "data.js"), encoding="utf-8") as f:
-            js = f.read()
-        block = js[js.index("const KNOWN_VENUES = {") : js.index("\n};", js.index("const KNOWN_VENUES = {"))]
-        for quoted, bare in re.findall(r'^\s*(?:"((?:[^"\\]|\\.)*)"|([A-Za-z_]\w*)):\s*\[', block, re.M):
-            names.add(json.loads(f'"{quoted}"') if quoted else bare)
-    except (OSError, ValueError):
-        pass
     names.update(v["name"] for v in read_folder(root, "venue"))
     return names
 
 
-def js_object(js, name):
-    """One `const NAME = {...}` block from data.js -> a dict."""
-    try:
-        start = js.index(f"const {name} = {{")
-        body = js[start : js.index("\n};", start)]
-    except ValueError:
-        return {}
-    out = {}
-    for quoted, bare, value in re.findall(r'^\s*(?:"((?:[^"\\]|\\.)*)"|([A-Za-z_]\w*)):\s*(.+?),?$', body, re.M):
-        try:
-            out[json.loads(f'"{quoted}"') if quoted else bare] = json.loads(value)
-        except ValueError:
-            pass
-    return out
-
-
-def builtin_venue(name, root=ROOT):
-    """A built-in venue's current details: data.js plus the address from the listings."""
-    try:
-        with open(os.path.join(root, "data.js"), encoding="utf-8") as f:
-            js = f.read()
-    except OSError:
-        js = ""
-    spot = js_object(js, "KNOWN_VENUES").get(name)
-    out = {
-        "name": name,
-        "lat": spot[0] if spot else None,
-        "lng": spot[1] if spot else None,
-        "phone": js_object(js, "VENUE_PHONES").get(name, ""),
-        "website": js_object(js, "VENUE_SITES").get(name, ""),
-    }
+def listed_venue(name, root=ROOT):
+    """A venue with no profile yet: its address and town from the listings."""
+    out = {"name": name}
     try:
         with open(os.path.join(root, "events.json"), encoding="utf-8") as f:
             e = next((e for e in json.load(f).get("events") or [] if e.get("venue") == name and e.get("address")), {})
         out.update({"address": e.get("address", ""), "city": e.get("city", "")})
     except (OSError, ValueError):
         pass
-    return {k: v for k, v in out.items() if v not in ("", None)} if len(out) > 1 else {}
+    return {k: v for k, v in out.items() if v}
 
 
 def short_name(v):

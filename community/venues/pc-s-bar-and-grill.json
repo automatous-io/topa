@@ -4,11 +4,12 @@
   "city": "Simi Valley",
   "lat": 34.271617,
   "lng": -118.712025,
-  "website": "https://instagram.com/pcsbargrill",
+  "website": "https://www.pcsbarandgrill.com",
   "instagram": "https://instagram.com/pcsbargrill",
   "maintainers": [
     "automatous-io"
   ],
   "submitted_by": "automatous-io",
-  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29",
+  "phone": "(805) 551-4881"
 }

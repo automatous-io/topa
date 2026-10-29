@@ -6,6 +6,17 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
 
 ---
 
+## 2.3.1
+
+**Venue details come only from venue profiles.**
+
+- Map spots, phone numbers and websites now come only from each venue's profile in `community/`. The old built-in venue
+  list is gone.
+- Eight more venues have a phone number from their own website or social pages.
+- Venues that don't publish a phone number show a dimmed Call button until one is added.
+
+---
+
 ## 2.3.0
 
 **Band and venue profiles, and Instagram on venue pages.**

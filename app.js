@@ -1113,7 +1113,7 @@ function showPage(id) {
   const links = bandLinks(band);
   return (
     `<div class="hero">${art(band)}<div class="hx">` +
-    `<small>${date} · <span class="ac">${timeLabel(e)}</span>${sourceIcon(e, true)}</small><h1>${esc(e.artist)}</h1>` +
+    `<small>${date} · <span class="ac">${timeLabel(e).toUpperCase()}</span>${sourceIcon(e, true)}</small><h1>${esc(e.artist)}</h1>` +
     `<button class="vb big" data-venue="${esc(e.venue)}">${esc(venueName(e.venue))} <em>· ${esc(e.city)}</em><span>›</span></button>` +
     `<div class="mrow">${heroPlayButton(band)}<span class="sub">${distanceLabel(e)}</span></div>` +
     `${tags}</div>${starButton(SAVED.bands.includes(band), `data-sb="${esc(band)}"`, 1)}</div>` +

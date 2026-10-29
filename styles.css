@@ -3824,3 +3824,8 @@ a.srcline:hover {
     height: 24px;
   }
 }
+/* no play button: the distance lines up with the text above */
+.mrow .sub:first-child,
+.mrow .hplay[hidden] + .sub {
+  margin-left: 0;
+}

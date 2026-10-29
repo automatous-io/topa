@@ -1,0 +1,15 @@
+{
+  "name": "Sagebrush Cantina Restaurant & Saloon",
+  "address": "23527 Calabasas Rd, Calabasas, CA 91302",
+  "city": "Calabasas",
+  "lat": 34.157372,
+  "lng": -118.639493,
+  "phone": "(818) 222-6062",
+  "website": "https://www.sagebrushcantina.com",
+  "instagram": "https://instagram.com/sagebrushcantinacalabasas",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

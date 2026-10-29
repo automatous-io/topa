@@ -1,0 +1,15 @@
+{
+  "name": "Public Realm Brewery",
+  "address": "961 Rice Ave, Oxnard, CA 93030",
+  "city": "Oxnard",
+  "lat": 34.21029,
+  "lng": -119.142192,
+  "phone": "(805) 890-1745",
+  "website": "https://www.publicrealmbrewing.com",
+  "instagram": "https://instagram.com/publicrealmbrewing",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

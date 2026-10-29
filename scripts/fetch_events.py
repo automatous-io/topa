@@ -23,6 +23,7 @@ import os
 import re
 import sys
 import tempfile
+import urllib.parse
 import urllib.request
 from zoneinfo import ZoneInfo
 from html.parser import HTMLParser
@@ -219,6 +220,65 @@ def fill_places(added, others):
             e["city"] = e.get("city") or town
 
 
+def fill_spots(events, venues):
+    """Copy a venue profile's map spot (and address, if missing) onto its listings."""
+    for e in events:
+        v = venues.get(e.get("venue")) or {}
+        if v.get("lat") is not None and e.get("lat") is None:
+            e["lat"], e["lng"] = v["lat"], v["lng"]
+        if v.get("address") and not e.get("address"):
+            e["address"] = v["address"]
+            e["city"] = e.get("city") or v.get("city") or city_from(v["address"])
+
+
+CENSUS = "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?"
+LOOKUPS_PER_RUN = 25
+RETRY_MISS_DAYS = 30
+
+
+def census_spot(address):
+    """Address -> (lat, lng) from the US Census geocoder, or None if no match."""
+    query = urllib.parse.urlencode({"address": address, "benchmark": "Public_AR_Current", "format": "json"})
+    request = urllib.request.Request(CENSUS + query, headers={"User-Agent": USER_AGENT})
+    with urllib.request.urlopen(request, timeout=15) as response:
+        matches = json.load(response)["result"]["addressMatches"]
+    if not matches:
+        return None
+    c = matches[0]["coordinates"]
+    return round(c["y"], 6), round(c["x"], 6)
+
+
+def fill_from_census(events, path, today, lookup=census_spot):
+    """Geocode listings that still have no map spot. Results are cached in spots.json; misses retry after a month."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            saved = json.load(f)
+    except (OSError, ValueError):
+        saved = {}
+    asked, changed = 0, False
+    for e in events:
+        if e.get("lat") is not None or not e.get("address"):
+            continue
+        key = " ".join(e["address"].split()).lower()
+        hit = saved.get(key)
+        stale = hit and "miss" in hit and (today - dt.date.fromisoformat(hit["miss"])).days >= RETRY_MISS_DAYS
+        if (hit is None or stale) and asked < LOOKUPS_PER_RUN:
+            asked += 1
+            try:
+                spot = lookup(e["address"])
+            except Exception as err:
+                print(f"census lookup failed for {e['address']}: {err}", file=sys.stderr)
+                continue
+            hit = {"lat": spot[0], "lng": spot[1]} if spot else {"miss": today.isoformat()}
+            saved[key], changed = hit, True
+        if hit and "lat" in hit:
+            e["lat"], e["lng"] = hit["lat"], hit["lng"]
+    if changed:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(dict(sorted(saved.items())), f, indent=1, ensure_ascii=False)
+            f.write("\n")
+
+
 def dedupe(events):
     """Drop repeats (same band, venue and start) and sort by start time."""
     seen, unique = set(), []
@@ -337,6 +397,9 @@ def main():
     found = {"community": added, "ventura-rocks": events}
     events, dropped = community.merge([found[s] for s in SOURCES])
     events = dedupe(events)
+    fill_spots(events, venues)
+    today = dt.datetime.now(community.PACIFIC).date()
+    fill_from_census(events, os.path.join(os.path.dirname(os.path.abspath(a.out)), "spots.json"), today)
     community.add_own_photos(venues, bands, events, a.community)  # a venue's or band's own photo wins
     # keep the forms' venue lists current
     known = community.known_venues(a.community) | {e["venue"] for e in events if e.get("venue")}

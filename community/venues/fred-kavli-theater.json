@@ -1,0 +1,14 @@
+{
+  "name": "Fred Kavli Theater",
+  "address": "2100 E Thousand Oaks Blvd, Thousand Oaks, CA 91362",
+  "city": "Thousand Oaks",
+  "lat": 34.177147,
+  "lng": -118.850684,
+  "phone": "(805) 449-2787",
+  "website": "https://bapacthousandoaks.com",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

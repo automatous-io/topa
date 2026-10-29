@@ -1,0 +1,14 @@
+{
+  "name": "Downtown Ventura",
+  "address": "E Main St & S California St, Ventura, CA 93001",
+  "city": "Ventura",
+  "lat": 34.280817,
+  "lng": -119.293106,
+  "website": "https://downtownventura.org",
+  "instagram": "https://instagram.com/downtownventura",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

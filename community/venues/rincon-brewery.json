@@ -1,0 +1,10 @@
+{
+  "name": "Rincon Brewery",
+  "website": "https://www.rinconbrewery.com",
+  "instagram": "https://instagram.com/rinconbreweryinc",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

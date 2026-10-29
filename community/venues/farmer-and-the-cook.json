@@ -1,0 +1,15 @@
+{
+  "name": "Farmer and the Cook",
+  "address": "339 W El Roblar Dr, Ojai, CA 93023",
+  "city": "Ojai",
+  "lat": 34.448969,
+  "lng": -119.278536,
+  "phone": "(805) 640-9608",
+  "website": "https://farmerandcook.com",
+  "instagram": "https://instagram.com/farmerandthecookojai",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

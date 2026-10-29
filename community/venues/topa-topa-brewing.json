@@ -1,0 +1,14 @@
+{
+  "name": "Topa Topa Brewing",
+  "address": "4880 Colt St, Ventura, CA 93003",
+  "city": "Ventura",
+  "lat": 34.25021,
+  "lng": -119.225005,
+  "website": "https://topatopa.beer",
+  "instagram": "https://instagram.com/topatopabrewingco",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

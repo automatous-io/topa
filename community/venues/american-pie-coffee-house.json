@@ -1,0 +1,15 @@
+{
+  "name": "American Pie Coffee House",
+  "address": "2211 Ventura Blvd, Camarillo, CA 93010",
+  "city": "Camarillo",
+  "lat": 34.216746,
+  "lng": -119.040713,
+  "phone": "(805) 388-9600",
+  "website": "https://www.americanpierecords.com",
+  "instagram": "https://instagram.com/americanpierecords",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

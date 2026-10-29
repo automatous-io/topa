@@ -1,0 +1,14 @@
+{
+  "name": "The Manhattan of Camarillo",
+  "address": "5800 Santa Rosa Rd, Camarillo, CA 93012",
+  "city": "Camarillo",
+  "lat": 34.225652,
+  "lng": -118.989015,
+  "website": "https://www.themanhattanofcamarillo.com",
+  "instagram": "https://instagram.com/manhattancamarillo",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

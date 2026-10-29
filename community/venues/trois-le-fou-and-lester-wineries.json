@@ -1,0 +1,15 @@
+{
+  "name": "Trois le Fou & Lester Wineries",
+  "address": "4522 Market St, Ventura, CA 93003",
+  "city": "Ventura",
+  "lat": 34.257195,
+  "lng": -119.232075,
+  "phone": "(805) 701-7973",
+  "website": "https://troislefou.com",
+  "instagram": "https://instagram.com/trois_le_fou_winery",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

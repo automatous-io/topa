@@ -1,0 +1,13 @@
+{
+  "name": "Ventura College Performing Arts Center",
+  "address": "4700 Loma Vista Rd, Ventura, CA 93003",
+  "city": "Ventura",
+  "lat": 34.27905,
+  "lng": -119.23222,
+  "website": "https://www.venturacollege.edu",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

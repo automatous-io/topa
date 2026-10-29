@@ -1,0 +1,14 @@
+{
+  "name": "Wagon Wheel Brewing Co.",
+  "address": "2601 Wagon Wheel Rd, Oxnard, CA 93036",
+  "city": "Oxnard",
+  "lat": 34.236584,
+  "lng": -119.182642,
+  "website": "https://wagonwheelbrewingcompany.com",
+  "instagram": "https://instagram.com/wagonwheelbrewingco",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

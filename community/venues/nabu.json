@@ -1,0 +1,15 @@
+{
+  "name": "Nabu",
+  "address": "2649 Townsgate Rd, Westlake Village, CA 91361",
+  "city": "Westlake Village",
+  "lat": 34.156753,
+  "lng": -118.828622,
+  "phone": "(805) 778-1100",
+  "website": "https://nabuwines.com",
+  "instagram": "https://instagram.com/nabuwines",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

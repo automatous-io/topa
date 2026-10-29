@@ -1,0 +1,15 @@
+{
+  "name": "Beatrice Wood Center for the Arts",
+  "address": "8585 N Ojai Rd, Ojai, CA 93023",
+  "city": "Ojai",
+  "lat": 34.434549,
+  "lng": -119.187173,
+  "phone": "(805) 646-3381",
+  "website": "https://www.beatricewood.com",
+  "instagram": "https://instagram.com/beatricewoodcenter",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

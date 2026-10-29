@@ -1,0 +1,12 @@
+{
+  "name": "Cisco's",
+  "address": "1712 E Avenida De Los Arboles, Thousand Oaks, CA 91362",
+  "city": "Thousand Oaks",
+  "lat": 34.211394,
+  "lng": -118.846752,
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

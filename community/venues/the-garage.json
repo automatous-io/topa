@@ -1,0 +1,15 @@
+{
+  "name": "The Garage",
+  "address": "1091 Scandia Ave, Ventura, CA 93004",
+  "city": "Ventura",
+  "lat": 34.279111,
+  "lng": -119.16118,
+  "phone": "(805) 666-5274",
+  "website": "https://www.thegaragebarvta.com",
+  "instagram": "https://instagram.com/thegaragebarventura",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

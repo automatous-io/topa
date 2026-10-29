@@ -1,0 +1,14 @@
+{
+  "name": "Sunland Vintage Winery",
+  "address": "1321 E Thousand Oaks Blvd, Thousand Oaks, CA 91362",
+  "city": "Thousand Oaks",
+  "lat": 34.178264,
+  "lng": -118.856251,
+  "phone": "(805) 379-2250",
+  "website": "https://www.sunlandvintagewinery.com",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Cafe Fiore",
+  "address": "66 S California St, Ventura, CA 93001",
+  "city": "Ventura",
+  "lat": 34.279975,
+  "lng": -119.293034,
+  "phone": "(805) 653-1266",
+  "website": "https://cafefiore.net",
+  "instagram": "https://instagram.com/cafefioreventura",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

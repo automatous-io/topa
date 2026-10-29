@@ -1,0 +1,12 @@
+{
+  "name": "The Hive Bar and Lounge",
+  "address": "2780 Tapo Canyon Rd, Simi Valley, CA 93063",
+  "city": "Simi Valley",
+  "lat": 34.285938,
+  "lng": -118.717675,
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

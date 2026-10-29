@@ -1,0 +1,15 @@
+{
+  "name": "Pedals & Pints Brewing Company",
+  "address": "156 W Hillcrest Dr, Thousand Oaks, CA 91360",
+  "city": "Thousand Oaks",
+  "lat": 34.18113,
+  "lng": -118.881892,
+  "phone": "(805) 551-0547",
+  "website": "https://www.pedalsandpintsbrewing.com",
+  "instagram": "https://instagram.com/pedalsandpintsbrewing",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

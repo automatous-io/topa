@@ -1,0 +1,15 @@
+{
+  "name": "Parque 1055",
+  "address": "1055 E Main St, Santa Paula, CA 93060",
+  "city": "Santa Paula",
+  "lat": 34.354428,
+  "lng": -119.058693,
+  "phone": "(805) 619-1055",
+  "website": "https://parque1055.com",
+  "instagram": "https://instagram.com/parque1055",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

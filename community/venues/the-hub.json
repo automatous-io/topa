@@ -1,0 +1,14 @@
+{
+  "name": "The Hub",
+  "address": "256 E Ojai Ave, Ojai, CA 93023",
+  "city": "Ojai",
+  "lat": 34.447927,
+  "lng": -119.24511,
+  "phone": "(805) 272-8344",
+  "website": "https://thehubojai.com",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

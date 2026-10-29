@@ -1,0 +1,14 @@
+{
+  "name": "Ventura Music Hall - VMH",
+  "address": "1888 E Thompson Blvd, Ventura, CA 93001",
+  "city": "Ventura",
+  "lat": 34.274864,
+  "lng": -119.273136,
+  "website": "https://www.venturamusichall.com",
+  "instagram": "https://instagram.com/venturamusichall",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

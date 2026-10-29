@@ -19,6 +19,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "scripts"))
 
 import community as c  # noqa: E402
 import submissions as s  # noqa: E402
+import fetch_events as fe  # noqa: E402
 
 TODAY = dt.date(2026, 10, 27)  # a Tuesday
 VENUES = {"Harbor Lights Tavern", "Rosie's Corner (The Annex)", "Pier Street Brewing Co. (Pier Street downtown)"}
@@ -136,11 +137,14 @@ class Forms(unittest.TestCase):
                 "Street address": "1 Main St, Ojai, CA 93023",
                 "Town": "Ojai",
                 "Map location": "https://www.google.com/maps/place/x/@34.4480,-119.2430,17z",
+                "Instagram": "@thenewspot",
             }
         )
         kind, r, problems = record(venue)
         self.assertEqual((kind, problems), ("venue", []))
         self.assertEqual((r["lat"], r["lng"]), (34.448, -119.243))
+        self.assertEqual(r["instagram"], "https://instagram.com/thenewspot")
+        self.assertIn("Instagram should be", " ".join(record(venue.replace("@thenewspot", "not a handle!"))[2]))
         self.assertIn("Couldn't read the map", " ".join(record(venue.replace("@34.4480,-119.2430", "x"))[2]))
 
 
@@ -316,6 +320,45 @@ class Merging(unittest.TestCase):
         self.assertTrue(c.same_band("The Tide Pool Ramblers", "The Tide Pool Ramblrs"))
         self.assertFalse(c.same_band("Open Mic", "Jazz Night"))
         self.assertFalse(c.same_band("DJ", "DJ Shadow"))  # too short to count as a prefix
+
+
+class MapSpots(unittest.TestCase):
+    def test_a_venue_profile_gives_listings_its_spot(self):
+        events = [{"venue": "Harbor Lights Tavern", "address": ""}, {"venue": "Somewhere Else", "address": "1 Main St"}]
+        venues = {"Harbor Lights Tavern": {"lat": 34.24, "lng": -119.26, "address": "1 Harbor Way, Ventura, CA 93001"}}
+        fe.fill_spots(events, venues)
+        self.assertEqual((events[0]["lat"], events[0]["address"]), (34.24, "1 Harbor Way, Ventura, CA 93001"))
+        self.assertNotIn("lat", events[1])
+
+    def test_census_spots_are_saved_and_misses_retried_later(self):
+        asked = []
+
+        def lookup(address):
+            asked.append(address)
+            return (34.27, -119.29) if address.startswith("1 Main") else None
+
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "spots.json")
+            events = [{"address": "1 Main St, Ventura, CA"}, {"address": "9 Nowhere Rd, Ojai, CA"}, {"lat": 1, "address": "x"}]
+            fe.fill_from_census(events, path, TODAY, lookup)
+            self.assertEqual((events[0]["lat"], events[0]["lng"]), (34.27, -119.29))
+            self.assertNotIn("lat", events[1])
+            self.assertEqual(len(asked), 2)
+            again = [{"address": "1  Main St, Ventura, CA"}, {"address": "9 Nowhere Rd, Ojai, CA"}]
+            fe.fill_from_census(again, path, TODAY + dt.timedelta(days=5), lookup)
+            self.assertEqual(len(asked), 2)
+            self.assertEqual(again[0]["lat"], 34.27)
+            fe.fill_from_census(again, path, TODAY + dt.timedelta(days=31), lookup)
+            self.assertEqual(asked[-1], "9 Nowhere Rd, Ojai, CA")
+
+    def test_a_down_service_is_not_saved_as_a_miss(self):
+        def down(address):
+            raise OSError("502")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "spots.json")
+            fe.fill_from_census([{"address": "1 Main St"}], path, TODAY, down)
+            self.assertFalse(os.path.exists(path))
 
 
 if __name__ == "__main__":

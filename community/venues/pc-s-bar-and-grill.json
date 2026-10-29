@@ -1,0 +1,14 @@
+{
+  "name": "PC's Bar & Grill",
+  "address": "4250 E Los Angeles Ave, Simi Valley, CA 93063",
+  "city": "Simi Valley",
+  "lat": 34.271617,
+  "lng": -118.712025,
+  "website": "https://instagram.com/pcsbargrill",
+  "instagram": "https://instagram.com/pcsbargrill",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

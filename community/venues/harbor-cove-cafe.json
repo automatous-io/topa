@@ -1,0 +1,14 @@
+{
+  "name": "Harbor Cove Cafe",
+  "address": "1867 Spinnaker Dr, Ventura, CA 93001",
+  "city": "Ventura",
+  "lat": 34.245518,
+  "lng": -119.266346,
+  "website": "https://harborcovecafe.net",
+  "instagram": "https://instagram.com/harborcovecafe",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

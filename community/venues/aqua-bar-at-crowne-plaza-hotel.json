@@ -1,0 +1,14 @@
+{
+  "name": "Aqua Bar at Crowne Plaza Hotel",
+  "address": "450 E Harbor Blvd, Ventura, CA 93001",
+  "city": "Ventura",
+  "lat": 34.276918,
+  "lng": -119.293873,
+  "website": "https://instagram.com/crowneplazaventura",
+  "instagram": "https://instagram.com/crowneplazaventura",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

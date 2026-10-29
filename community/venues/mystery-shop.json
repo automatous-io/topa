@@ -1,0 +1,15 @@
+{
+  "name": "Mystery Shop",
+  "address": "420 S A St, Oxnard, CA 93030",
+  "city": "Oxnard",
+  "lat": 34.198598,
+  "lng": -119.1785,
+  "phone": "(805) 628-3048",
+  "website": "https://mysteryshop805.com",
+  "instagram": "https://instagram.com/mysteryshop805",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

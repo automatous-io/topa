@@ -1,0 +1,13 @@
+{
+  "name": "Samuelson Chapel",
+  "address": "165 Chapel Ln, Thousand Oaks, CA 91360",
+  "city": "Thousand Oaks",
+  "lat": 34.225759,
+  "lng": -118.875094,
+  "website": "https://www.callutheran.edu",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

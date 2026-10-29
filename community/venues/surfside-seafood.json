@@ -1,0 +1,15 @@
+{
+  "name": "Surfside Seafood",
+  "address": "550 E Surfside Dr, Port Hueneme, CA 93041",
+  "city": "Port Hueneme",
+  "lat": 34.14351,
+  "lng": -119.195735,
+  "phone": "(805) 488-9533",
+  "website": "https://www.surfsideph.com",
+  "instagram": "https://instagram.com/surfsideseafood",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

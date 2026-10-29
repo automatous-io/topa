@@ -1,0 +1,15 @@
+{
+  "name": "Duke's Beach Grill",
+  "address": "1124 S Seaward Ave, Ventura, CA 93001",
+  "city": "Ventura",
+  "lat": 34.263532,
+  "lng": -119.273038,
+  "phone": "(805) 667-8411",
+  "website": "https://dukesbeachgrill.com",
+  "instagram": "https://instagram.com/dukesventura",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

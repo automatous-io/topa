@@ -1,0 +1,15 @@
+{
+  "name": "Crown and Anchor",
+  "address": "2891 Thousand Oaks Blvd, Thousand Oaks, CA 91362",
+  "city": "Thousand Oaks",
+  "lat": 34.170788,
+  "lng": -118.838165,
+  "phone": "(805) 497-0070",
+  "website": "https://crownnanchor.com",
+  "instagram": "https://instagram.com/crownandanchorpub",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

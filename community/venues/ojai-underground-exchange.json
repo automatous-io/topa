@@ -1,0 +1,15 @@
+{
+  "name": "Ojai Underground Exchange",
+  "address": "616 Pearl St, Ojai, CA 93023",
+  "city": "Ojai",
+  "lat": 34.445939,
+  "lng": -119.239339,
+  "phone": "(805) 340-7893",
+  "website": "https://ojaiunderground.com",
+  "instagram": "https://instagram.com/ojaiundergroundexchange",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

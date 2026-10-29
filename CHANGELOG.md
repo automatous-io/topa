@@ -6,6 +6,19 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
 
 ---
 
+## 2.3.0
+
+**Band and venue profiles, and Instagram on venue pages.**
+
+- 85 local bands have a profile with their Instagram, and Apple Music previews now play the right artist for bands with
+  a common name.
+- 96 venues have a profile with their address, map spot, website, phone and Instagram where known. Venue pages show an
+  Instagram button under the venue's buttons.
+- A venue TOPA hasn't seen before gets its map spot from its address automatically.
+- The venue form asks for the venue's Instagram.
+
+---
+
 ## 2.2.1
 
 **Fixes.**

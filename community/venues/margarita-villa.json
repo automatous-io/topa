@@ -1,0 +1,15 @@
+{
+  "name": "Margarita Villa",
+  "address": "1567 Spinnaker Dr, Ventura, CA 93001",
+  "city": "Ventura",
+  "lat": 34.240045,
+  "lng": -119.264961,
+  "phone": "(805) 654-7906",
+  "website": "https://margaritavillaventura.com",
+  "instagram": "https://instagram.com/margaritavilla805",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

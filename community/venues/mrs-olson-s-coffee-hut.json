@@ -1,0 +1,15 @@
+{
+  "name": "Mrs. Olson's Coffee Hut",
+  "address": "2800 Harbor Blvd, Oxnard, CA 93035",
+  "city": "Oxnard",
+  "lat": 34.172742,
+  "lng": -119.231138,
+  "phone": "(805) 985-9151",
+  "website": "https://www.mrsolsons.com",
+  "instagram": "https://instagram.com/mrsolsonsevents",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
+}

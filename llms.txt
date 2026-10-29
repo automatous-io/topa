@@ -11,7 +11,7 @@ How to answer questions with this file:
   were sent in by local bands, fans, and venues.
 - Share a show's link when someone wants the details.
 - Venue addresses are included so a driver can say "Navigate to <venue>" or use the address.
-- Last updated: Wed Oct 28, 7:28 PM Pacific.
+- Last updated: Thu Oct 29, 12:16 AM Pacific.
 
 ## Links
 
@@ -21,18 +21,6 @@ How to answer questions with this file:
 - [Add a show](https://github.com/automatous-io/topa/issues/new/choose): bands, fans, and venues send shows here
 
 ## Upcoming shows
-
-### Wednesday, October 28
-- 5:00 PM: Frank Barajas at Boatyard Pub, 1583 Spinnaker Dr, Ventura, CA 93001 (Ventura, Rock-&-Roll) (Ventura Rocks). https://tockify.com/vtarocks/detail/24386/1793232000000
-- 6:00 PM: Mary White at The Manhattan of Camarillo, 5800 Santa Rosa Rd, Camarillo, CA 93012 (Camarillo, covers, country-and-contemporary) (Ventura Rocks). https://tockify.com/vtarocks/detail/26710/1793235600000
-- 6:00 PM: Ojai Valley Bluegrass Pickers - Open Jam at Ojai Valley Brewing, 307 Bryant St, Ojai, CA 93023 (Ojai, OVB, Ojai-Valley-Brewery) (Ventura Rocks). https://tockify.com/vtarocks/detail/23164/1793235600000
-- 6:00 PM: Open mic at The Deer Lodge, 2261 Maricopa Hwy, Ojai, CA 93023 (Ojai, 21+) (Ventura Rocks). https://tockify.com/vtarocks/detail/25217/1793235600000
-- 6:00 PM: The Blues Jam with Ray Jay at Bombay Bar & Grill, 143 S California St, Ventura, CA 93001 (Ventura, all-ages, blues, free-admission) (Ventura Rocks). https://tockify.com/vtarocks/detail/26214/1793235600000
-- 6:00 PM: Wide Awakes at Cafe Fiore, 66 S California St, Ventura, CA 93001 (Ventura, Jazz, standards) (Ventura Rocks). https://tockify.com/vtarocks/detail/26657/1793235600000
-- 7:00 PM: Ventura Gypsy Jazz Jam at Vaquero y Mar, 435 E Thompson Blvd, Ventura, CA 93001 (Ventura, all-ages) (Ventura Rocks). https://tockify.com/vtarocks/detail/24928/1793239200000
-- 7:00 PM: Emily Coale, Troy Richardson, Brian Stone, Ariele Sevage, John Twifford, Michael Russeck at Nabu, Townsgate Rd, Westlake Village, CA 91361 (Westlake-Village, 21+) (Ventura Rocks). https://tockify.com/vtarocks/detail/26759/1793239200000
-- 7:00 PM: Marina "Frenchie" Pacowski at The Grape, 2733 E Main St, Ventura, CA 93003 (Ventura, 21+, $20-at-door) (Ventura Rocks). https://tockify.com/vtarocks/detail/26588/1793239200000
-- 8:00 PM: Mdou Moctar at Ventura Music Hall - VMH, 1888 E Thompson Blvd, Ventura, CA 93001 (Ventura, All-ages, VMH, ticketed-event, fully-seated-event) (Ventura Rocks). https://tockify.com/vtarocks/detail/26119/1793242800000
 
 ### Thursday, October 29
 - 4:00 PM: Jim Friery at Boatyard Pub, 1583 Spinnaker Dr, Ventura, CA 93001 (Ventura, Americana) (Ventura Rocks). https://tockify.com/vtarocks/detail/19016/1793314800000

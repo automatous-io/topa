@@ -219,6 +219,17 @@ def fill_places(added, others):
             e["city"] = e.get("city") or town
 
 
+def fill_spots(events, venues):
+    """A listing at a venue with a TOPA profile gets that venue's map spot, and its address if the listing has none."""
+    for e in events:
+        v = venues.get(e.get("venue")) or {}
+        if v.get("lat") is not None and e.get("lat") is None:
+            e["lat"], e["lng"] = v["lat"], v["lng"]
+        if v.get("address") and not e.get("address"):
+            e["address"] = v["address"]
+            e["city"] = e.get("city") or v.get("city") or city_from(v["address"])
+
+
 def dedupe(events):
     """Drop repeats (same band, venue and start) and sort by start time."""
     seen, unique = set(), []
@@ -337,6 +348,7 @@ def main():
     found = {"community": added, "ventura-rocks": events}
     events, dropped = community.merge([found[s] for s in SOURCES])
     events = dedupe(events)
+    fill_spots(events, venues)
     community.add_own_photos(venues, bands, events, a.community)  # a venue's or band's own photo wins
     # keep the forms' venue lists current
     known = community.known_venues(a.community) | {e["venue"] for e in events if e.get("venue")}

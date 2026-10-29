@@ -987,7 +987,7 @@ const bandNow = name => {
 };
 const venueNow = v => {
   const added = addedVenue(v.venue),
-    spot = KNOWN_VENUES[v.venue] || (added.lat != null ? [added.lat, added.lng] : null);
+    spot = added.lat != null ? [added.lat, added.lng] : KNOWN_VENUES[v.venue] || null;
   return filled({
     pick: v.venue,
     address: added.address || v.address,

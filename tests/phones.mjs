@@ -78,7 +78,7 @@ export async function showScreen(page, screen) {
 }
 
 // problems: the page scrolls sideways, a title or button is cut off (list names ending in "…" are fine),
-// or a tap target is under 36px. `small` lists the ones under Apple's 44px, for the sheet
+// a pill or chip wraps, or a tap target is under 36px. `small` lists the ones under Apple's 44px, for the sheet
 export const layoutProblems = page =>
   page.evaluate(() => {
     const shown = e => {
@@ -96,6 +96,20 @@ export const layoutProblems = page =>
       if (!shown(e) || e.scrollWidth - e.clientWidth <= 2) continue;
       const onPurpose = getComputedStyle(e).textOverflow === "ellipsis" && e.closest(".rw, .tile, .card");
       if (!onPurpose) problems.push(`cut off: ${e.tagName.toLowerCase()} "${label(e)}"`);
+    }
+    // pills and chips stay on one line
+    for (const e of document.querySelectorAll(".chip, .pill, .mcounty, nav button, .abig b")) {
+      // day tiles are two lines on purpose
+      if (!shown(e) || e.closest(".days")) continue;
+      const lines = new Set();
+      const walk = document.createTreeWalker(e, NodeFilter.SHOW_TEXT);
+      while (walk.nextNode()) {
+        if (!walk.currentNode.textContent.trim()) continue;
+        const r = document.createRange();
+        r.selectNodeContents(walk.currentNode);
+        for (const box of r.getClientRects()) lines.add(Math.round(box.top));
+      }
+      if (lines.size > 1) problems.push(`wraps onto ${lines.size} lines: "${label(e)}"`);
     }
     for (const e of document.querySelectorAll("button, .chip, a.aform, input")) {
       // names inside a tappable row or card; the row is the real target

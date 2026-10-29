@@ -244,6 +244,7 @@ test("a band someone added shows up before its first show, but not under its oth
 test("phones get the TOPA top bar and a four-button tab bar", async t => {
   const page = await open(t, { viewport: PHONE });
   assert.match(await text(page, ".mbar .mhome"), /TOPA/);
+  assert.match(await text(page, ".mbar .mhome"), /Local Music/);
   assert.match(await text(page, ".mbar .mcounty"), /Ventura County/);
   assert.deepEqual(
     await page.$$eval("nav button", bs =>

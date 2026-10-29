@@ -143,8 +143,8 @@ Or double-click `serve.command` on a Mac. Location only works over `https://` or
 The version lives at the top of `app.js` (`VERSION`) and shows in the About popup. Bumping it also gives the offline
 cache a new name, so every phone and car picks up the new files.
 
-Two address-bar switches help with testing: `?tesla=1` turns on the car-only voice hint and remembers it on that device (`?tesla=0` turns it off), and
-`?now=2026-10-24T19:00` pins the date and time.
+Three address-bar switches help with testing: `?tesla=1` turns on the car-only voice hint and remembers it on that device (`?tesla=0` turns it off), and
+`?now=2026-10-24T19:00` pins the date and time. `?splash=1` plays the opening animation every time.
 
 ## Tests
 

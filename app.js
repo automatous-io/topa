@@ -2136,6 +2136,9 @@ document.getElementById("main").addEventListener("scroll", markScrolled, { passi
 })();
 
 // ---- Start ----
+// a tap skips the opening splash
+document.getElementById("splash").onclick = ev => (ev.currentTarget.style.display = "none");
+
 try {
   history.replaceState({ v: view, prev }, "", urlFor(view));
 } catch (_) {}

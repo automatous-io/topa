@@ -26,8 +26,40 @@ Copyright 2026 AUTOMATOUS.IO. All rights reserved. See LICENSE.
     <link rel="preload" href="fonts/figtree.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="fonts/oswald.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="styles.css" />
+    <!-- the opening splash plays once per visit; skipped for reduced motion, links to a page, and test browsers
+         (?splash=1 always plays it) -->
+    <script>
+      try {
+        if (
+          !/[?&]splash=1/.test(location.search) &&
+          (sessionStorage.getItem("topa.splash") ||
+          matchMedia("(prefers-reduced-motion: reduce)").matches ||
+          /[?&]view=/.test(location.search) ||
+          navigator.webdriver)
+        )
+          document.documentElement.classList.add("nosplash");
+        sessionStorage.setItem("topa.splash", "1");
+      } catch (_) {}
+    </script>
   </head>
   <body>
+    <!-- opening splash: sound bars settle into the Topa Topa ridge, then TOPA rises -->
+    <div id="splash" aria-hidden="true">
+      <div class="spl">
+        <div class="spl-art">
+          <div class="spl-bars">
+            <span style="--h: 0.2"></span><span style="--h: 0.4"></span><span style="--h: 0.3"></span
+            ><span style="--h: 0.92"></span><span style="--h: 0.55"></span><span style="--h: 0.7"></span
+            ><span style="--h: 0.42"></span>
+          </div>
+          <svg viewBox="0 0 34 18" fill="none">
+            <path class="spl-ridge" d="M1 15 L8 11 L13 13 L19 3 L24 9 L28 6 L33 12" />
+          </svg>
+        </div>
+        <span class="spl-name">TOPA</span>
+        <span class="spl-tag">Local Music Finder</span>
+      </div>
+    </div>
     <div class="app" id="app">
       <nav id="nav"></nav>
       <main id="main"></main>

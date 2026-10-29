@@ -153,6 +153,7 @@ Three address-bar switches help with testing: `?tesla=1` turns on the car-only v
 ```sh
 npm install                          # once; the only dependency is for testing (puppeteer-core)
 npm test                             # the app, in headless Chrome
+npm run sheet                        # every screen on every phone, in phone-sheet/index.html
 python3 -m unittest discover tests   # forms, merging sources
 ```
 
@@ -161,6 +162,12 @@ genre chips, search, starring bands and venues, the Faves tabs, opening a show a
 and the phone layout. Each test gets a fresh browser session. Runs are repeatable: listings come from a saved copy
 ([`tests/fixtures/events.json`](tests/fixtures/events.json)), the clock is pinned, and Apple Music and visit counting are
 blocked. It uses your installed Chrome, or set `CHROME_PATH`.
+
+[`tests/phones.test.mjs`](tests/phones.test.mjs) runs TOPA on eight phone sizes, from a small old iPhone SE (320px) to an
+iPhone Pro Max (440px), listed in [`tests/phones.mjs`](tests/phones.mjs). On each it opens every main screen and fails
+if a title or button is cut off, the page scrolls sideways, or something is too small to tap, and it checks that tabs,
+search, About and faves work. `npm run sheet` takes the same screens as screenshots, side by side in one page to look
+over; it isn't saved in the repo.
 
 [`.github/workflows/test.yml`](.github/workflows/test.yml) runs the same tests on GitHub for every code change, so each
 commit gets a ✓ or ✗ before it's tagged as a release.

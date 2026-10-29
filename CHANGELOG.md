@@ -6,6 +6,19 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
 
 ---
 
+## 2.5.0
+
+**One logo everywhere, and a better fit on smaller phones.**
+
+- The logo is the same on the splash, About, the phone top bar and the car sidebar: the ridge, TOPA, then LOCAL MUSIC /
+  FINDER. The ridge line is the same weight everywhere.
+- Bands shows its full title on smaller phones; Soonest moved under the filter, like on Venues.
+- A day name too long for the phone shortens, so Wednesday becomes Wed.
+- The venue link on a show page is easier to tap.
+- Tests now check every screen on eight phone sizes, from a small iPhone SE to an iPhone Pro Max.
+
+---
+
 ## 2.4.0
 
 **A new About page.**

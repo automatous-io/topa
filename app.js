@@ -7,7 +7,7 @@
 
 // ---- Settings and state ----
 // the app's version: shown in About, and it names the offline cache, so bumping it refreshes every device
-const VERSION = "2.4.0";
+const VERSION = "2.5.0";
 const params = new URLSearchParams(location.search);
 
 // Is this the car's browser? Some versions say "Tesla" in the user agent, but current ones just say
@@ -502,7 +502,10 @@ const voiceHint = v =>
 const RIDGE = "M1 15 L8 11 L13 13 L19 3 L24 9 L28 6 L33 12";
 const ridge = () =>
   `<svg class="wm" viewBox="0 0 34 18" aria-hidden="true"><path class="wm-ridge" d="${RIDGE}"/></svg>`;
-const wordmark = id => `<span class="wmk wmk-${id}">${ridge()}<span class="wm-name">TOPA</span></span>`;
+const wordmark = (id, tag) =>
+  `<span class="wmk wmk-${id}">${ridge()}<span class="wm-name">TOPA</span>` +
+  (tag ? `<span class="wm-tag">Local Music<br>Finder</span>` : "") +
+  `</span>`;
 
 const starButton = (on, attr, big) =>
   `<button class="star${on ? " on" : ""}${big ? " big" : ""}" ${attr} aria-label="${on ? "Unfave" : "Fave"}" title="${on ? "Unfave" : "Fave"}">${svg("Faves")}</button>`;
@@ -931,7 +934,7 @@ function bandsPage() {
   return (
     topBar(
       "Bands",
-      playAllButton() + sort,
+      `<i class="brk"></i>` + playAllButton() + sort,
       countLabel(bands.length, "band"),
       true,
       filterBox("bf", "Filter bands", bandFilter),
@@ -1203,11 +1206,27 @@ function navHtml(page) {
   // when the listings last changed (the Ventura Rocks credit lives in About)
   const updated = updatedLabel() ? `Updated<i>${updatedLabel()}</i>` : "";
   return (
-    `<button class="logo" data-about aria-label="About TOPA">${wordmark("nav")}</button>${tabs}` +
+    `<button class="logo" data-about aria-label="About TOPA">${wordmark("nav", true)}</button>${tabs}` +
     `<button class="about-tab" data-about>${svg("info")}About</button>` +
     `<div class="credit">${updated}</div>`
   );
 }
+
+// a day title too wide for the phone uses the short name: Wednesday → Wed
+function fitTitle() {
+  const h = document.querySelector(".top h1");
+  if (!h) return;
+  const full = h.dataset.full || h.textContent;
+  h.textContent = full;
+  h.removeAttribute("aria-label");
+  const short = /^(Mon|Tues|Wednes|Thurs|Fri|Satur|Sun)day$/.test(full) && full.slice(0, 3);
+  if (short && h.scrollWidth > h.clientWidth) {
+    h.dataset.full = full;
+    h.textContent = short;
+    h.setAttribute("aria-label", full);
+  }
+}
+addEventListener("resize", fitTitle);
 
 function render() {
   if (!PAGES[view.split(":")[0]]) view = "Shows";
@@ -1226,7 +1245,7 @@ function render() {
       `<input id="ms" type="search" placeholder="Bands, venues, towns, genres" value="${esc(term)}" ` +
       `autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" aria-label="Search">` +
       `<button class="mbtn" data-searchx aria-label="Close search">${CLOSE_ICON}</button></div></header>`
-    : `<header class="mbar"><button class="mhome" data-about aria-label="About TOPA">${wordmark("phone")}</button>` +
+    : `<header class="mbar"><button class="mhome" data-about aria-label="About TOPA">${wordmark("phone", true)}</button>` +
       `<span class="mcounty">${svg("Venues")}Ventura County</span>` +
       `<button class="mbtn" data-search aria-label="Search bands, venues, towns">${svg("search")}</button></header>`;
   searchSlide = false;
@@ -1245,6 +1264,7 @@ function render() {
     if (r > dayRow.scrollLeft + dayRow.clientWidth - pad) dayRow.scrollLeft = r - dayRow.clientWidth + pad;
     else if (l < dayRow.scrollLeft + pad) dayRow.scrollLeft = Math.max(0, l - pad);
   }
+  fitTitle();
   updateScrollRows();
   markScrolled();
   syncPlayIcons();
@@ -1886,7 +1906,7 @@ function aboutHtml() {
   const fact = (label, value) => `<div><dt>${label}</dt><dd>${value}</dd></div>`;
   return (
     `<div class="abar"><button class="ax" data-about-close aria-label="Close">${CLOSE_ICON}</button></div>` +
-    `<header class="ahero">${wordmark("about")}<p class="atag">Local Music Finder</p>` +
+    `<header class="ahero">${wordmark("about", true)}` +
     `<p class="astory">Made for and by local live music lovers.<br>` +
     `Bands, fans, and venues add to it, so it keeps getting better.</p></header>` +
     `<div class="abody">` +
@@ -1924,7 +1944,7 @@ function addHtml() {
     `<div class="abar"><button class="aback" data-about-back>‹ About</button>` +
     `<button class="ax" data-about-close aria-label="Close">${CLOSE_ICON}</button></div>` +
     `<header class="ahero addh"><div class="atrow"><span class="aat">${svg("at")}</span>` +
-    `<div><h2 class="atitle">Add to TOPA</h2><p class="atag cm">Shows, bands, venues</p></div></div>` +
+    `<div><h2 class="atitle">Add to TOPA</h2><p class="atag">Shows, bands, venues</p></div></div>` +
     `<p class="astory">Bands, fans, and venues can add shows.<br>` +
     `They get the <span class="srci cm">${svg("at")}</span>mark in the list.</p></header>` +
     `<div class="abody">` +

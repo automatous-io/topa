@@ -4,29 +4,16 @@
 // Browser tests for TOPA: they open the real app in headless Chrome and use it the way a person would
 // (tap chips, star bands, search, switch pages), then check what's on screen.
 //
-// Every run is the same: listings come from tests/fixtures/events.json, the clock is pinned with ?now=,
-// the time zone is Pacific, and Deezer and GoatCounter are blocked (no network, no counted visits).
+// The setup (server, Chrome, fixture listings, pinned clock) is in harness.mjs.
 //
 // Run: npm install, then npm test. Chrome is found automatically, or set CHROME_PATH.
 
 import { test, before, after } from "node:test";
 import assert from "node:assert/strict";
-import { createServer } from "node:http";
-import { readFile } from "node:fs/promises";
-import { existsSync } from "node:fs";
-import { extname, join, normalize } from "node:path";
-import { fileURLToPath } from "node:url";
-import puppeteer from "puppeteer-core";
+import { EVENTS, TZ, NOON, EVENING, PHONE, start, stop, open, text, count, tap } from "./harness.mjs";
 
-const ROOT = fileURLToPath(new URL("..", import.meta.url));
-const FIXTURE = join(ROOT, "tests/fixtures/events.json");
-const EVENTS = JSON.parse(await readFile(FIXTURE, "utf8")).events;
-
-const TZ = "America/Los_Angeles";
-const NOON = "2026-10-24T12:00"; // a Saturday, during the day
-const EVENING = "2026-10-24T21:00"; // same day, after most shows started
-const TESLA = { width: 1920, height: 1200 };
-const PHONE = { width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true };
+before(start);
+after(stop);
 
 // ---- what the fixture says should be on screen ----
 
@@ -45,95 +32,9 @@ const showsOn = (date, now) =>
     return dateOf(start) === date && (date !== dateOf(now) || start >= now - 2 * 3600e3);
   });
 
-// ---- a tiny web server for the app, serving the fixture as events.json ----
-
-const TYPES = {
-  ".html": "text/html",
-  ".js": "text/javascript",
-  ".css": "text/css",
-  ".json": "application/json",
-  ".png": "image/png",
-};
-let server, base, browser;
-
-before(async () => {
-  server = createServer(async (req, res) => {
-    const path = decodeURIComponent(new URL(req.url, "http://x").pathname);
-    const file =
-      path === "/events.json" ? FIXTURE : join(ROOT, normalize(path === "/" ? "/index.html" : path));
-    try {
-      res.writeHead(200, { "content-type": TYPES[extname(file)] || "application/octet-stream" });
-      res.end(await readFile(file));
-    } catch {
-      res.writeHead(404).end();
-    }
-  });
-  await new Promise(r => server.listen(0, "127.0.0.1", r));
-  base = `http://127.0.0.1:${server.address().port}/index.html`;
-  // GitHub's Linux runners block Chrome's sandbox, so it's turned off there (CI is set on those runners)
-  browser = await puppeteer.launch({
-    executablePath: findChrome(),
-    headless: true,
-    args: process.env.CI ? ["--no-sandbox"] : [],
-  });
-});
-
-after(async () => {
-  await browser?.close();
-  server?.close();
-});
-
-function findChrome() {
-  const paths = [
-    process.env.CHROME_PATH,
-    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-    "/usr/bin/google-chrome",
-    "/usr/bin/chromium-browser",
-    "/usr/bin/chromium",
-  ];
-  const found = paths.find(p => p && existsSync(p));
-  if (!found) throw new Error("Chrome not found; set CHROME_PATH");
-  return found;
-}
-
-// opens the app in its own private browser session (no faves or storage left over from other tests);
-// fails the test if the page throws
-// `listings` swaps in a different events.json for this one test
-async function open(t, { query = "", viewport = TESLA, now = NOON, faves, listings } = {}) {
-  const session = await browser.createBrowserContext();
-  const page = await session.newPage();
-  const errors = [];
-  page.on("pageerror", e => errors.push(e.message));
-  t.after(async () => {
-    await session.close();
-    assert.deepEqual(errors, [], "the page threw an error");
-  });
-  await page.emulateTimezone(TZ);
-  await page.setViewport(viewport);
-  await page.setBypassServiceWorker(true);
-  await page.setRequestInterception(true);
-  page.on("request", r => {
-    if (/deezer|dzcdn|itunes|mzstatic|goatcounter|zgo\.at/.test(r.url())) return r.abort();
-    if (listings && /\/events\.json/.test(r.url()))
-      return r.respond({ contentType: "application/json", body: JSON.stringify(listings) });
-    r.continue();
-  });
-  if (faves) {
-    await page.evaluateOnNewDocument(f => localStorage.setItem("topa.faves.v1", JSON.stringify(f)), faves);
-  }
-  await page.goto(`${base}?now=${now}${query}`, { waitUntil: "networkidle0" });
-  return page;
-}
-
-const text = (page, sel) => page.$eval(sel, el => el.textContent.trim());
-const count = (page, sel) => page.$$eval(sel, els => els.length);
 // rows in the main list (not the Faves section pinned above it)
 const listRows = page =>
   page.$$eval("#main .rw[data-show]", rows => rows.filter(r => !r.closest(".favsec")).length);
-const tap = async (page, sel) => {
-  await page.click(sel);
-  await new Promise(r => setTimeout(r, 50));
-};
 
 // ---- Shows ----
 
@@ -343,6 +244,7 @@ test("a band someone added shows up before its first show, but not under its oth
 test("phones get the TOPA top bar and a four-button tab bar", async t => {
   const page = await open(t, { viewport: PHONE });
   assert.match(await text(page, ".mbar .mhome"), /TOPA/);
+  assert.match(await text(page, ".mbar .mhome"), /Local Music/);
   assert.match(await text(page, ".mbar .mcounty"), /Ventura County/);
   assert.deepEqual(
     await page.$$eval("nav button", bs =>

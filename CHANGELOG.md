@@ -6,6 +6,16 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
 
 ---
 
+## 2.1.0
+
+**An opening splash.**
+
+- Sound bars settle into the Topa Topa ridge, then TOPA rises. About a second and a half, on phones and the Tesla.
+- Plays once each time the app opens. A tap skips it. Skipped for reduced motion and for links straight to a page.
+- `?splash=1` plays it every time, for testing.
+
+---
+
 ## 2.0.0
 
 **A new look on phones and the Tesla.**

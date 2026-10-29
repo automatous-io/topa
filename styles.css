@@ -2083,10 +2083,6 @@ main.back {
     padding-left: 0;
     margin-top: 2px;
   }
-  .card.vcard .vacts .mi {
-    width: 52px;
-    height: 52px;
-  }
   .hplay {
     width: 56px;
     height: 56px;
@@ -3371,10 +3367,6 @@ nav button.on[data-v="Faves"] svg path {
   .vaddr {
     font-size: 15px;
   }
-  .card.vcard .vacts .mi.lb {
-    width: auto;
-    height: 40px;
-  }
   /* full player fills the phone */
   #fp {
     padding: 0;
@@ -3548,5 +3540,105 @@ nav button.on[data-v="Faves"] svg path {
   .rw.rwb {
     border-radius: 0;
     border-bottom: 1px solid #241d2f;
+  }
+}
+
+/* venue buttons: Directions, Call, Website, Maps always in the same four spots */
+.vtiles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+  max-width: 600px;
+  margin-top: 16px;
+}
+.vt {
+  height: 76px;
+  border-radius: 16px;
+  background: var(--hi);
+  color: var(--ink);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 700;
+}
+.vt svg {
+  width: 24px;
+  height: 24px;
+}
+a.vt:hover {
+  background: #ffffff24;
+}
+.vt.dir {
+  background: var(--acc);
+  color: var(--on-acc);
+}
+a.vt.dir:hover {
+  background: #ffa085;
+}
+.vt.off {
+  background: #1d1726;
+  color: #5a4f66;
+  cursor: default;
+}
+/* Play lineup: a full-width bar under the tiles */
+.lineup {
+  margin-top: 12px;
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+  height: 56px;
+  border-radius: 28px;
+  border: 1.5px solid #3a3046;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 17px;
+  font-weight: 700;
+}
+.lineup svg {
+  width: 18px;
+  height: 18px;
+}
+.lineup:hover {
+  background: #ffffff0f;
+}
+.vacts {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+.vacts .vtiles {
+  margin-top: 4px;
+}
+@media (max-width: 700px) {
+  .vtiles {
+    gap: 8px;
+  }
+  .vt {
+    height: 64px;
+    border-radius: 14px;
+    font-size: 12px;
+    gap: 5px;
+  }
+  .vt svg {
+    width: 20px;
+    height: 20px;
+  }
+  .lineup {
+    margin-top: 10px;
+    height: 48px;
+    font-size: 15px;
+  }
+  .lineup svg {
+    width: 16px;
+    height: 16px;
+  }
+  .card .vt {
+    height: 54px;
   }
 }

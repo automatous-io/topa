@@ -430,25 +430,24 @@ const svg = k => `<svg viewBox="0 0 24 24" fill="currentColor">${ICONS[k]}</svg>
 
 const mapsQuery = v => encodeURIComponent([venueName(v.venue), v.city, "CA"].filter(Boolean).join(", "));
 
-// Directions, call, website, Maps listing: labeled pill buttons (Directions in coral)
+// Directions, Call, Website, Maps: four tiles that always sit in the same spots.
+// A tile TOPA has no details for is dimmed and can't be tapped.
 const venueActions = v => {
   // details someone added for the venue win over the built-in ones
   const tel = addedVenue(v.venue).phone || VENUE_PHONES[v.venue];
   const web = safeUrl(addedVenue(v.venue).website) || VENUE_SITES[v.venue];
-  const link = (href, icon, label, title, cls = "", newTab = true) =>
-    `<a class="mi lb${cls}" href="${href}"${newTab ? ' target="_blank" rel="noopener"' : ""} title="${title}">${svg(icon)}<span>${label}</span></a>`;
-  return [
-    link(
-      `https://www.google.com/maps/dir/?api=1&destination=${mapsQuery(v)}`,
-      "pin",
-      "Directions",
-      "Directions",
-      " dir",
-    ),
-    tel ? link(`tel:${tel.replace(/[^\d+]/g, "")}`, "tel", "Call", `Call ${esc(tel)}`, "", false) : "",
-    web ? link(web, "globe", "Website", "Venue website") : "",
-    link(`https://www.google.com/maps/search/?api=1&query=${mapsQuery(v)}`, "store", "Maps", "Look up venue in Maps"),
-  ].join("");
+  const tile = (href, icon, label, title, cls = "", newTab = true) =>
+    href
+      ? `<a class="vt${cls}" href="${href}"${newTab ? ' target="_blank" rel="noopener"' : ""} title="${title}">${svg(icon)}<span>${label}</span></a>`
+      : `<span class="vt off" aria-disabled="true" title="No ${label.toLowerCase()} for this venue yet">${svg(icon)}<span>${label}</span></span>`;
+  return (
+    `<div class="vtiles">` +
+    tile(`https://www.google.com/maps/dir/?api=1&destination=${mapsQuery(v)}`, "pin", "Directions", "Directions", " dir") +
+    tile(tel && `tel:${tel.replace(/[^\d+]/g, "")}`, "tel", "Call", `Call ${esc(tel || "")}`, "", false) +
+    tile(web, "globe", "Website", "Venue website") +
+    tile(`https://www.google.com/maps/search/?api=1&query=${mapsQuery(v)}`, "store", "Maps", "Look up venue in Maps") +
+    `</div>`
+  );
 };
 
 // in the car: tapping a map link may not start the car's navigation, but voice always does
@@ -1025,9 +1024,10 @@ function venuePage(key) {
     `<small>VENUE · ${esc(v.city.toUpperCase())}${dist ? " · " + dist.toUpperCase() : ""}</small>` +
     `<h1>${esc(venueName(v.venue))}</h1>` +
     (v.address ? `<p class="vaddr">${esc(v.address)}</p>` : "") +
-    `<div class="mrow pills">${venueActions(v)}</div>${voiceHint(v)}` +
-    `<div class="mrow">${L.length ? playAllButton("Play lineup") : ""}` +
-    `<span class="sub">${L.length ? showCount(L.length) : "No shows yet"}</span></div>` +
+    `${venueActions(v)}${voiceHint(v)}` +
+    (L.length
+      ? `<button class="lineup" data-playall>${svg("play")}Play lineup · ${countLabel(L.length, "show")}</button>`
+      : `<p class="sub">No shows yet</p>`) +
     `</div>${starButton(SAVED.venues.includes(v.venue), `data-sv="${esc(v.venue)}"`, 1)}</div>` +
     section(todayWord(), tonight) +
     section("This week", thisWeek, tonight.length) +
@@ -1067,7 +1067,7 @@ function showPage(id) {
     `<div class="hero">${art(band)}<div class="hx">` +
     `<small>${date} · <span class="ac">${timeLabel(e)}</span>${sourceIcon(e, true)}</small><h1>${esc(e.artist)}</h1>` +
     `<button class="vb big" data-venue="${esc(e.venue)}">${esc(venueName(e.venue))} <em>· ${esc(e.city)}</em><span>›</span></button>` +
-    `<div class="mrow pills">${heroPlayButton(band)}${venueActions(e)}${listing}<span class="sub">${distanceLabel(e)}</span></div>${voiceHint(e)}` +
+    `${venueActions(e)}<div class="mrow pills">${heroPlayButton(band)}${listing}<span class="sub">${distanceLabel(e)}</span></div>${voiceHint(e)}` +
     `${tags}</div>${starButton(SAVED.bands.includes(band), `data-sb="${esc(band)}"`, 1)}</div>` +
     (otherDates.length ? `<h2>More ${esc(band)} dates</h2>${otherDates.map(venueDateRow).join("")}` : "") +
     (alsoHere.length
@@ -1110,7 +1110,7 @@ function favesPage() {
       `<div class="card vcard">${venueArt(n)}<div class="ci">` +
       `<button class="cn" data-venue="${esc(n)}">${esc(venueName(n))}</button>` +
       `<span>${where}${v.city ? " · " : ""}${showCount(L.length)}</span><span>${esc(v.address)}</span>` +
-      `</div>${starButton(true, `data-sv="${esc(n)}"`)}<div class="mrow vacts">${venueActions(v)}</div></div>`
+      `</div>${starButton(true, `data-sv="${esc(n)}"`)}<div class="vacts">${venueActions(v)}</div></div>`
     );
   };
   // Bands / Venues chips (with counts) switch the list instead of stacking both on one long page.

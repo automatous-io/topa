@@ -1,0 +1,15 @@
+{
+  "name": "Prime Steakhouse & Wine Bar",
+  "address": "2209 E Thompson Blvd, Ventura, CA 93001",
+  "city": "Ventura",
+  "lat": 34.273946,
+  "lng": -119.267908,
+  "phone": "(805) 652-1055",
+  "website": "https://www.primesteakhouseventura.com",
+  "instagram": "https://www.instagram.com/primesteakhouseventura/",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's own website and public Instagram, and US Census address lookup, 2026-10-29"
+}

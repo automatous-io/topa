@@ -1,0 +1,15 @@
+{
+  "name": "Institution Ale Company",
+  "address": "3841 Mission Oaks Blvd, Camarillo, CA 93012",
+  "city": "Camarillo",
+  "lat": 34.216421,
+  "lng": -119.019325,
+  "phone": "(805) 482-3777",
+  "website": "https://www.institutionales.com",
+  "instagram": "https://www.instagram.com/institutionales/",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's own website and public Instagram, and US Census address lookup, 2026-10-29"
+}

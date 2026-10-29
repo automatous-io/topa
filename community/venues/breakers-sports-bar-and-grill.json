@@ -1,0 +1,15 @@
+{
+  "name": "Breakers Sports Bar & Grill",
+  "address": "398 N. Moorpark Road, Thousand Oaks",
+  "city": "Thousand Oaks",
+  "lat": 34.183988,
+  "lng": -118.875285,
+  "phone": "(805) 494-8454",
+  "website": "https://breakersto.com",
+  "instagram": "https://www.instagram.com/breakerssportsbarandgrill/",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's own website and public Instagram, and US Census address lookup, 2026-10-29"
+}

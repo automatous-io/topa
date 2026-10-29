@@ -1,0 +1,14 @@
+{
+  "name": "Winchesters Grill & Saloon",
+  "address": "632 E Main St, Ventura, CA 93001",
+  "city": "Ventura",
+  "lat": 34.280766,
+  "lng": -119.291028,
+  "website": "https://www.winchestersgrill.com",
+  "instagram": "https://www.instagram.com/winchestersgrill/",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's own website and public Instagram, and US Census address lookup, 2026-10-29"
+}

@@ -1,0 +1,15 @@
+{
+  "name": "El Capitan Fresh Mexican Grill and Seafood",
+  "address": "2982 E Los Angeles Ave, Simi Valley, CA 93065",
+  "city": "Simi Valley",
+  "lat": 34.271617,
+  "lng": -118.738017,
+  "phone": "(805) 285-0337",
+  "website": "https://elcapitanmexgrill.com",
+  "instagram": "https://www.instagram.com/el_capitan_mexican_grill/",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's own website and public Instagram, and US Census address lookup, 2026-10-29"
+}

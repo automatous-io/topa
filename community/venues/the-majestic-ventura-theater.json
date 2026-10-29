@@ -1,0 +1,15 @@
+{
+  "name": "The Majestic Ventura Theater",
+  "address": "26 S Chestnut St, Ventura, CA 93001",
+  "city": "Ventura",
+  "lat": 34.280471,
+  "lng": -119.291478,
+  "phone": "(805) 653-0721",
+  "website": "https://www.venturatheater.net",
+  "instagram": "https://www.instagram.com/majestic.ventura.theater/",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's own website and public Instagram, and US Census address lookup, 2026-10-29"
+}

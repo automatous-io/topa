@@ -1,0 +1,14 @@
+{
+  "name": "Magnavino Cellars | Public Realm Brewing",
+  "address": "961 Rice Ave, Oxnard, CA 93030",
+  "city": "Oxnard",
+  "lat": 34.21029,
+  "lng": -119.142192,
+  "website": "https://www.magnavinocellars.com",
+  "instagram": "https://www.instagram.com/magnavino_cellars/",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's own website and public Instagram, and US Census address lookup, 2026-10-29"
+}

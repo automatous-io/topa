@@ -1,0 +1,14 @@
+{
+  "name": "The Original Pizza Cookery",
+  "address": "75 W Thousand Oaks Blvd, Thousand Oaks, CA 91360",
+  "city": "Thousand Oaks",
+  "lat": 34.178129,
+  "lng": -118.878797,
+  "website": "https://www.pizzacookery.com",
+  "instagram": "https://www.instagram.com/topizzacookery/",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's own website and public Instagram, and US Census address lookup, 2026-10-29"
+}

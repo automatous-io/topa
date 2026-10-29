@@ -1,0 +1,15 @@
+{
+  "name": "Boatyard Pub",
+  "address": "1583 Spinnaker Dr, Ventura, CA 93001",
+  "city": "Ventura",
+  "lat": 34.240194,
+  "lng": -119.265276,
+  "phone": "(805) 850-0202",
+  "website": "https://boatyardpub.com",
+  "instagram": "https://www.instagram.com/boatyardpub/",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's own website and public Instagram, and US Census address lookup, 2026-10-29"
+}

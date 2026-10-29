@@ -1,0 +1,15 @@
+{
+  "name": "Simi Valley Cultural Arts Center",
+  "address": "3050 E Los Angeles Ave, Simi Valley, CA 93065",
+  "city": "Simi Valley",
+  "lat": 34.271617,
+  "lng": -118.737137,
+  "phone": "(805) 583-7905",
+  "website": "https://www.svcac.org",
+  "instagram": "https://www.instagram.com/svculturalartsctr/",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's own website and public Instagram, and US Census address lookup, 2026-10-29"
+}

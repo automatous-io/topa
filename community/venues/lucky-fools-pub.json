@@ -1,0 +1,14 @@
+{
+  "name": "Lucky Fools Pub",
+  "address": "75 E High St, Moorpark, CA 93021",
+  "city": "Moorpark",
+  "lat": 34.285496,
+  "lng": -118.881193,
+  "phone": "(805) 532-1500",
+  "website": "https://www.luckyfoolspub.com",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's own website and public Instagram, and US Census address lookup, 2026-10-29"
+}

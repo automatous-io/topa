@@ -1,0 +1,14 @@
+{
+  "name": "Ojai Valley Brewing",
+  "address": "307 Bryant St, Ojai, CA 93023",
+  "city": "Ojai",
+  "lat": 34.446423,
+  "lng": -119.237286,
+  "website": "https://ojaivalleybrewery.com",
+  "instagram": "https://www.instagram.com/ojaivalleybrewery/",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's own website and public Instagram, and US Census address lookup, 2026-10-29"
+}

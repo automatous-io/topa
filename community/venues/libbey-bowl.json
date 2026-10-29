@@ -1,0 +1,14 @@
+{
+  "name": "Libbey Bowl",
+  "address": "210 S Signal St, Ojai, CA 93023",
+  "city": "Ojai",
+  "lat": 34.446632,
+  "lng": -119.24587,
+  "website": "https://www.libbeybowl.org",
+  "instagram": "https://www.instagram.com/libbeybowlojai/",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's own website and public Instagram, and US Census address lookup, 2026-10-29"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "Keynote Lounge",
+  "address": "10245 Telephone Rd, Ventura, CA 93004",
+  "city": "Ventura",
+  "lat": 34.277467,
+  "lng": -119.161736,
+  "website": "https://www.instagram.com/keynotelounge/",
+  "instagram": "https://www.instagram.com/keynotelounge/",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's own website and public Instagram, and US Census address lookup, 2026-10-29"
+}

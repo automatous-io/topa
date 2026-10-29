@@ -1,0 +1,15 @@
+{
+  "name": "Twisted Oak Tavern and Brewery",
+  "address": "2433 Ventura Blvd, Camarillo, CA 93010",
+  "city": "Camarillo",
+  "lat": 34.216394,
+  "lng": -119.037469,
+  "phone": "(805) 586-4005",
+  "website": "https://www.twistedoaktavern.pub",
+  "instagram": "https://www.instagram.com/twistedoaktavern.camarillo/",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's own website and public Instagram, and US Census address lookup, 2026-10-29"
+}

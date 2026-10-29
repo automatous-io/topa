@@ -1,0 +1,14 @@
+{
+  "name": "Ric's Restaurant Sports Lounge",
+  "address": "2500 Las Posas Rd, Camarillo, CA 93010",
+  "city": "Camarillo",
+  "lat": 34.237089,
+  "lng": -119.036382,
+  "website": "https://www.ricsrestaurant.com",
+  "instagram": "https://www.instagram.com/ricscamarillo/",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's own website and public Instagram, and US Census address lookup, 2026-10-29"
+}

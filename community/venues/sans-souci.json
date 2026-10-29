@@ -1,0 +1,14 @@
+{
+  "name": "Sans Souci",
+  "address": "21 S Chestnut St, Ventura, CA 93001",
+  "city": "Ventura",
+  "lat": 34.280524,
+  "lng": -119.291617,
+  "website": "https://www.instagram.com/sanssouci_vta/",
+  "instagram": "https://www.instagram.com/sanssouci_vta/",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search, the venue's own website and public Instagram, and US Census address lookup, 2026-10-29"
+}

@@ -1107,8 +1107,10 @@ a.pldz {
 }
 .astory {
   margin: 18px 0 0;
-  text-align: left;
   font-size: 16px;
+}
+.addh .astory {
+  text-align: left;
 }
 .abody {
   padding: 24px 36px 32px;
@@ -3764,10 +3766,14 @@ a.vt.dir:hover {
   opacity: 0;
   animation: spl-rise 0.35s 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
+/* same as the About tagline */
 .spl-tag {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--mute);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-right: -0.16em;
+  color: var(--acc);
   opacity: 0;
   animation: spl-fade-in 0.25s 0.8s ease forwards;
 }
@@ -3829,7 +3835,7 @@ a.vt.dir:hover {
     font-size: 96px;
   }
   .spl-tag {
-    font-size: 20px;
+    font-size: 18px;
   }
 }
 

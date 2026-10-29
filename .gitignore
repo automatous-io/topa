@@ -16,5 +16,6 @@ __pycache__/
 *.log
 .env
 
-# Tests (npm install)
+# Tests (npm install; npm run sheet)
 node_modules/
+phone-sheet/

@@ -206,6 +206,31 @@ test("an added show uses its venue's added details and has no Ventura Rocks link
   assert.match(await text(listed, "a.srcline"), /Ventura Rocks/, "Ventura Rocks shows keep their link");
 });
 
+test("a show with no venue is listed by its town, and never as a blank venue", async t => {
+  const show = {
+    ...EVENTS[0],
+    artist: "No Venue Quartet",
+    venue: "",
+    address: "",
+    city: "Ojai",
+    tags: ["Ojai"],
+  };
+  const listings = { updated: "2026-10-24T09:00:00-07:00", events: [show, ...EVENTS.slice(1, 4)] };
+  const page = await open(t, { listings });
+  const row = await page.$$eval(
+    "#main .rw[data-show]",
+    rs => rs.find(r => /No Venue Quartet/.test(r.textContent)).textContent,
+  );
+  assert.match(row, /Venue not listed · Ojai/);
+  assert.equal(await count(page, '[data-venue=""]'), 0, "no link to a blank venue");
+  await page.$$eval("#main .rw[data-show]", rs =>
+    rs.find(r => /No Venue Quartet/.test(r.textContent)).click(),
+  );
+  assert.equal(await text(page, "h1"), "No Venue Quartet");
+  const venues = await open(t, { listings, query: "&view=Venues" });
+  assert.equal(await count(venues, "#main .vrow"), new Set(EVENTS.slice(1, 4).map(e => e.venue)).size);
+});
+
 test("a venue someone added shows up before its first show", async t => {
   const listings = {
     updated: "2026-10-24T09:00:00-07:00",

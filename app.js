@@ -295,6 +295,14 @@ const venueName = v =>
     .replace(/\s*\(.*?\)\s*/g, " ")
     .replace(/\s+-\s+VMH$/, "")
     .trim();
+// a listing can come without a venue (it happens on Ventura Rocks): it still shows, but never as a venue
+const venueLabel = e => (e.venue ? venueName(e.venue) : "Venue not listed");
+// the venue under a band name: a link to its page, or plain text when there's no venue
+const venueLink = (e, cls, inner) =>
+  e.venue
+    ? `<button class="${cls}" data-venue="${esc(e.venue)}">${inner}<span>›</span></button>`
+    : `<span class="${cls}">${inner}</span>`;
+const townPart = e => (e.city ? ` <em>· ${esc(e.city)}${milesPart(e)}</em>` : milesPart(e));
 
 const bandName = e =>
   e.artist
@@ -570,8 +578,9 @@ const venueDateRow = e => {
   return (
     `<div class="rw rwb" data-show="${e.id}">` +
     `<div class="tcol"><span>${weekdayLabel(e)}</span><span>${d.getMonth() + 1}/${d.getDate()}</span><b>${timeLabel(e)}${sourceIcon(e, true)}</b>${milesUnderTime(e)}</div>` +
-    `<div class="rb"><b>${esc(venueName(e.venue))}</b>` +
-    `<button class="vb" data-venue="${esc(e.venue)}">${esc(e.city)}${milesPart(e)}${bill}<span>›</span></button></div></div>`
+    `<div class="rb"><b>${esc(venueLabel(e))}</b>` +
+    venueLink(e, "vb", `${esc(e.city)}${milesPart(e)}${bill}`) +
+    `</div></div>`
   );
 };
 
@@ -605,7 +614,7 @@ const showRow = (e, timeOnly, atVenue) => {
     `<div class="rb"><b>${esc(e.artist)}</b>` +
     (atVenue
       ? ""
-      : `<button class="vb" data-venue="${esc(e.venue)}">${esc(venueName(e.venue))} <em>· ${esc(e.city)}${milesPart(e)}</em><span>›</span></button>`) +
+      : venueLink(e, "vb", esc(venueLabel(e)) + townPart(e))) +
     `</div>` +
     `${tags}${rowPlay(band)}${starButton(SAVED.bands.includes(band), `data-sb="${esc(band)}"`)}</div>`
   );
@@ -873,7 +882,7 @@ function searchResults(k, L) {
   const B = [...groupBy(EVENTS, bandName), ...emptyBands()].filter(([n, l]) =>
       hit(n + " " + tagsOf(n, l).join(" ")),
     ),
-    V = [...groupBy(EVENTS, e => e.venue), ...emptyVenues()]
+    V = [...groupBy(EVENTS.filter(e => e.venue), e => e.venue), ...emptyVenues()]
       .filter(([n, l]) => hit(venueName(n) + " " + (l[0] || venueSpot(n)).city))
       .sort(
         (a, b) => (milesTo(a[1][0] || venueSpot(a[0])) ?? 1e9) - (milesTo(b[1][0] || venueSpot(b[0])) ?? 1e9),
@@ -1033,7 +1042,10 @@ function venuesPage() {
   const filter = venueFilter.toLowerCase();
   const place = ([n, L]) => L[0] || venueSpot(n);
   const venues = [
-    ...groupBy(showsInRange().filter(isStillOn), e => e.venue),
+    ...groupBy(
+      showsInRange().filter(e => e.venue && isStillOn(e)),
+      e => e.venue,
+    ),
     ...emptyVenues().filter(x => inRadius(place(x))),
   ].filter(x => (venueName(x[0]) + " " + place(x).city).toLowerCase().includes(filter));
   // "Nearest" needs a location; without one the list starts A–Z
@@ -1104,7 +1116,7 @@ function showPage(id) {
     .toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" })
     .toUpperCase();
   const otherDates = EVENTS.filter(x => bandName(x) === band && x.id !== e.id);
-  const alsoHere = EVENTS.filter(x => x.venue === e.venue && bandName(x) !== band).slice(0, 6);
+  const alsoHere = e.venue ? EVENTS.filter(x => x.venue === e.venue && bandName(x) !== band).slice(0, 6) : [];
   // source line: the Ventura Rocks listing or the link the show was sent with
   const href = isAdded(e) ? safeUrl(e.url) : e.url || VR_CAL;
   const onIg = isAdded(e) && /^https:\/\/(www\.)?instagram\.com\//.test(href);
@@ -1119,11 +1131,11 @@ function showPage(id) {
   return (
     `<div class="hero">${art(band)}<div class="hx">` +
     `<small>${date} · <span class="ac">${timeLabel(e).toUpperCase()}</span>${sourceIcon(e, true)}</small><h1>${esc(e.artist)}</h1>` +
-    `<button class="vb big" data-venue="${esc(e.venue)}">${esc(venueName(e.venue))} <em>· ${esc(e.city)}</em><span>›</span></button>` +
+    venueLink(e, "vb big", esc(venueLabel(e)) + (e.city ? ` <em>· ${esc(e.city)}</em>` : "")) +
     `<div class="mrow">${heroPlayButton(band)}<span class="sub">${distanceLabel(e)}</span></div>` +
     `${tags}</div>${starButton(SAVED.bands.includes(band), `data-sb="${esc(band)}"`, 1)}</div>` +
     (links ? `<h2>${esc(band)}</h2>${links}` : "") +
-    `<h2>${esc(venueName(e.venue))}</h2>${venueActions(e, "Show:" + e.id)}${voiceHint(e)}` +
+    (e.venue ? `<h2>${esc(venueName(e.venue))}</h2>${venueActions(e, "Show:" + e.id)}${voiceHint(e)}` : "") +
     source +
     (otherDates.length ? `<h2>More ${esc(band)} dates</h2>${otherDates.map(venueDateRow).join("")}` : "") +
     (alsoHere.length
@@ -1154,7 +1166,7 @@ function favesPage() {
     return (
       `<div class="card" data-show="${next.id}">${artWithPlay(n, "round")}<div class="ci">` +
       `<button class="cn" data-band="${esc(n)}">${esc(n)}</button>` +
-      `<span>Next: ${nextLabel(next)} · ${esc(venueName(next.venue))}</span>` +
+      `<span>Next: ${nextLabel(next)} · ${esc(venueLabel(next))}</span>` +
       `<span>${dist ? dist + " · " : ""}${showCount(L.length)}</span>` +
       `</div>${starButton(true, `data-sb="${esc(n)}"`)}</div>`
     );
@@ -1647,14 +1659,14 @@ function showPlayer(it, t, v) {
   am.hidden = !amLink;
   if (amLink) am.href = amLink;
   inPlayer(".plb").textContent =
-    it.band + (e ? " · " + nextLabel(e) + " · " + venueName(e.venue) : "") + (e ? "  ›" : "");
+    it.band + (e ? " · " + nextLabel(e) + " · " + venueLabel(e) : "") + (e ? "  ›" : "");
   inPlayer(".plp i").style.width = "0";
   inPlayer(".plcur").textContent = "0:00";
   if (t && "mediaSession" in navigator && window.MediaMetadata)
     navigator.mediaSession.metadata = new MediaMetadata({
       title: t.title,
       artist: it.band,
-      album: e ? nextLabel(e) + " · " + venueName(e.venue) : "TOPA",
+      album: e ? nextLabel(e) + " · " + venueLabel(e) : "TOPA",
       artwork: pic ? [{ src: pic, sizes: "500x500", type: "image/jpeg" }] : [],
     });
   syncPlayIcons();
@@ -1692,7 +1704,7 @@ function paintFull() {
   if (e) {
     const d = new Date(e.start);
     inFull(".fptime").textContent = timeLabel(e).toUpperCase();
-    inFull(".fpven").textContent = venueName(e.venue);
+    inFull(".fpven").textContent = venueLabel(e);
     inFull(".fpwhen").textContent = [
       sameDay(d, NOW) ? showDayWord(e) : `${weekdayLabel(e)} ${d.getMonth() + 1}/${d.getDate()}`,
       e.city,

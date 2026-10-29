@@ -208,6 +208,14 @@ def from_ld(text):
     return events
 
 
+def fill_towns(events):
+    """A listing with no address gets its town from a tag Ventura Rocks gave it ('Thousand-Oaks' -> 'Thousand Oaks')."""
+    towns = {e["city"] for e in events if e.get("city")}
+    for e in events:
+        if not e.get("city"):
+            e["city"] = next((t.replace("-", " ") for t in e.get("tags", []) if t.replace("-", " ") in towns), "")
+
+
 def fill_places(added, others):
     """A community show at a venue Ventura Rocks knows gets that venue's address and town, if it has none."""
     places = {}
@@ -397,6 +405,7 @@ def main():
     found = {"community": added, "ventura-rocks": events}
     events, dropped = community.merge([found[s] for s in SOURCES])
     events = dedupe(events)
+    fill_towns(events)
     fill_spots(events, venues)
     today = dt.datetime.now(community.PACIFIC).date()
     fill_from_census(events, os.path.join(os.path.dirname(os.path.abspath(a.out)), "spots.json"), today)

@@ -319,6 +319,18 @@ class Merging(unittest.TestCase):
         self.assertFalse(c.same_band("DJ", "DJ Shadow"))  # too short to count as a prefix
 
 
+class Towns(unittest.TestCase):
+    def test_a_listing_with_no_address_gets_its_town_from_a_tag(self):
+        events = [
+            {"venue": "The Grape", "city": "Ventura", "tags": []},
+            {"venue": "Libbey Bowl", "city": "Thousand Oaks", "tags": []},
+            {"venue": "", "city": "", "tags": ["Thousand-Oaks", "Free"]},
+            {"venue": "", "city": "", "tags": ["Free"]},
+        ]
+        fe.fill_towns(events)
+        self.assertEqual([e["city"] for e in events], ["Ventura", "Thousand Oaks", "Thousand Oaks", ""])
+
+
 class MapSpots(unittest.TestCase):
     def test_a_venue_profile_gives_listings_its_spot(self):
         events = [{"venue": "Harbor Lights Tavern", "address": ""}, {"venue": "Somewhere Else", "address": "1 Main St"}]

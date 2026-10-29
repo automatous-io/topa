@@ -15,6 +15,7 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
 - Add to TOPA is its own page with a teal header: four tiles (show, weekly show, band, venue), what to do if you're
   already listed, and how it works in three steps.
 - Close and back stay at the top while you scroll.
+- The opening splash's "Local Music Finder" matches About: coral capitals.
 - Same look on phones and in the car.
 
 ---

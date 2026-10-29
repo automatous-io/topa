@@ -335,7 +335,7 @@ function art(s, cls = "", band = true, photo = "") {
 const playBadge = h =>
   `<span class="pb" role="button" aria-label="Play preview" data-play="${esc(h)}"${hasPreview(h) ? "" : " hidden"}>${svg("play")}</span>`;
 
-// a round ▶ at the end of a show row
+// play button at the end of a show row
 const rowPlay = h =>
   `<button class="rplay" aria-label="Play preview" data-play="${esc(h)}"${hasPreview(h) ? "" : " hidden"}>${svg("play")}</button>`;
 
@@ -386,7 +386,7 @@ const groupBy = (l, f) => {
 
 // inline SVG icons, drawn on a 24×24 grid
 const ICONS = {
-  // the four tabs: line icons (calendar, mic, map pin, star)
+  // tab icons
   Shows:
     '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></g>',
   Bands:
@@ -415,7 +415,7 @@ const ICONS = {
   tel: '<path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/>',
   globe:
     '<g fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></g>',
-  // band links: simple line marks, not the services' logos
+  // band link icons
   bc: '<path d="M3 17 9 7h12l-6 10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
   sp: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M7.5 9.5c3-1 6.5-.7 9 .8M8 12.6c2.5-.7 5.2-.4 7.2.8M8.6 15.4c1.9-.5 3.9-.3 5.5.6"/></g>',
   yt: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.2v5.6l4.8-2.8z"/></g>',
@@ -437,9 +437,8 @@ const svg = k => `<svg viewBox="0 0 24 24" fill="currentColor">${ICONS[k]}</svg>
 
 const mapsQuery = v => encodeURIComponent([venueName(v.venue), v.city, "CA"].filter(Boolean).join(", "));
 
-// Directions, Call, Website, Share: tiles that always sit in the same spots.
-// A tile TOPA has no details for is dimmed and can't be tapped. The car has no Share (nothing to send it to).
-// share: the page Share sends ("Show:12", "Venue:The Grape")
+// venue tiles: Directions, Call, Website, Share. Missing details show dimmed; no Share in the car.
+// share: the page to share, e.g. "Venue:The Grape"
 const venueActions = (v, share) => {
   // details someone added for the venue win over the built-in ones
   const tel = addedVenue(v.venue).phone || VENUE_PHONES[v.venue];
@@ -458,10 +457,10 @@ const venueActions = (v, share) => {
   );
 };
 
-// a page's own web address, for Share
+// full address of a page
 const pageUrl = v => location.origin + urlFor(v);
 
-// the phone's share menu when there is one (https only); otherwise copy the link, and as a last resort show it
+// share menu if there is one (https only), else copy the link, else show it
 async function sharePage(v) {
   const url = pageUrl(v),
     title = "TOPA: " + pagePath(v).split("/").pop();
@@ -477,7 +476,7 @@ async function sharePage(v) {
     await navigator.clipboard.writeText(url);
     return toast("Link copied");
   } catch (_) {}
-  // older or insecure pages: copy through a hidden text box
+  // fallback copy for insecure pages
   const box = document.createElement("textarea");
   box.value = url;
   box.setAttribute("readonly", "");
@@ -500,8 +499,7 @@ const voiceHint = v =>
       `${v.address ? `<i>${esc(v.address)}</i>` : ""}</span></p>`
     : "";
 
-// the TOPA wordmark: the Topa Topa ridgeline in coral (same as the app icons), with the name in Oswald.
-// The name is plain text beside or under the drawing (the CSS for each spot decides).
+// TOPA wordmark: the ridgeline and the name; the CSS lays them out per spot
 const RIDGE = "M1 15 L8 11 L13 13 L19 3 L24 9 L28 6 L33 12";
 const ridge = () =>
   `<svg class="wm" viewBox="0 0 34 18" aria-hidden="true"><path class="wm-ridge" d="${RIDGE}"/></svg>`;
@@ -581,7 +579,7 @@ const sourceIcon = (e, after) =>
     ? `<span class="srci cm${after ? " af" : ""}" title="Sent straight to TOPA">${svg("at")}</span>`
     : `<span class="srci vr${after ? " af" : ""}" title="From the Ventura Rocks community calendar">${svg("cal")}</span>`;
 
-// the key for those icons: one quiet line at the bottom of a list of shows
+// key for the source icons, under a list of shows
 const sourceKey = () =>
   `<div class="skey"><span>${svg("cal")}Ventura Rocks calendar</span><span class="cm">${svg("at")}Sent to TOPA</span></div>`;
 
@@ -667,7 +665,7 @@ function dayOptions() {
   const t0 = dayStart(NOW),
     wk = weekendDays().map(dayKey),
     wd = d => d.toLocaleDateString("en-US", { weekday: "short" }),
-    // tile: the phone's day tiles, [small line, big line]
+    // tile: [small line, big line] for the phone's day tiles
     defs = [["tonight", todayWord(), todayWord(), e => sameDay(new Date(e.start), NOW), [wd(t0), t0.getDate()]]];
   for (let i = 1; i < 7; i++) {
     const d = new Date(t0);
@@ -676,7 +674,7 @@ function dayOptions() {
     defs.push([
       k,
       d.toLocaleDateString("en-US", { weekday: "short" }) + " " + d.getDate(),
-      // the page title: just the weekday ("Saturday"); the date goes in the line under it
+      // title is the weekday only; the date goes underneath
       d.toLocaleDateString("en-US", { weekday: "long" }),
       e => dayKey(new Date(e.start)) === k,
       [wd(d), d.getDate()],
@@ -715,7 +713,7 @@ function pickDay() {
   if (!cur) cur = D.find(d => d.k !== "weekend" && d.k !== "all") || D[0];
   const sel = cur ? cur.k : "";
   const chips = D.map(
-    // wide screens show the label ("Sat 31"); phones show a two-line tile (dl / dt)
+    // wide screens show dl, phones the dt tile
     d =>
       `<button class="chip${d.k === sel ? " on" : ""}${d.tile[0] ? "" : " wide"}" data-d="${d.k}">` +
       `<span class="dl">${d.l}</span><span class="dt">${d.tile[0] ? `<small>${d.tile[0]}</small>` : ""}<b>${d.tile[1]}</b></span></button>`,
@@ -754,7 +752,7 @@ const emptyMessage = () =>
     ? `<p class="empty">${status.c === "offline" ? "Couldn't load shows. Check your connection and try again." : "Loading shows…"}</p>`
     : `<p class="empty">No upcoming shows within ${radius >= ANY ? "the county" : radius + " mi"}.</p>${radius < ANY ? `<button class="chip pall" data-anyrad>Show all distances</button>` : ""}`;
 
-// search with nothing typed yet: one-tap ideas (towns and genres with shows coming up)
+// empty search: suggested towns and genres
 function searchIdeas() {
   const top = (f, n) =>
     [...groupBy(EVENTS.filter(isStillOn).flatMap(f), x => x)]
@@ -798,7 +796,7 @@ function showsPage() {
     );
   }
   const { cur, chips, gchips, L, lbl } = pickDay();
-  // the date goes under the title: "Fri, Oct 30 · 38 shows" (Today/Tonight), "Oct 31 · 24 shows" (a day)
+  // date line under the title, e.g. "Fri, Oct 30 · 38 shows"
   const today = !cur
     ? ""
     : cur.k === "tonight"
@@ -832,7 +830,7 @@ function showsPage() {
   const faves = L.filter(e => SAVED.bands.includes(bandName(e)) || SAVED.venues.includes(e.venue)).sort(
     (a, b) => a.startMs - b.startMs,
   );
-  // every fave playing that day moves up here, so a starred show is never listed twice
+  // all of the day's faves go here and are left out of the list below
   const pinned = new Set(faves.map(x => x.id));
   const favesSection = faves.length
     ? `<section class="favsec"><h2 class="dh">My Faves</h2>` +
@@ -942,7 +940,7 @@ function bandsPage() {
   );
 }
 
-// the links a band added about itself (website, Instagram, Bandcamp…), as pills after its play button
+// the links a band can send, and their names
 const LINK_NAMES = {
   website: "Website",
   instagram: "Instagram",
@@ -961,7 +959,7 @@ const LINK_ICONS = {
   youtube: "yt",
   soundcloud: "sc",
 };
-// the links a band sent, as a row of round icons with their names under them ("" when none)
+// a band's links as a row of icons; empty when it has none
 const bandLinks = name => {
   const links = (EXTRA.bands[name] && EXTRA.bands[name].links) || {};
   const icons = Object.keys(LINK_NAMES)
@@ -1102,7 +1100,7 @@ function showPage(id) {
     .toUpperCase();
   const otherDates = EVENTS.filter(x => bandName(x) === band && x.id !== e.id);
   const alsoHere = EVENTS.filter(x => x.venue === e.venue && bandName(x) !== band).slice(0, 6);
-  // where the listing came from, as a small line at the bottom: its Ventura Rocks listing, or the link it was sent with
+  // source line: the Ventura Rocks listing or the link the show was sent with
   const href = isAdded(e) ? safeUrl(e.url) : e.url || VR_CAL;
   const onIg = isAdded(e) && /^https:\/\/(www\.)?instagram\.com\//.test(href);
   const from = !isAdded(e)
@@ -1218,8 +1216,8 @@ function render() {
   for (const w of document.querySelectorAll(".sw"))
     rowScroll[w.dataset.row] = w.querySelector(".chips").scrollLeft;
   document.getElementById("nav").innerHTML = navHtml(page);
-  // phones have no sidebar, so each page starts with a bar: TOPA (opens About), the county, and search
-  // in search mode the bar turns into the search box (it slides out from the search button), with an X to close
+  // phone top bar: logo (opens About), county, search
+  // in search mode the bar becomes the search box
   const searching = page === "Shows" && (searchOpen || !!term);
   const phoneBar = searching
     ? `<header class="mbar"><div class="msf${searchSlide ? " slide" : ""}">${svg("search")}` +
@@ -1235,7 +1233,7 @@ function render() {
   main.innerHTML = phoneBar + PAGES[page](arg);
   for (const w of document.querySelectorAll(".sw"))
     w.querySelector(".chips").scrollLeft = rowScroll[w.dataset.row] || 0;
-  // the picked day stays fully in view (not half hidden under the row's fade)
+  // keep the picked day tile in view
   const dayRow = document.querySelector('.sw[data-row="days"] .chips'),
     picked = dayRow && dayRow.querySelector(".chip.on");
   if (picked) {
@@ -1609,7 +1607,7 @@ async function playCurrent() {
   showPlayer(it, t, v);
 }
 
-// what the player is showing now, so the full-screen player can draw the same thing
+// what the player is showing, for the full-screen player
 let nowShowing = null;
 
 function showPlayer(it, t, v) {
@@ -1653,7 +1651,7 @@ function openFull() {
 }
 const closeFull = () => (document.getElementById("fp").hidden = true);
 
-// fill the full player from what's playing: art, song, band, where and when they play next
+// fill in the full-screen player
 function paintFull() {
   if (!fullOpen() || !nowShowing) return;
   const { it, t, v } = nowShowing,
@@ -1969,7 +1967,7 @@ const closeAbout = () => (document.getElementById("about").hidden = true);
 
 addEventListener("keydown", ev => ev.key === "Escape" && (closeAbout(), closeFull()));
 
-// phones: the search button opens Shows in search mode with the keyboard up
+// phone search button: open Shows in search mode
 function openSearch() {
   searchOpen = true;
   searchSlide = true;
@@ -2009,7 +2007,7 @@ document.body.onclick = ev => {
     render();
     return paintFull();
   }
-  // phones: the mini player's band line opens the full player; its show card leads to the show
+  // phones: the mini player opens the full-screen player
   if (d.plshow !== undefined && !t.closest("#fp") && matchMedia("(max-width: 700px)").matches) return openFull();
   if (d.plshow !== undefined && t.closest("#fp")) closeFull();
   if (d.search !== undefined) return openSearch();
@@ -2059,7 +2057,7 @@ document.body.onclick = ev => {
   if (d.show) go("Show:" + d.show);
   else if (d.band || d.venue) go(d.band ? "Band:" + d.band : "Venue:" + d.venue);
   else if (d.v) {
-    // the Shows tab always leads back to the day's list, out of search
+    // the Shows tab exits search
     if (d.v === "Shows" && (searchOpen || term)) {
       searchOpen = false;
       term = "";
@@ -2112,7 +2110,7 @@ document.body.onclick = ev => {
   }
 };
 
-// phones: the top bar only gets its dark backing once the page is scrolled
+// phones: the top bar gets its backing once the page scrolls
 function markScrolled() {
   document.body.classList.toggle("scrolled", document.getElementById("main").scrollTop > 4);
 }

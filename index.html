@@ -26,8 +26,7 @@ Copyright 2026 AUTOMATOUS.IO. All rights reserved. See LICENSE.
     <link rel="preload" href="fonts/figtree.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="fonts/oswald.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="styles.css" />
-    <!-- the opening splash plays once per visit; skipped for reduced motion, links to a page, and test browsers
-         (?splash=1 always plays it) -->
+    <!-- the splash plays once per visit; skipped for reduced motion, links to a page and tests. ?splash=1 forces it -->
     <script>
       try {
         if (
@@ -43,7 +42,7 @@ Copyright 2026 AUTOMATOUS.IO. All rights reserved. See LICENSE.
     </script>
   </head>
   <body>
-    <!-- opening splash: sound bars settle into the Topa Topa ridge, then TOPA rises -->
+    <!-- opening splash -->
     <div id="splash" aria-hidden="true">
       <div class="spl">
         <div class="spl-art">
@@ -101,7 +100,7 @@ Copyright 2026 AUTOMATOUS.IO. All rights reserved. See LICENSE.
         </div>
       </div>
     </div>
-    <!-- full-screen player: opens from the mini player; app.js fills it in -->
+    <!-- full-screen player, filled in by app.js -->
     <div id="fp" role="dialog" aria-modal="true" aria-label="Now playing" hidden>
       <div class="fpc">
         <div class="fph">

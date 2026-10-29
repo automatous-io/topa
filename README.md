@@ -195,6 +195,9 @@ commit gets a ✓ or ✗ before it's tagged as a release.
 
 - **Show listings** come from the [Ventura Rocks](https://www.venturarocks.com) community calendar and from the bands, fans,
   and venues who send them to TOPA.
+- **Band and venue profiles** are put together by TOPA from public sources, such as each band's or venue's own website and
+  public social profiles, and from photos TOPA takes itself. Bands and venues can correct or add to their page through the
+  forms.
 - **Visit counts** come from [GoatCounter](https://www.goatcounter.com): anonymous, no cookies, nothing personal.
 - **Previews and album art** come from [Apple Music](https://music.apple.com) through its public search API. Band and venue
   photos are sent by the bands and venues themselves.

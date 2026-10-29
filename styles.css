@@ -3829,3 +3829,18 @@ a.srcline:hover {
 .mrow .hplay[hidden] + .sub {
   margin-left: 0;
 }
+/* phones: a snugger tab bar; the labels sit just above the home bar instead of a full home-bar height above it */
+@media (max-width: 700px) {
+  .app {
+    grid-template-rows: minmax(0, 1fr) calc(58px + max(env(safe-area-inset-bottom) - 14px, 0px));
+  }
+  .app.pl {
+    grid-template-rows: minmax(0, 1fr) 64px calc(58px + max(env(safe-area-inset-bottom) - 14px, 0px));
+  }
+  nav {
+    padding-bottom: max(env(safe-area-inset-bottom) - 14px, 0px);
+  }
+  nav button {
+    height: 58px;
+  }
+}

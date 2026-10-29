@@ -2,17 +2,20 @@
  * Copyright 2026 AUTOMATOUS.IO. All rights reserved. See LICENSE.
  */
 :root {
-  /* "Pink Moment": the Topa Topa bluffs at sunset over Ojai */
-  --bg: #0a070d;
-  --panel: #141019;
-  --hi: #231a2b;
-  --ink: #fff;
-  --mute: #b4a9bf;
-  --acc: #ff6f91; /* sunset pink: times, selected genre, icons */
-  --sunset: linear-gradient(135deg, #ff5f8f, #ff9a5a); /* pink into orange: the big play buttons */
-  --on-acc: #1a0b14; /* text and icons sitting on pink */
-  --fave: #ffc15e;
-  --community: #5ee0c1; /* teal: shows the community added */
+  /* the Topa Topa bluffs at dusk over Ojai */
+  --bg: #120e18;
+  --panel: #17121f;
+  --hi: #241d2f;
+  --card: #211a2b;
+  --line: #2a2235;
+  --ink: #f4eef7;
+  --mute: #a99bb5;
+  --acc: #ff8a66; /* sunset coral: times, play buttons, the ridge */
+  --sunset: #ff8a66; /* the big play buttons */
+  --on-acc: #1a0f14; /* text and icons sitting on coral */
+  --fave: #ffc857;
+  --community: #5ee0c1; /* teal: shows sent to TOPA */
+  --display: Oswald, "Arial Narrow", sans-serif; /* names and times */
 }
 * {
   box-sizing: border-box;
@@ -89,10 +92,6 @@ nav .logo .wm-name {
 .ahead .wm-name {
   font-size: 34px;
 }
-.mlogo .wm,
-.mlogo .wm-name {
-  font-size: 22px;
-}
 nav .logo {
   width: auto;
   height: auto;
@@ -103,9 +102,6 @@ nav .logo {
   letter-spacing: 0.12em;
   color: var(--acc);
   margin-bottom: 14px;
-}
-.mlogo {
-  display: none;
 }
 nav .logo:hover {
   background: none;
@@ -1014,22 +1010,6 @@ a.pldz {
   margin: 0;
   padding-top: 0.25em;
 }
-.seeall {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin: 6px 0 0 16px;
-  padding: 10px 0;
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--mute);
-}
-.seeall span {
-  font-size: 18px;
-}
-.seeall:hover {
-  color: var(--ink);
-}
 .rule + .dh {
   margin-top: 8px;
 }
@@ -1094,7 +1074,7 @@ a.pldz {
 .acard::-webkit-scrollbar-thumb:hover {
   background: #ffffff4d;
 }
-/* links read as bold white text, turning pink only on hover */
+/* links read as bold white text, turning coral only on hover */
 .acard a:not(.chip) {
   color: var(--ink);
   font-weight: 700;
@@ -1641,7 +1621,7 @@ button.ainstall:hover {
   width: 28px;
   height: 28px;
 }
-/* pulled far enough (or refreshing): the sunset gradient, like the play buttons */
+/* pulled far enough (or refreshing): coral, like the play buttons */
 #ptr.ready,
 #ptr.spin {
   background: var(--sunset);
@@ -1809,10 +1789,6 @@ main.back {
   .credit {
     display: none;
   }
-  /* About is the fifth button in the phone's bottom bar */
-  nav .about-tab {
-    margin-top: 0;
-  }
   .about {
     padding: calc(12px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom));
     align-items: flex-end;
@@ -1859,37 +1835,6 @@ main.back {
     border-radius: 0;
     padding: 0 16px 20px;
   }
-  /* TOPA header pinned to the top of every phone page; the page scrolls under it */
-  .mlogo {
-    display: block;
-    position: sticky;
-    z-index: 3;
-    top: 0;
-    width: calc(100% + 32px);
-    margin: 0 -16px 18px;
-    padding: calc(18px + env(safe-area-inset-top)) 0 14px;
-    text-align: center;
-    background: transparent;
-    transition:
-      background 0.2s,
-      box-shadow 0.2s;
-  }
-  /* once the page scrolls, the header gets a backing so it stays readable over the list */
-  .scrolled .mlogo {
-    background: #140f19e6;
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-    box-shadow: 0 6px 16px #0006;
-  }
-  .mlogo small {
-    display: block;
-    margin-top: 5px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    color: var(--mute);
-    white-space: nowrap;
-  }
   h1 {
     font-size: 26px;
   }
@@ -1933,7 +1878,7 @@ main.back {
     font-size: 24px;
   }
   .hero {
-    /* slides up under the pinned header so its purple glow fills the top */
+    /* slides up under the top bar so its purple glow fills the top */
     margin: calc(-120px - env(safe-area-inset-top)) -16px 18px;
     padding: calc(132px + env(safe-area-inset-top)) 16px 20px;
     gap: 16px;
@@ -2262,7 +2207,7 @@ main.back {
   .top .pill.loc {
     order: 5;
   }
-  /* phone header: title + round play button, then search, days, and one filter row */
+  /* phone header: title + Play all, then days and one filter row */
   .top {
     margin-bottom: 14px;
   }
@@ -2330,5 +2275,1278 @@ main.back {
   .frow .sortb {
     font-size: 14px;
     padding: 9px 14px;
+  }
+}
+
+/* ---- The 2.0 look: round buttons, date tiles, Oswald for names and times, Figtree for the rest.
+ * These rules sit on top of the ones above. ---- */
+@font-face {
+  font-family: Figtree;
+  src: url(fonts/figtree.woff2) format("woff2");
+  font-weight: 300 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: Oswald;
+  src: url(fonts/oswald.woff2) format("woff2");
+  font-weight: 200 700;
+  font-display: swap;
+}
+html,
+body {
+  font-family:
+    Figtree,
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+main {
+  background: var(--panel);
+}
+h1,
+.hero h1 {
+  font-family: var(--display);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+.rb > b,
+.tile b,
+.card .cn {
+  font-family: var(--display);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.tcol b {
+  font-family: var(--display);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.hero {
+  background: linear-gradient(#2b2236, transparent);
+}
+/* the wordmark: coral ridge, Oswald name */
+.wmk {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+.wm {
+  width: 2.6em;
+  margin: 0 auto 0.1em;
+}
+.wm-ridge {
+  stroke: var(--acc);
+}
+.wm-name {
+  font-family: var(--display);
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.08em;
+  margin-right: -0.08em;
+}
+/* stars drawn as outlines fill in when on */
+.fv svg path {
+  fill: currentColor;
+}
+nav button.on[data-v="Faves"] svg path {
+  fill: currentColor;
+}
+/* day buttons: wide screens show the label, phones the two-line tile */
+.chip .dt {
+  display: none;
+}
+/* phone-only pieces */
+.mbar,
+.rplay,
+.top .sx {
+  display: none;
+}
+.ideas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+@media (max-width: 700px) {
+  .app {
+    background: var(--panel);
+  }
+  main {
+    padding: 0 16px 20px;
+  }
+  nav {
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+  }
+  nav .about-tab {
+    display: none;
+  }
+  nav button {
+    color: #8e8199;
+    font-weight: 600;
+  }
+  nav button.on {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  nav svg {
+    width: 23px;
+    height: 23px;
+  }
+
+  /* top bar: TOPA (opens About) · Ventura County · search */
+  .mbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: sticky;
+    z-index: 3;
+    top: 0;
+    margin: 0 -16px 8px;
+    padding: calc(10px + env(safe-area-inset-top)) 16px 10px;
+    transition:
+      background 0.2s,
+      box-shadow 0.2s;
+  }
+  .scrolled .mbar {
+    background: #17121fe6;
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 6px 16px #0006;
+  }
+  .mhome {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    margin-right: auto;
+  }
+  .wmk-phone {
+    flex-direction: row;
+    gap: 8px;
+  }
+  .wmk-phone .wm {
+    width: 34px;
+    margin: 0;
+  }
+  .wmk-phone .wm-name {
+    font-size: 21px;
+    line-height: 1;
+  }
+  .mcounty {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 18px;
+    background: var(--hi);
+    color: #cfc4d8;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .mcounty svg {
+    width: 14px;
+    height: 14px;
+  }
+  .mbtn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--hi);
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mbtn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* page title: big Oswald, date + count, coral Play all */
+  h1 {
+    font-size: 46px;
+  }
+  .tsub {
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 6px;
+  }
+  .top .chip.pall {
+    width: auto;
+    height: 44px;
+    padding: 0 18px 0 14px;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    background: var(--acc);
+    color: var(--on-acc);
+  }
+  .top .chip.pall svg {
+    width: 16px;
+    height: 16px;
+  }
+  /* the Shows search box only shows in search mode (the bar's search button) */
+  #main:not(.srch) .sf:has(#s) {
+    display: none;
+  }
+  .top .chip.sx {
+    display: inline-flex;
+    background: none;
+    color: var(--acc);
+    padding: 0 4px;
+    font-size: 16px;
+  }
+  .top .search {
+    border-radius: 14px;
+  }
+
+  /* day tiles */
+  .sw[data-row="days"] .chips .chips {
+    margin-bottom: 12px;
+  }
+  .sw[data-row="days"] .chips .chip {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    width: 50px;
+    height: 56px;
+    padding: 0;
+    border-radius: 12px;
+    background: var(--hi);
+    color: #e2d9ea;
+  }
+  .sw[data-row="days"] .chips .chip.wide {
+    width: auto;
+    padding: 0 14px;
+  }
+  .sw[data-row="days"] .chips .chip .dl {
+    display: none;
+  }
+  .sw[data-row="days"] .chips .chip .dt {
+    display: contents;
+  }
+  .sw[data-row="days"] .chips .chip small {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+  .sw[data-row="days"] .chips .chip b {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1.1;
+  }
+  .sw[data-row="days"] .chips .chip.wide b {
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .sw[data-row="days"] .chips .chip.on {
+    background: var(--ink);
+    color: var(--panel);
+  }
+
+  /* filter row: outlined chips */
+  .frow .chip,
+  .frow .pill,
+  .frow .loc,
+  .frow .sortb {
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 1px solid #332a3f;
+    background: transparent;
+    color: #e2d9ea;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .frow .chip.on {
+    background: var(--acc);
+    border-color: var(--acc);
+    color: var(--on-acc);
+  }
+  .frow svg {
+    width: 15px;
+    height: 15px;
+  }
+  .rule {
+    height: 1px;
+    background: var(--line);
+    margin: 0 -16px 6px;
+  }
+
+  /* section labels */
+  .dh {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mute);
+    margin: 18px 0 2px;
+  }
+  .favsec .dh {
+    color: var(--acc);
+  }
+
+  /* show rows: time | band + venue | ▶ | star */
+  .rw:not(.vrow):not(.rwb) {
+    grid-template-columns: 54px minmax(0, 1fr) auto auto;
+    column-gap: 10px;
+    padding: 10px 0;
+    border-radius: 0;
+    border-bottom: 1px solid #241d2f;
+  }
+  .rw:not(.vrow) > .rplay {
+    grid-column: 3;
+  }
+  .rw:not(.vrow):not(.rwb) > .star {
+    grid-column: 4;
+    width: 36px;
+    font-size: 22px;
+  }
+  .rw:has(> .tg) > .rplay {
+    grid-row: 1 / span 2;
+  }
+  .rplay:not([hidden]) {
+    display: flex;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1.5px solid #3a3046;
+    color: var(--ink);
+    align-items: center;
+    justify-content: center;
+  }
+  .rplay svg {
+    width: 16px;
+    height: 16px;
+  }
+  .rplay.on {
+    background: var(--acc);
+    border-color: var(--acc);
+    color: var(--on-acc);
+  }
+  .tcol b,
+  .tcol b:first-child {
+    font-size: 20px;
+    line-height: 1;
+  }
+  .rb > b {
+    font-size: 19px;
+  }
+  .rw:hover {
+    background: none;
+  }
+
+  /* Bands tab: a list (photo | name + next show | ▶ | star) instead of a grid */
+  .agrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+  .agrid .tile {
+    position: relative;
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    column-gap: 14px;
+    align-items: center;
+    text-align: left;
+    padding: 10px 96px 10px 0;
+    border-radius: 0;
+    border-bottom: 1px solid #241d2f;
+  }
+  .agrid .art.round {
+    position: static;
+    width: 52px;
+    height: 52px;
+    grid-row: span 2;
+    font-size: 18px;
+    box-shadow: none;
+    padding: 0;
+  }
+  .agrid .art.g:after {
+    display: none;
+  }
+  .agrid .tile b {
+    margin: 0;
+    font-size: 19px;
+    align-self: end;
+  }
+  .agrid .tile small {
+    margin-top: 2px;
+    align-self: start;
+  }
+  .agrid .art.round .pb {
+    right: 48px;
+    top: 50%;
+    bottom: auto;
+    margin-top: -22px;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: 1.5px solid #3a3046;
+    color: var(--ink);
+    box-shadow: none;
+  }
+  .agrid .art.round .pb.on {
+    background: var(--acc);
+    border-color: var(--acc);
+    color: var(--on-acc);
+  }
+  .agrid .art.round .pb svg {
+    width: 16px;
+    height: 16px;
+  }
+  .agrid .art.round .fv {
+    left: auto;
+    right: 0;
+    top: 50%;
+    bottom: auto;
+    margin-top: -20px;
+    width: 40px;
+    height: 40px;
+    box-shadow: none;
+    background: transparent;
+    color: var(--fave);
+  }
+  .agrid .art.round .fv.tog:not(.on) {
+    background: transparent;
+    color: #8e8199;
+  }
+
+  /* Venues and Faves */
+  .vrow > .art {
+    border-radius: 12px;
+    box-shadow: none;
+  }
+  .rw.vrow {
+    border-radius: 0;
+    border-bottom: 1px solid #241d2f;
+    padding: 10px 0;
+  }
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+  }
+  .card .cn {
+    font-size: 19px;
+  }
+
+  /* band, venue and show pages: the header slides up under the top bar */
+  .hero {
+    margin: calc(-66px - env(safe-area-inset-top)) -16px 18px;
+    padding: calc(78px + env(safe-area-inset-top)) 16px 20px;
+  }
+  .hero h1 {
+    font-size: 40px;
+  }
+  .star.big {
+    top: calc(86px + env(safe-area-inset-top));
+  }
+
+  /* mini player */
+  #player {
+    margin: 0 10px 6px;
+    border-radius: 16px;
+    background: #2b2236;
+  }
+  .pla {
+    border-radius: 10px;
+  }
+  .plbtns .pp,
+  .plbtns .pp:hover {
+    background: var(--ink);
+    color: var(--panel);
+    border-radius: 50%;
+  }
+
+  /* About slides up from the bottom */
+  .about {
+    padding: env(safe-area-inset-top) 0 0;
+  }
+  .acard {
+    max-height: 92%;
+    border-radius: 28px 28px 0 0;
+    background: var(--card);
+    padding: 22px 20px calc(24px + env(safe-area-inset-bottom));
+  }
+}
+
+/* phones: the search box that slides out of the top bar */
+@media (max-width: 700px) {
+  .msf {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 44px;
+    padding: 0 2px 0 14px;
+    border-radius: 22px;
+    background: var(--hi);
+    color: var(--mute);
+  }
+  .msf > svg {
+    flex: none;
+    width: 18px;
+    height: 18px;
+  }
+  .msf input {
+    all: unset;
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    color: var(--ink);
+    font-size: 17px;
+  }
+  .msf input::placeholder {
+    color: var(--mute);
+  }
+  .msf input::-webkit-search-cancel-button {
+    display: none;
+  }
+  .msf .mbtn {
+    background: none;
+    color: var(--ink);
+  }
+  .msf.slide {
+    animation: msf-out 0.24s ease-out;
+  }
+  @keyframes msf-out {
+    from {
+      clip-path: inset(0 0 0 calc(100% - 44px) round 22px);
+    }
+    to {
+      clip-path: inset(0 0 0 0 round 22px);
+    }
+  }
+  /* search mode: the bar's box and X replace the page's own box, title and Cancel */
+  #main.srch .sf,
+  #main.srch .top h1,
+  #main.srch .top .sx {
+    display: none;
+  }
+  #main.srch .top {
+    margin-bottom: 6px;
+  }
+}
+@media (max-width: 700px) {
+  #main.srch section > h2 {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--acc);
+    margin: 18px 0 8px;
+  }
+  #main.srch section > h2 .cnt {
+    color: var(--mute);
+  }
+  #main.srch .row .tile {
+    width: 104px;
+  }
+  #main.srch .row .tile b {
+    font-size: 16px;
+  }
+  #main.srch .row .art {
+    font-size: 26px;
+  }
+}
+/* wide screens (the car): Oswald runs narrow, so names, times and titles go up a size */
+@media (min-width: 701px) {
+  h1 {
+    font-size: 44px;
+  }
+  .rb > b {
+    font-size: 23px;
+  }
+  .tcol b,
+  .tcol b:first-child {
+    font-size: 22px;
+  }
+  .tile b {
+    font-size: 20px;
+  }
+  .hero h1 {
+    font-size: 56px;
+  }
+}
+@media (max-width: 1000px) and (min-width: 701px) {
+  h1 {
+    font-size: 38px;
+  }
+  .rb > b {
+    font-size: 21px;
+  }
+  .hero h1 {
+    font-size: 42px;
+  }
+}
+
+/* wide screens (the car): the same redesign as phones, sized for arm's length.
+ * The sidebar stays; days are tiles, filters are outlined, rows end in a round ▶. */
+@media (min-width: 701px) {
+  .app {
+    background: var(--bg);
+  }
+  nav {
+    background: var(--bg);
+  }
+  nav button.on {
+    background: var(--hi);
+  }
+  /* day tiles */
+  .sw[data-row="days"] .chips .chip {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    width: 68px;
+    height: 76px;
+    padding: 0;
+    border-radius: 14px;
+    background: var(--hi);
+    color: #e2d9ea;
+  }
+  .sw[data-row="days"] .chips .chip.wide {
+    width: auto;
+    padding: 0 22px;
+  }
+  .sw[data-row="days"] .chips .chip .dl {
+    display: none;
+  }
+  .sw[data-row="days"] .chips .chip .dt {
+    display: contents;
+  }
+  .sw[data-row="days"] .chips .chip small {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+  .sw[data-row="days"] .chips .chip b {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 27px;
+    line-height: 1.05;
+  }
+  .sw[data-row="days"] .chips .chip.wide b {
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .sw[data-row="days"] .chips .chip.on {
+    background: var(--ink);
+    color: var(--panel);
+  }
+  .sw[data-row="days"] {
+    margin-bottom: 16px;
+  }
+  /* filters: outlined, the picked genre in coral */
+  .frow .chip,
+  .frow .sortb,
+  .top .pill.loc,
+  .top .chip:not(.pall) {
+    border: 1.5px solid #3a3046;
+    background: transparent;
+    color: #e2d9ea;
+    border-radius: 12px;
+  }
+  .frow .chip {
+    height: 46px;
+    padding: 0 16px;
+    font-size: 16px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+  }
+  .frow .chips .chip.on {
+    background: var(--acc);
+    border-color: var(--acc);
+    color: var(--on-acc);
+  }
+  .top .chip.pall {
+    border-radius: 999px;
+  }
+  .rule {
+    height: 1px;
+    background: var(--line);
+    margin: 0 0 6px;
+  }
+  /* section labels */
+  .dh,
+  .hero ~ h2 {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mute);
+    margin: 22px 0 4px;
+  }
+  .favsec .dh {
+    color: var(--acc);
+  }
+  /* show rows: time | photo | band + venue | tags | ▶ | star, with dividers */
+  .rw:not(.vrow):not(.rwb) {
+    grid-template-columns: 92px 60px minmax(0, 1fr) auto auto auto;
+    gap: 18px;
+    padding: 12px 0;
+    border-radius: 0;
+    border-bottom: 1px solid #241d2f;
+  }
+  .rw:not(.vrow):not(.rwb) > .rplay {
+    grid-column: 5;
+  }
+  .rw:not(.vrow):not(.rwb) > .star {
+    grid-column: 6;
+  }
+  .rw > .art .pb {
+    display: none;
+  }
+  .rw .art {
+    box-shadow: none;
+    border-radius: 12px;
+  }
+  .rplay:not([hidden]) {
+    display: flex;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 1.5px solid #3a3046;
+    color: var(--ink);
+    align-items: center;
+    justify-content: center;
+  }
+  .rplay svg {
+    width: 20px;
+    height: 20px;
+  }
+  .rplay.on {
+    background: var(--acc);
+    border-color: var(--acc);
+    color: var(--on-acc);
+  }
+  .rw:hover,
+  .rw.sel {
+    background: #ffffff0a;
+  }
+  .rw.vrow,
+  .rw.rwb {
+    border-radius: 0;
+    border-bottom: 1px solid #241d2f;
+  }
+  .vrow > .art {
+    border-radius: 12px;
+    box-shadow: none;
+  }
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+  }
+}
+/* half screen: no tags column, so ▶ and star move left */
+@media (max-width: 1000px) and (min-width: 701px) {
+  .rw:not(.vrow):not(.rwb) {
+    grid-template-columns: 70px 48px minmax(0, 1fr) auto auto;
+    gap: 14px;
+  }
+  .rw:not(.vrow):not(.rwb) > .rplay {
+    grid-column: 4;
+  }
+  .rw:not(.vrow):not(.rwb) > .star {
+    grid-column: 5;
+  }
+  .rplay:not([hidden]) {
+    width: 50px;
+    height: 50px;
+  }
+  .sw[data-row="days"] .chips .chip {
+    width: 60px;
+    height: 70px;
+  }
+}
+
+/* ---- venue buttons: labeled pills, Directions in coral ---- */
+.mi.lb {
+  width: auto;
+  height: 52px;
+  padding: 0 20px 0 16px;
+  gap: 8px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--hi);
+  color: var(--ink);
+  font-size: 17px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.mi.lb svg {
+  width: 22px;
+  height: 22px;
+}
+.mi.lb.dir {
+  background: var(--acc);
+  color: var(--on-acc);
+  font-weight: 700;
+}
+.mi.lb:hover {
+  background: #ffffff24;
+}
+.mi.lb.dir:hover {
+  background: #ffa085;
+}
+.mrow.pills {
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+.vaddr {
+  color: #cfc4d8;
+  font-size: 17px;
+  margin-top: 8px;
+}
+
+/* ---- full-screen player ---- */
+#fp {
+  position: fixed;
+  inset: 0;
+  z-index: 25;
+  background: #000c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+#fp[hidden] {
+  display: none;
+}
+.fpc {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  max-height: 100%;
+  overflow-y: auto;
+  background: var(--panel);
+  border-radius: 24px;
+  padding: 24px 32px 32px;
+  display: grid;
+  grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  column-gap: 40px;
+  align-items: center;
+  box-shadow: 0 24px 60px #000c;
+}
+.fph {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.fpx {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--hi);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fpx svg {
+  width: 22px;
+  height: 22px;
+}
+.fpq {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.fpsp {
+  width: 48px;
+}
+.fpart {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 24px;
+  background: #3a2c4a center/cover;
+  box-shadow: 0 20px 50px #0008;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--display);
+  font-size: 96px;
+  color: #ffffffcc;
+}
+.fpinfo {
+  min-width: 0;
+}
+.fpt {
+  font-size: 17px;
+  color: #cfc4d8;
+}
+.fpb {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 52px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  margin: 4px 0 0;
+  overflow-wrap: anywhere;
+}
+.fpshow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--card);
+}
+.fpshow[hidden] {
+  display: none;
+}
+.fptime {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 24px;
+  color: var(--acc);
+}
+.fpwhere {
+  flex: 1;
+  min-width: 0;
+}
+.fpven {
+  display: block;
+  font-size: 17px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fpwhen {
+  display: block;
+  font-size: 14px;
+  color: var(--mute);
+  margin-top: 2px;
+}
+.fpgo {
+  color: var(--mute);
+  font-size: 22px;
+}
+.fpp {
+  margin-top: 24px;
+  padding: 10px 0;
+  cursor: pointer;
+}
+.fpp > span {
+  display: block;
+  height: 5px;
+  border-radius: 3px;
+  background: #2e2539;
+  overflow: hidden;
+}
+.fpp i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--acc);
+}
+.fptimes {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--mute);
+}
+.fpbtns {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+.fpbtns > * {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--ink);
+}
+.fpfave,
+.fpdir {
+  width: 52px;
+  height: 52px;
+}
+.fpfave svg,
+.fpdir svg {
+  width: 26px;
+  height: 26px;
+}
+.fpfave.on {
+  color: var(--fave);
+}
+.fpfave.on svg path {
+  fill: currentColor;
+}
+.fpdir[hidden] {
+  visibility: hidden;
+  display: flex;
+}
+.fpskip {
+  width: 60px;
+  height: 60px;
+  background: var(--hi);
+}
+.fpskip svg {
+  width: 24px;
+  height: 24px;
+}
+.fppp {
+  width: 84px;
+  height: 84px;
+  background: var(--acc);
+  color: var(--on-acc);
+}
+.fppp svg {
+  width: 34px;
+  height: 34px;
+}
+.fpam {
+  display: block;
+  margin-top: 18px;
+  text-align: center;
+  font-size: 13px;
+  color: #8e8199;
+  text-decoration: none;
+}
+.fpam[hidden] {
+  display: none;
+}
+.pla[data-plfull],
+.plt[data-plfull] {
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  /* the title row keeps the same width every day, so Play all stays put */
+  .top .tt {
+    flex: 1;
+    min-width: 0;
+  }
+  .top h1 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .top .chip.pall {
+    flex: none;
+  }
+  /* venue pills fit three to a row */
+  .mi.lb {
+    height: 44px;
+    padding: 0 16px 0 12px;
+    font-size: 15px;
+  }
+  .mi.lb svg {
+    width: 18px;
+    height: 18px;
+  }
+  .vaddr {
+    font-size: 15px;
+  }
+  .card.vcard .vacts .mi.lb {
+    width: auto;
+    height: 40px;
+  }
+  /* full player fills the phone */
+  #fp {
+    padding: 0;
+    background: var(--panel);
+    align-items: stretch;
+  }
+  .fpc {
+    border-radius: 0;
+    max-height: none;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: calc(12px + env(safe-area-inset-top)) 24px calc(20px + env(safe-area-inset-bottom));
+  }
+  .fph {
+    margin-bottom: 0;
+  }
+  .fpx {
+    width: 40px;
+    height: 40px;
+  }
+  .fpsp {
+    width: 40px;
+  }
+  .fpart {
+    width: min(100%, 42vh);
+    margin: 22px auto 0;
+    font-size: 72px;
+  }
+  .fpinfo {
+    margin-top: 22px;
+  }
+  .fpb {
+    font-size: 40px;
+  }
+  .fpshow {
+    margin-top: 14px;
+    padding: 12px 14px;
+  }
+  .fptime {
+    font-size: 22px;
+  }
+  .fpven {
+    font-size: 15px;
+  }
+  .fpwhen {
+    font-size: 13px;
+  }
+  .fpp {
+    margin-top: 16px;
+  }
+  .fpp > span {
+    height: 4px;
+  }
+  .fpbtns {
+    margin-top: 6px;
+  }
+  .fppp {
+    width: 76px;
+    height: 76px;
+  }
+  .fpskip {
+    width: 52px;
+    height: 52px;
+  }
+  .fpam {
+    margin-top: auto;
+    padding-top: 12px;
+  }
+}
+@media (max-width: 700px) {
+  .hero ~ h2 {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--acc);
+    margin: 18px 0 2px !important;
+  }
+}
+@media (max-width: 700px) {
+  /* the title shrinks a bit on narrow phones so WEDNESDAY fits beside Play all */
+  .top h1 {
+    font-size: clamp(34px, 11.6vw, 46px);
+  }
+}
+
+/* where a show came from: the icon sits right after the time ("5PM 📅"), with a key under the list */
+.tcol b .srci {
+  margin: 0 0 0 6px;
+  vertical-align: 0.02em;
+}
+.tcol b .srci svg {
+  width: 0.72em;
+  height: 0.72em;
+}
+.tcol b .srci.vr {
+  opacity: 0.85;
+}
+.skey {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 22px;
+  padding: 22px 0 12px;
+  font-size: 15px;
+  color: var(--mute);
+}
+.skey span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.skey svg {
+  width: 17px;
+  height: 17px;
+}
+.skey .cm svg {
+  color: var(--community);
+}
+@media (min-width: 701px) {
+  .rw:not(.vrow):not(.rwb) {
+    grid-template-columns: 100px 60px minmax(0, 1fr) auto auto auto;
+  }
+}
+@media (max-width: 1000px) and (min-width: 701px) {
+  .rw:not(.vrow):not(.rwb) {
+    grid-template-columns: 96px 48px minmax(0, 1fr) auto auto;
+  }
+}
+@media (max-width: 700px) {
+  .rw:not(.vrow):not(.rwb) {
+    grid-template-columns: 74px minmax(0, 1fr) auto auto;
+  }
+  .skey {
+    font-size: 13px;
+    gap: 6px 18px;
+  }
+  .skey svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+.tcol b {
+  white-space: nowrap;
+}
+@media (max-width: 700px) {
+  .rw:not(.vrow):not(.rwb) {
+    grid-template-columns: 82px minmax(0, 1fr) auto auto;
+    column-gap: 8px;
+  }
+  .rw .vb {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+}
+/* band page dates: room for "8:30PM 📅" */
+.rw.rwb {
+  grid-template-columns: 100px minmax(0, 1fr);
+}
+@media (max-width: 700px) {
+  .rw.rwb {
+    grid-template-columns: 82px minmax(0, 1fr);
+    padding: 10px 0;
+  }
+}
+@media (max-width: 700px) {
+  .rw.rwb {
+    border-radius: 0;
+    border-bottom: 1px solid #241d2f;
   }
 }

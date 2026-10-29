@@ -6,13 +6,13 @@ Copyright 2026 AUTOMATOUS.IO. All rights reserved. See LICENSE.
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-    <meta name="theme-color" content="#0a070d" />
+    <meta name="theme-color" content="#17121f" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="manifest" href="manifest.json" />
-    <link rel="icon" href="icon-192.png?v=2" />
-    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2" />
+    <link rel="icon" href="icon-192.png?v=3" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=3" />
     <title>TOPA Local Music Finder</title>
     <meta name="description" content="Live music near you in Ventura County." />
     <!-- for AI assistants and crawlers: the listings in plain English (llms.txt) and as data -->
@@ -23,6 +23,8 @@ Copyright 2026 AUTOMATOUS.IO. All rights reserved. See LICENSE.
       title="Upcoming shows in plain English, for AI assistants"
     />
     <link rel="alternate" type="application/json" href="events.json" title="Upcoming shows as JSON" />
+    <link rel="preload" href="fonts/figtree.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="fonts/oswald.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -31,9 +33,9 @@ Copyright 2026 AUTOMATOUS.IO. All rights reserved. See LICENSE.
       <main id="main"></main>
       <div id="player" hidden>
         <div class="pll">
-          <div class="pla"></div>
+          <div class="pla" data-plfull role="button" aria-label="Open the full player"></div>
           <div class="pli">
-            <b class="plt"></b>
+            <b class="plt" data-plfull></b>
             <button class="plb" data-plshow></button>
             <a class="pldz" target="_blank" rel="noopener" hidden>Preview from Apple Music</a>
           </div>
@@ -64,6 +66,47 @@ Copyright 2026 AUTOMATOUS.IO. All rights reserved. See LICENSE.
               <path d="M6 6l12 12M18 6L6 18" />
             </svg>
           </button>
+        </div>
+      </div>
+    </div>
+    <!-- full-screen player: opens from the mini player; app.js fills it in -->
+    <div id="fp" role="dialog" aria-modal="true" aria-label="Now playing" hidden>
+      <div class="fpc">
+        <div class="fph">
+          <button class="fpx" data-fpclose aria-label="Close player">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </button>
+          <span class="fpq"></span>
+          <span class="fpsp"></span>
+        </div>
+        <div class="fpart"></div>
+        <div class="fpinfo">
+          <p class="fpt"></p>
+          <h2 class="fpb"></h2>
+          <button class="fpshow" data-plshow>
+            <b class="fptime"></b>
+            <span class="fpwhere"><span class="fpven"></span><small class="fpwhen"></small></span>
+            <span class="fpgo">›</span>
+          </button>
+          <div class="fpp" data-pl="seek"><span><i></i></span></div>
+          <div class="fptimes"><small class="fpcur">0:00</small><small class="fpdur">0:30</small></div>
+          <div class="fpbtns">
+            <button class="fpfave" data-fpfave aria-label="Fave this band"></button>
+            <button class="fpskip" data-pl="prev" aria-label="Previous"></button>
+            <button class="fppp" data-pl="toggle" aria-label="Play or pause"></button>
+            <button class="fpskip" data-pl="next" aria-label="Next"></button>
+            <a class="fpdir" target="_blank" rel="noopener" aria-label="Directions"></a>
+          </div>
+          <a class="fpam" target="_blank" rel="noopener">30-second previews from Apple Music</a>
         </div>
       </div>
     </div>

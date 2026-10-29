@@ -6,6 +6,21 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
 
 ---
 
+## 2.5.1
+
+**Fixes.**
+
+- A show listed without a venue no longer appears as a blank venue. It shows as "Venue not listed" with its town, and
+  links to its listing.
+- Instagram shows as an @handle link instead of a big round button: on venue pages under the address, on band
+  pages under the name, and for both the band and the venue on show pages. A band's other links sit on the same line.
+- Show pages no longer repeat the band's name above its links. On show and band pages the band's @handle sits under
+  its play button, and moves up when there's no preview to play.
+- Show pages put the distance in the line above the band's name, like venue pages, instead of on a line of its own.
+- On phones, band, venue and show pages are one color behind the logo again, with no line through the top bar.
+
+---
+
 ## 2.5.0
 
 **One logo everywhere, and a better fit on smaller phones.**

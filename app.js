@@ -931,7 +931,7 @@ function bandsPage() {
   return (
     topBar(
       "Bands",
-      playAllButton() + sort,
+      `<i class="brk"></i>` + playAllButton() + sort,
       countLabel(bands.length, "band"),
       true,
       filterBox("bf", "Filter bands", bandFilter),
@@ -1209,6 +1209,22 @@ function navHtml(page) {
   );
 }
 
+// a day title too wide for the phone uses the short name: Wednesday → Wed
+function fitTitle() {
+  const h = document.querySelector(".top h1");
+  if (!h) return;
+  const full = h.dataset.full || h.textContent;
+  h.textContent = full;
+  h.removeAttribute("aria-label");
+  const short = /^(Mon|Tues|Wednes|Thurs|Fri|Satur|Sun)day$/.test(full) && full.slice(0, 3);
+  if (short && h.scrollWidth > h.clientWidth) {
+    h.dataset.full = full;
+    h.textContent = short;
+    h.setAttribute("aria-label", full);
+  }
+}
+addEventListener("resize", fitTitle);
+
 function render() {
   if (!PAGES[view.split(":")[0]]) view = "Shows";
   const page = view.split(":")[0];
@@ -1245,6 +1261,7 @@ function render() {
     if (r > dayRow.scrollLeft + dayRow.clientWidth - pad) dayRow.scrollLeft = r - dayRow.clientWidth + pad;
     else if (l < dayRow.scrollLeft + pad) dayRow.scrollLeft = Math.max(0, l - pad);
   }
+  fitTitle();
   updateScrollRows();
   markScrolled();
   syncPlayIcons();

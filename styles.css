@@ -745,7 +745,9 @@ h2 {
   font-size: 22px;
   color: #e8e8e8;
   font-weight: 700;
-  margin-top: 2px;
+  /* 44px tall to tap, text stays put */
+  padding: 11px 0;
+  margin: -9px 0 -11px;
 }
 .tg {
   display: flex;

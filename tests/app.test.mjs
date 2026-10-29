@@ -291,7 +291,7 @@ test("an added show uses its venue's added details and has no Ventura Rocks link
   };
   const added = await open(t, { listings, query: "&view=Show:0" });
   assert.equal(await text(added, "h1"), "The Tide Pool Ramblers");
-  assert.equal(await added.$('a[title="View on Ventura Rocks"]'), null);
+  assert.doesNotMatch(await text(added, ".srcline"), /Ventura Rocks/);
   assert.ok(await added.$('a[href="tel:8055550123"]'), "calls the added phone number");
   assert.ok(await added.$('a[href="https://newspot.example"]'), "links the added website");
   // distance works from the map spot that came with the show
@@ -302,7 +302,7 @@ test("an added show uses its venue's added details and has no Ventura Rocks link
   assert.match(await text(added, ".mrow .sub"), /here/);
 
   const listed = await open(t, { listings, query: "&view=Show:1" });
-  assert.ok(await listed.$('a[title="View on Ventura Rocks"]'), "Ventura Rocks shows keep their link");
+  assert.match(await text(listed, "a.srcline"), /Ventura Rocks/, "Ventura Rocks shows keep their link");
 });
 
 test("a venue someone added shows up before its first show", async t => {
@@ -335,7 +335,7 @@ test("a band someone added shows up before its first show, but not under its oth
   assert.ok(!tiles.includes("The Quiet Ramblers"), "an alias isn't its own band");
   const page = await open(t, { listings, query: "&view=" + encodeURIComponent("Band:Quiet Ramblers") });
   assert.match(await text(page, ".hero small"), /FOLK/);
-  assert.equal(await text(page, ".blinks .chip"), "Website");
+  assert.equal(await text(page, ".blinks .bl"), "Website");
 });
 
 // ---- Layout ----

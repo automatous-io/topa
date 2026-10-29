@@ -728,24 +728,6 @@ h2 {
   font-size: 17px;
   margin-left: 8px;
 }
-.mi {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--acc);
-  border: 1px solid #ffffff26;
-}
-.mi:hover {
-  background: #ffffff14;
-  color: var(--ink);
-}
-.mi svg {
-  width: 26px;
-  height: 26px;
-}
 .vb {
   display: block;
   color: var(--mute);
@@ -965,15 +947,6 @@ h2 {
 }
 .srci.af {
   margin: 0 0 0 8px;
-}
-/* a band's play button, then its link pills, in one row */
-.hero .acts.blinks {
-  flex-wrap: wrap;
-  align-items: center;
-}
-.blinks .chip {
-  color: var(--ink);
-  text-decoration: none;
 }
 /* quiet "+ Add a show here" links at the bottom of band and venue pages */
 .addrow {
@@ -2035,14 +2008,6 @@ main.back {
   .hero {
     position: relative;
   }
-  .mi {
-    width: 48px;
-    height: 48px;
-  }
-  .mi svg {
-    width: 22px;
-    height: 22px;
-  }
   .vb.big {
     font-size: 17px;
   }
@@ -2086,14 +2051,6 @@ main.back {
   .hplay {
     width: 56px;
     height: 56px;
-  }
-  /* smaller pills so play and three links fit one line */
-  .hero .acts.blinks {
-    gap: 8px;
-  }
-  .hero .acts.blinks .chip {
-    font-size: 14px;
-    padding: 7px 12px;
   }
   .hplay svg {
     width: 28px;
@@ -2274,8 +2231,7 @@ main.back {
   }
 }
 
-/* ---- The 2.0 look: round buttons, date tiles, Oswald for names and times, Figtree for the rest.
- * These rules sit on top of the ones above. ---- */
+/* ---- 2.0 look: these rules override the ones above ---- */
 @font-face {
   font-family: Figtree;
   src: url(fonts/figtree.woff2) format("woff2");
@@ -2322,7 +2278,7 @@ h1,
 .hero {
   background: linear-gradient(#2b2236, transparent);
 }
-/* the wordmark: coral ridge, Oswald name */
+/* wordmark */
 .wmk {
   display: inline-flex;
   flex-direction: column;
@@ -2342,14 +2298,14 @@ h1,
   letter-spacing: 0.08em;
   margin-right: -0.08em;
 }
-/* stars drawn as outlines fill in when on */
+/* outline stars fill in when on */
 .fv svg path {
   fill: currentColor;
 }
 nav button.on[data-v="Faves"] svg path {
   fill: currentColor;
 }
-/* day buttons: wide screens show the label, phones the two-line tile */
+/* day buttons: label on wide screens, tile on phones */
 .chip .dt {
   display: none;
 }
@@ -2485,7 +2441,7 @@ nav button.on[data-v="Faves"] svg path {
     width: 16px;
     height: 16px;
   }
-  /* the Shows search box only shows in search mode (the bar's search button) */
+  /* the Shows search box only shows in search mode */
   #main:not(.srch) .sf:has(#s) {
     display: none;
   }
@@ -2596,7 +2552,7 @@ nav button.on[data-v="Faves"] svg path {
     color: var(--acc);
   }
 
-  /* show rows: time | band + venue | ▶ | star */
+  /* show rows: time | band + venue | play | star */
   .rw:not(.vrow):not(.rwb) {
     grid-template-columns: 54px minmax(0, 1fr) auto auto;
     column-gap: 10px;
@@ -2646,7 +2602,7 @@ nav button.on[data-v="Faves"] svg path {
     background: none;
   }
 
-  /* Bands tab: a list (photo | name + next show | ▶ | star) instead of a grid */
+  /* Bands tab: a list on phones */
   .agrid {
     grid-template-columns: minmax(0, 1fr);
     gap: 0;
@@ -2779,7 +2735,7 @@ nav button.on[data-v="Faves"] svg path {
   }
 }
 
-/* phones: the search box that slides out of the top bar */
+/* phones: search box in the top bar */
 @media (max-width: 700px) {
   .msf {
     flex: 1;
@@ -2826,7 +2782,7 @@ nav button.on[data-v="Faves"] svg path {
       clip-path: inset(0 0 0 0 round 22px);
     }
   }
-  /* search mode: the bar's box and X replace the page's own box, title and Cancel */
+  /* search mode: hide the page's own box, title and Cancel */
   #main.srch .sf,
   #main.srch .top h1,
   #main.srch .top .sx {
@@ -2858,7 +2814,7 @@ nav button.on[data-v="Faves"] svg path {
     font-size: 26px;
   }
 }
-/* wide screens (the car): Oswald runs narrow, so names, times and titles go up a size */
+/* wide screens: Oswald runs narrow, so names, times and titles go up a size */
 @media (min-width: 701px) {
   h1 {
     font-size: 44px;
@@ -2889,8 +2845,7 @@ nav button.on[data-v="Faves"] svg path {
   }
 }
 
-/* wide screens (the car): the same redesign as phones, sized for arm's length.
- * The sidebar stays; days are tiles, filters are outlined, rows end in a round ▶. */
+/* wide screens: the same design as phones, sized for the car */
 @media (min-width: 701px) {
   .app {
     background: var(--bg);
@@ -2995,7 +2950,7 @@ nav button.on[data-v="Faves"] svg path {
   .favsec .dh {
     color: var(--acc);
   }
-  /* show rows: time | photo | band + venue | tags | ▶ | star, with dividers */
+  /* show rows: time | photo | band + venue | tags | play | star */
   .rw:not(.vrow):not(.rwb) {
     grid-template-columns: 92px 60px minmax(0, 1fr) auto auto auto;
     gap: 18px;
@@ -3053,7 +3008,7 @@ nav button.on[data-v="Faves"] svg path {
     border-radius: 16px;
   }
 }
-/* half screen: no tags column, so ▶ and star move left */
+/* half screen: no tags column */
 @media (max-width: 1000px) and (min-width: 701px) {
   .rw:not(.vrow):not(.rwb) {
     grid-template-columns: 70px 48px minmax(0, 1fr) auto auto;
@@ -3075,40 +3030,7 @@ nav button.on[data-v="Faves"] svg path {
   }
 }
 
-/* ---- venue buttons: labeled pills, Directions in coral ---- */
-.mi.lb {
-  width: auto;
-  height: 52px;
-  padding: 0 20px 0 16px;
-  gap: 8px;
-  border-radius: 999px;
-  border: 0;
-  background: var(--hi);
-  color: var(--ink);
-  font-size: 17px;
-  font-weight: 600;
-  text-decoration: none;
-}
-.mi.lb svg {
-  width: 22px;
-  height: 22px;
-}
-.mi.lb.dir {
-  background: var(--acc);
-  color: var(--on-acc);
-  font-weight: 700;
-}
-.mi.lb:hover {
-  background: #ffffff24;
-}
-.mi.lb.dir:hover {
-  background: #ffa085;
-}
-.mrow.pills {
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 14px;
-}
+/* venue address under the name */
 .vaddr {
   color: #cfc4d8;
   font-size: 17px;
@@ -3341,7 +3263,7 @@ nav button.on[data-v="Faves"] svg path {
 }
 
 @media (max-width: 700px) {
-  /* the title row keeps the same width every day, so Play all stays put */
+  /* keep the title row one width so Play all stays put */
   .top .tt {
     flex: 1;
     min-width: 0;
@@ -3353,16 +3275,6 @@ nav button.on[data-v="Faves"] svg path {
   }
   .top .chip.pall {
     flex: none;
-  }
-  /* venue pills fit three to a row */
-  .mi.lb {
-    height: 44px;
-    padding: 0 16px 0 12px;
-    font-size: 15px;
-  }
-  .mi.lb svg {
-    width: 18px;
-    height: 18px;
   }
   .vaddr {
     font-size: 15px;
@@ -3449,13 +3361,13 @@ nav button.on[data-v="Faves"] svg path {
   }
 }
 @media (max-width: 700px) {
-  /* the title shrinks a bit on narrow phones so WEDNESDAY fits beside Play all */
+  /* shrink the title on narrow phones so long weekdays fit */
   .top h1 {
     font-size: clamp(34px, 11.6vw, 46px);
   }
 }
 
-/* where a show came from: the icon sits right after the time ("5PM 📅"), with a key under the list */
+/* source icon after the time, and its key under the list */
 .tcol b .srci {
   margin: 0 0 0 6px;
   vertical-align: 0.02em;
@@ -3526,7 +3438,7 @@ nav button.on[data-v="Faves"] svg path {
     max-width: 100%;
   }
 }
-/* band page dates: room for "8:30PM 📅" */
+/* band page dates: room for the time and source icon */
 .rw.rwb {
   grid-template-columns: 100px minmax(0, 1fr);
 }
@@ -3543,7 +3455,7 @@ nav button.on[data-v="Faves"] svg path {
   }
 }
 
-/* venue buttons: Directions, Call, Website, Maps always in the same four spots */
+/* venue tiles */
 .vtiles {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -3585,7 +3497,7 @@ a.vt.dir:hover {
   color: #5a4f66;
   cursor: default;
 }
-/* Play lineup: a full-width bar under the tiles */
+/* Play lineup bar */
 .lineup {
   margin-top: 12px;
   width: 100%;
@@ -3643,7 +3555,7 @@ a.vt.dir:hover {
   }
 }
 
-/* ---- opening splash: about 1.4s, then fades away (index.html decides whether it plays) ---- */
+/* ---- opening splash (index.html decides whether it plays) ---- */
 #splash {
   position: fixed;
   inset: 0;
@@ -3784,7 +3696,7 @@ a.vt.dir:hover {
     visibility: hidden;
   }
 }
-/* the car: same opening, bigger */
+/* bigger on wide screens */
 @media (min-width: 701px) {
   .spl-art {
     width: 250px;
@@ -3795,5 +3707,85 @@ a.vt.dir:hover {
   }
   .spl-tag {
     font-size: 20px;
+  }
+}
+
+/* band links */
+.blinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 22px;
+  margin-top: 16px;
+}
+.bl {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 60px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+.bl span {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--hi);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bl svg {
+  width: 26px;
+  height: 26px;
+}
+.bl:hover span {
+  background: #ffffff24;
+}
+/* Share tile; the car has three tiles */
+button.vt {
+  cursor: pointer;
+}
+.vtiles.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+/* source line on show pages */
+.srcline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  font-size: 15px;
+  color: var(--mute);
+  text-decoration: none;
+}
+.srcline .srci {
+  margin: 0;
+}
+a.srcline:hover {
+  color: var(--ink);
+}
+@media (max-width: 700px) {
+  .blinks {
+    gap: 12px 18px;
+    margin-top: 12px;
+  }
+  .bl {
+    min-width: 52px;
+    font-size: 12px;
+  }
+  .bl span {
+    width: 52px;
+    height: 52px;
+  }
+  .bl svg {
+    width: 22px;
+    height: 22px;
+  }
+  .srcline {
+    font-size: 13px;
+    margin-top: 16px;
   }
 }

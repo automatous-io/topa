@@ -421,6 +421,7 @@ const ICONS = {
   sc: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17h9.5a3.5 3.5 0 0 0 0-7 5.5 5.5 0 0 0-9.5-2.6z"/><path d="M3 13.5V17M6 11v6"/></g>',
   fb: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M15.5 7.5h-1.8a2.2 2.2 0 0 0-2.2 2.2V21M9 12.5h6"/></g>',
   shr: '<path d="M12 15V4M8 7.5 12 4l4 3.5M7 11H6a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1h-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+  plus: '<path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>',
   play: '<path d="M8 5.5v13l11-6.5z"/>',
   pause: '<path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/>',
   next: '<path d="M5.5 6l9 6-9 6zM16 6h2.5v12H16z"/>',
@@ -1866,89 +1867,84 @@ addEventListener("beforeinstallprompt", ev => {
   installPrompt = ev;
 });
 
-function installHtml() {
+// "Get the app": one tap where the browser allows it, otherwise the steps
+function installTile() {
   if (IN_TESLA || INSTALLED) return "";
-  // one card either way: a one-tap Install where the browser allows it, otherwise the steps
-  const card = (tag, attrs, icon, title, sub) =>
-    `<${tag} class="ainstall"${attrs}><span class="ai-icon">${svg(icon)}</span>` +
-    `<span class="ai-text"><b>${title}</b><small>${sub}</small></span>` +
-    (tag === "button" ? `<span class="ai-go">›</span>` : "") +
-    `</${tag}>`;
-  if (installPrompt)
-    return card("button", " data-install", "install", "Install TOPA", "Opens full-screen, like an app");
-  if (ON_IPHONE)
-    return card("div", "", "share", "Add to Home Screen", "In Safari, tap Share, then Add to Home Screen");
-  if (ON_ANDROID) return card("div", "", "install", "Install TOPA", "In Chrome, tap ⋮, then Install app");
-  return card(
-    "div",
-    "",
-    "install",
-    "Get the app",
-    "On a phone, add TOPA to your home screen from the browser's menu",
-  );
+  const tile = (tag, attrs, icon, sub) =>
+    `<${tag} class="abig inst"${attrs}>${svg(icon)}<span><b>Get the app</b><small>${sub}</small></span></${tag}>`;
+  if (installPrompt) return tile("button", " data-install", "install", "Install with one tap");
+  if (ON_IPHONE) return tile("div", "", "share", "Share › Add to Home Screen");
+  if (ON_ANDROID) return tile("div", "", "install", "⋮ › Install app");
+  return tile("div", "", "install", "Add it from your phone's browser");
 }
 
-// About: the four forms as one card, styled like the Install card
-const addCard = () =>
-  `<div class="aadd">` +
-  [
-    ["add-show", "at", "Add a show", "One night at any venue"],
-    ["add-weekly-show", "cal", "Add a weekly show", "Open mics and residencies"],
-    ["add-band", "Bands", "Add or update a band", "Links, photo, previews"],
-    ["add-venue", "Venues", "Add or update a venue", "Address, map spot, photo"],
-  ]
-    .map(
-      ([form, icon, title, sub]) =>
-        `<a href="${formUrl(form)}" target="_blank" rel="noopener"><span class="aa-icon">${svg(icon)}</span>` +
-        `<span class="ai-text"><b>${title}</b><small>${sub}</small></span><span class="ai-go">›</span></a>`,
-    )
-    .join("") +
-  `</div>`;
+const newTab = (href, label) => `<a href="${href}" target="_blank" rel="noopener">${label}</a>`;
 
+// About
 function aboutHtml() {
-  const link = (href, label) => `<a class="chip" href="${href}" target="_blank" rel="noopener">${label}</a>`;
+  const app = installTile();
+  const fact = (label, value) => `<div><dt>${label}</dt><dd>${value}</dd></div>`;
   return (
-    `<button class="ax" data-about-close aria-label="Close">${CLOSE_ICON}</button>` +
-    `<div class="ahead">${wordmark("about")}<p>Local Music Finder</p></div>` +
-    `<p class="astory">Made for and by local live music lovers. ` +
-    `Bands, fans, and venues add to it, so it keeps getting better.</p>` +
+    `<div class="abar"><button class="ax" data-about-close aria-label="Close">${CLOSE_ICON}</button></div>` +
+    `<header class="ahero">${wordmark("about")}<p class="atag">Local Music Finder</p>` +
+    `<p class="astory">Made for and by local live music lovers.<br>` +
+    `Bands, fans, and venues add to it, so it keeps getting better.</p></header>` +
+    `<div class="abody">` +
+    `<div class="abigs${app ? "" : " one"}">` +
+    `<button class="abig add" data-about-add>${svg("at")}<span><b>Add to TOPA</b><small>Shows, bands, venues</small></span><span class="ago">›</span></button>` +
+    app +
+    `</div>` +
     `<h3>Where shows come from</h3>` +
     `<div class="legend">` +
-    `<div><span class="srci vr">${svg("cal")}</span><span>The <a href="${VR_SITE}" target="_blank" rel="noopener">Ventura Rocks</a> ` +
-    `community calendar, checked 3 times a day</span></div>` +
+    `<div><span class="srci vr">${svg("cal")}</span><span>The ${newTab(VR_SITE, "Ventura Rocks")} ` +
+    `community calendar, checked 3x a day</span></div>` +
     `<div><span class="srci cm">${svg("at")}</span><span>Sent to TOPA by bands, fans, and venues</span></div>` +
     `</div>` +
     `<h3>Good to know</h3>` +
-    `<p>Previews and album art come from <a href="https://music.apple.com" target="_blank" rel="noopener">Apple Music</a>.</p>` +
-    `<p>Distances are approximate.<br>Visits are counted anonymously, with no cookies.</p>` +
-    `<button class="ainstall" data-about-add><span class="ai-icon cm">${svg("at")}</span>` +
-    `<span class="ai-text"><b>Add your show</b><small>Shows, bands, and venues</small></span>` +
-    `<span class="ai-go">›</span></button>` +
-    installHtml() +
-    `<div class="alinks">${link(REPO, "GitHub")}${link(REPO + "#readme", "README")}${link(REPO + "/blob/main/LICENSE", "License")}</div>` +
-    `<p class="acopy">© 2026 AUTOMATOUS.IO. Not affiliated with Ventura Rocks or Apple.</p>` +
-    `<p class="aver"><a href="${REPO}" target="_blank" rel="noopener">v${VERSION}</a>` +
-    `${updatedLabel() ? ` · listings updated ${updatedLabel()}` : ""}</p>`
+    `<dl class="afacts">` +
+    fact("Previews and art", newTab("https://music.apple.com", "Apple Music")) +
+    fact("Distances", "Approximate") +
+    fact("Visits", "Counted anonymously, no cookies") +
+    (updatedLabel() ? fact("Listings updated", updatedLabel()) : "") +
+    `</dl>` +
+    `<p class="alinks">${newTab(REPO, "GitHub")}${newTab(REPO + "#readme", "README")}` +
+    `${newTab(REPO + "/blob/main/LICENSE", "License")}<span class="aver">${newTab(REPO, "v" + VERSION)}</span></p>` +
+    `<p class="acopy">© 2026 AUTOMATOUS.IO.<br>Not affiliated with Ventura Rocks or Apple.</p>` +
+    `</div>`
   );
 }
 
-// About's second page: how adding works, and the four forms
+// About's second page: the four forms
 function addHtml() {
+  const form = (name, icon, title, sub) =>
+    `<a class="aform" href="${formUrl(name)}" target="_blank" rel="noopener">${svg(icon)}` +
+    `<span><b>${title}</b><small>${sub}</small></span></a>`;
+  const step = (title, text) => `<li><b>${title}</b><span>${text}</span></li>`;
   return (
-    `<button class="ax" data-about-close aria-label="Close">${CLOSE_ICON}</button>` +
-    `<button class="aback" data-about-back>‹ About</button>` +
-    `<h2 class="atitle">Add your show</h2>` +
-    `<p>Bands, fans, and venues can send shows straight to TOPA, plus band info and venue photos. ` +
-    `Shows added this way get the <span class="srci cm">${svg("at")}</span>mark.</p>` +
+    `<div class="abar"><button class="aback" data-about-back>‹ About</button>` +
+    `<button class="ax" data-about-close aria-label="Close">${CLOSE_ICON}</button></div>` +
+    `<header class="ahero addh"><div class="atrow"><span class="aat">${svg("at")}</span>` +
+    `<div><h2 class="atitle">Add to TOPA</h2><p class="atag cm">Shows, bands, venues</p></div></div>` +
+    `<p class="astory">Bands, fans, and venues can add shows.<br>` +
+    `They get the <span class="srci cm">${svg("at")}</span>mark in the list.</p></header>` +
+    `<div class="abody">` +
+    `<div class="aforms">` +
+    form("add-show", "plus", "Show", "One night at any venue") +
+    form("add-weekly-show", "cal", "Weekly show", "Open mics, residencies") +
+    form("add-band", "Bands", "Band", "Links, photo, previews") +
+    form("add-venue", "Venues", "Venue", "Address, map spot, photo") +
+    `</div>` +
+    `<p class="anote"><b>Already listed?</b>Send the same form with just what's changing. Blank answers stay as they are.</p>` +
+    `<h3>How it works</h3>` +
     `<ol class="asteps">` +
-    `<li><b>Pick what you're adding</b><span>A show, a weekly show, a band, or a venue.</span></li>` +
-    `<li><b>Fill in a short form</b><span>It's on GitHub, so you'll need a free account. A bot checks it in ` +
-    `about a minute and tells you if anything needs fixing.</span></li>` +
-    `<li><b>It goes live</b><span>Once it's approved, it shows up on TOPA within minutes.</span></li>` +
+    step("Pick what you're adding", "A show, a weekly show, a band, or a venue.") +
+    step(
+      "Fill in a short form",
+      "It's on GitHub, so you'll need a free account. A bot checks it in about a minute and tells you if anything needs fixing.",
+    ) +
+    step("It goes live", "Once it's approved, it shows up on TOPA within minutes.") +
     `</ol>` +
-    addCard() +
-    `<p class="anote">Already listed? Send the same form with the name and just what's changing; ` +
-    `blank answers stay as they are.</p>`
+    `</div>`
   );
 }
 

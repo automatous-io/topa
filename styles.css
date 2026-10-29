@@ -704,6 +704,11 @@ h2 {
   margin-top: 16px;
   flex-wrap: wrap;
 }
+/* no preview to play: the row goes, and what's under it moves up */
+.mrow:not(:has(:not([hidden]))),
+.acts:not(:has(:not([hidden]))) {
+  display: none;
+}
 /* Tesla only: how to start the car's navigation by voice */
 .vhint {
   display: inline-flex;
@@ -735,11 +740,6 @@ h2 {
   font-size: 15px;
   color: var(--mute);
   margin-top: 2px;
-}
-.mrow .sub {
-  color: #ccc;
-  font-size: 17px;
-  margin-left: 8px;
 }
 .vb {
   display: block;
@@ -2155,9 +2155,6 @@ main.back {
   .vb.big {
     font-size: 17px;
   }
-  .mrow .sub {
-    font-size: 14px;
-  }
   .fv {
     width: 32px;
     height: 32px;
@@ -2838,8 +2835,8 @@ nav button.on[data-v="Faves"] svg path {
 
   /* band, venue and show pages: the header slides up under the top bar */
   .hero {
-    margin: calc(-66px - env(safe-area-inset-top)) -16px 18px;
-    padding: calc(78px + env(safe-area-inset-top)) 16px 20px;
+    margin: calc(-98px - env(safe-area-inset-top)) -16px 18px;
+    padding: calc(110px + env(safe-area-inset-top)) 16px 20px;
   }
   .hero h1 {
     font-size: 40px;
@@ -3178,6 +3175,30 @@ nav button.on[data-v="Faves"] svg path {
   color: #cfc4d8;
   font-size: 17px;
   margin-top: 8px;
+}
+/* a band's or venue's links, one line under its name or address */
+.plinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 18px;
+  margin-top: 2px;
+}
+.plinks a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.plinks a:hover {
+  color: var(--acc);
+}
+.plinks svg {
+  width: 18px;
+  height: 18px;
 }
 
 /* ---- full-screen player ---- */
@@ -3853,39 +3874,6 @@ a.vt.dir:hover {
 }
 
 /* band links */
-.blinks {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px 22px;
-  margin-top: 16px;
-}
-.bl {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  min-width: 60px;
-  color: var(--ink);
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-}
-.bl span {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: var(--hi);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.bl svg {
-  width: 26px;
-  height: 26px;
-}
-.bl:hover span {
-  background: #ffffff24;
-}
 /* Share tile; the car has three tiles */
 button.vt {
   cursor: pointer;
@@ -3910,22 +3898,6 @@ a.srcline:hover {
   color: var(--ink);
 }
 @media (max-width: 700px) {
-  .blinks {
-    gap: 12px 18px;
-    margin-top: 12px;
-  }
-  .bl {
-    min-width: 52px;
-    font-size: 12px;
-  }
-  .bl span {
-    width: 52px;
-    height: 52px;
-  }
-  .bl svg {
-    width: 22px;
-    height: 22px;
-  }
   .srcline {
     font-size: 13px;
     margin-top: 16px;

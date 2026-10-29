@@ -200,7 +200,7 @@ test("an added show uses its venue's added details and has no Ventura Rocks link
     USER = { lat: 34.448, lng: -119.243 };
     render();
   });
-  assert.match(await text(added, ".mrow .sub"), /here/);
+  assert.match(await text(added, ".hero small"), /HERE/);
 
   const listed = await open(t, { listings, query: "&view=Show:1" });
   assert.match(await text(listed, "a.srcline"), /Ventura Rocks/, "Ventura Rocks shows keep their link");
@@ -261,7 +261,7 @@ test("a band someone added shows up before its first show, but not under its oth
   assert.ok(!tiles.includes("The Quiet Ramblers"), "an alias isn't its own band");
   const page = await open(t, { listings, query: "&view=" + encodeURIComponent("Band:Quiet Ramblers") });
   assert.match(await text(page, ".hero small"), /FOLK/);
-  assert.equal(await text(page, ".blinks .bl"), "Website");
+  assert.equal(await text(page, ".plinks a"), "Website");
 });
 
 // ---- Layout ----

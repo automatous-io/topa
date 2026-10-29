@@ -7,7 +7,7 @@
 
 // ---- Settings and state ----
 // the app's version: shown in About, and it names the offline cache, so bumping it refreshes every device
-const VERSION = "2.5.0";
+const VERSION = "2.5.1";
 const params = new URLSearchParams(location.search);
 
 // Is this the car's browser? Some versions say "Tesla" in the user agent, but current ones just say
@@ -970,19 +970,21 @@ const LINK_ICONS = {
   youtube: "yt",
   soundcloud: "sc",
 };
-// links as a row of icons; empty when there are none
-const linkRow = (links, keys) => {
-  const icons = keys
+// links as one line of small icon + name links (Instagram shows the @handle); empty when there are none
+const igHandle = url => (url.match(/instagram\.com\/([^/?#]+)/i) || [])[1];
+const linkLine = (links, keys) => {
+  const shown = keys
     .filter(k => safeUrl(links[k]))
-    .map(
-      k =>
-        `<a class="bl" href="${esc(safeUrl(links[k]))}" target="_blank" rel="noopener"><span>${svg(LINK_ICONS[k])}</span>${LINK_NAMES[k]}</a>`,
-    );
-  return icons.length ? `<div class="blinks">${icons.join("")}</div>` : "";
+    .map(k => {
+      const url = safeUrl(links[k]),
+        handle = k === "instagram" && igHandle(url);
+      return `<a href="${esc(url)}" target="_blank" rel="noopener">${svg(LINK_ICONS[k])}${esc(handle ? "@" + handle : LINK_NAMES[k])}</a>`;
+    });
+  return shown.length ? `<p class="plinks">${shown.join("")}</p>` : "";
 };
-const bandLinks = name => linkRow((EXTRA.bands[name] && EXTRA.bands[name].links) || {}, Object.keys(LINK_NAMES));
+const bandLinks = name => linkLine((EXTRA.bands[name] && EXTRA.bands[name].links) || {}, Object.keys(LINK_NAMES));
 // a venue's website has its own tile
-const venueLinks = name => linkRow(addedVenue(name), ["instagram", "facebook"]);
+const venueLinks = name => linkLine(addedVenue(name), ["instagram", "facebook"]);
 
 // "+ Add a show" links at the bottom of band and venue pages, with the form filled in
 // what TOPA knows about a band or venue, to fill in its update form (keys are the form's field ids)
@@ -1092,7 +1094,8 @@ function venuePage(key) {
     `<small>VENUE · ${esc(v.city.toUpperCase())}${dist ? " · " + dist.toUpperCase() : ""}</small>` +
     `<h1>${esc(venueName(v.venue))}</h1>` +
     (v.address ? `<p class="vaddr">${esc(v.address)}</p>` : "") +
-    `${venueActions(v, "Venue:" + v.venue)}${venueLinks(v.venue)}${voiceHint(v)}` +
+    venueLinks(v.venue) +
+    `${venueActions(v, "Venue:" + v.venue)}${voiceHint(v)}` +
     (L.length
       ? `<button class="lineup" data-playall>${svg("play")}Play lineup · ${countLabel(L.length, "show")}</button>`
       : `<p class="sub">No shows yet</p>`) +
@@ -1127,15 +1130,16 @@ function showPage(id) {
     ? `<a class="srcline" href="${esc(href)}" target="_blank" rel="noopener">${sourceIcon(e)}${from} ›</a>`
     : `<p class="srcline">${sourceIcon(e)}${from}</p>`;
   const tags = e.tags.length ? `<div class="tg">${e.tags.map(x => `<i>${esc(x)}</i>`).join("")}</div>` : "";
-  const links = bandLinks(band);
   return (
     `<div class="hero">${art(band)}<div class="hx">` +
-    `<small>${date} · <span class="ac">${timeLabel(e).toUpperCase()}</span>${sourceIcon(e, true)}</small><h1>${esc(e.artist)}</h1>` +
+    `<small>${date} · <span class="ac">${timeLabel(e).toUpperCase()}</span>${sourceIcon(e, true)}` +
+    `${distanceLabel(e) ? " · " + distanceLabel(e).toUpperCase() : ""}</small><h1>${esc(e.artist)}</h1>` +
     venueLink(e, "vb big", esc(venueLabel(e)) + (e.city ? ` <em>· ${esc(e.city)}</em>` : "")) +
-    `<div class="mrow">${heroPlayButton(band)}<span class="sub">${distanceLabel(e)}</span></div>` +
-    `${tags}</div>${starButton(SAVED.bands.includes(band), `data-sb="${esc(band)}"`, 1)}</div>` +
-    (links ? `<h2>${esc(band)}</h2>${links}` : "") +
-    (e.venue ? `<h2>${esc(venueName(e.venue))}</h2>${venueActions(e, "Show:" + e.id)}${voiceHint(e)}` : "") +
+    `<div class="mrow">${heroPlayButton(band)}</div>` +
+    `${tags}${bandLinks(band)}</div>${starButton(SAVED.bands.includes(band), `data-sb="${esc(band)}"`, 1)}</div>` +
+    (e.venue
+      ? `<h2>${esc(venueName(e.venue))}</h2>${venueLinks(e.venue)}${venueActions(e, "Show:" + e.id)}${voiceHint(e)}`
+      : "") +
     source +
     (otherDates.length ? `<h2>More ${esc(band)} dates</h2>${otherDates.map(venueDateRow).join("")}` : "") +
     (alsoHere.length

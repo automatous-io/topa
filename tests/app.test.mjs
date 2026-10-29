@@ -141,7 +141,7 @@ test("opens on today's shows, titled Today before 4pm", async t => {
   const page = await open(t);
   assert.equal(await text(page, "h1"), "Today");
   const expected = showsOn("2026-10-24", pacific(NOON));
-  assert.equal(await text(page, ".tsub"), `${expected.length} shows`);
+  assert.equal(await text(page, ".tsub"), `Sat, Oct 24 · ${expected.length} shows`);
   assert.equal(await listRows(page), expected.length);
 });
 
@@ -156,7 +156,8 @@ test("says Tonight from 4pm and drops shows that already ended", async t => {
 test("day chips switch the list to that day", async t => {
   const page = await open(t);
   await tap(page, '.chip[data-d="2026-10-25"]');
-  assert.equal(await text(page, "h1"), "Sunday, Oct 25");
+  assert.equal(await text(page, "h1"), "Sunday");
+  assert.match(await text(page, ".tsub"), /^Oct 25 · \d+ shows?$/);
   assert.equal(await listRows(page), showsOn("2026-10-25", pacific(NOON)).length);
 });
 
@@ -166,7 +167,7 @@ test("a genre chip keeps only shows with that genre", async t => {
   await tap(page, `.chip[data-g="${genre}"]`);
   const rows = await listRows(page);
   assert.ok(rows > 0);
-  assert.equal(await text(page, ".tsub"), `${rows} show${rows > 1 ? "s" : ""}`);
+  assert.equal(await text(page, ".tsub"), `Sat, Oct 24 · ${rows} show${rows > 1 ? "s" : ""}`);
 });
 
 test("search finds bands, venues and shows, and clearing it goes back", async t => {
@@ -188,6 +189,30 @@ test("starring a show faves the band, pins it under My Faves, and survives a rel
   assert.ok(await page.$(`.favsec [data-sb="${band}"].on`));
   await page.reload({ waitUntil: "networkidle0" });
   assert.ok(await page.$(`.favsec [data-sb="${band}"].on`), "fave was not saved");
+});
+
+test("a show pinned under My Faves isn't listed again below it", async t => {
+  const page = await open(t);
+  const total = await listRows(page);
+  const band = await page.$eval("#main .rw [data-sb]", el => el.dataset.sb);
+  await tap(page, `#main .rw [data-sb="${band}"]`);
+  const pinned = await count(page, ".favsec .rw[data-show]");
+  assert.ok(pinned > 0);
+  assert.equal(await count(page, `#main .rw:not(.favsec .rw) [data-sb="${band}"]`), 0);
+  assert.equal(await listRows(page), total - pinned);
+});
+
+test("every starred show moves up to My Faves, not just the first few", async t => {
+  const page = await open(t);
+  const total = await listRows(page);
+  for (let i = 0; i < 5; i++) {
+    const band = await page.$eval("#main .rw:not(.favsec .rw) .star:not(.on)", el => el.dataset.sb);
+    await tap(page, `#main .rw:not(.favsec .rw) [data-sb="${band}"]`);
+  }
+  assert.equal(await count(page, "#main .rw:not(.favsec .rw) .star.on"), 0);
+  const pinned = await count(page, ".favsec .rw[data-show]");
+  assert.ok(pinned >= 5);
+  assert.equal(await listRows(page), total - pinned);
 });
 
 test("shows at a faved venue are tagged Fave venue", async t => {
@@ -315,15 +340,30 @@ test("a band someone added shows up before its first show, but not under its oth
 
 // ---- Layout ----
 
-test("phones get the TOPA header and a five-button tab bar", async t => {
+test("phones get the TOPA top bar and a four-button tab bar", async t => {
   const page = await open(t, { viewport: PHONE });
-  assert.match(await text(page, ".mlogo"), /TOPA/);
+  assert.match(await text(page, ".mbar .mhome"), /TOPA/);
+  assert.match(await text(page, ".mbar .mcounty"), /Ventura County/);
   assert.deepEqual(
     await page.$$eval("nav button", bs =>
       bs.filter(b => getComputedStyle(b).display !== "none").map(b => b.textContent.trim()),
     ),
-    ["Shows", "Bands", "Venues", "Faves", "About"],
+    ["Shows", "Bands", "Venues", "Faves"],
   );
+  // About opens from the logo
+  await tap(page, ".mbar .mhome");
+  assert.equal(await page.$eval("#about", el => el.hidden), false);
+});
+
+test("phones: the search button slides out a search box, and the X closes it", async t => {
+  const page = await open(t, { viewport: PHONE });
+  await tap(page, ".mbar [data-search]");
+  assert.ok(await page.$(".mbar #ms"));
+  await page.type("#ms", "ventura");
+  assert.ok((await page.$$("#main section")).length > 0);
+  await tap(page, ".mbar [data-searchx]");
+  assert.equal(await page.$(".mbar #ms"), null);
+  assert.equal(await text(page, "h1"), "Today");
 });
 
 test("About opens and closes, and shows the version", async t => {

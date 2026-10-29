@@ -7,7 +7,7 @@
 
 // ---- Settings and state ----
 // the app's version: shown in About, and it names the offline cache, so bumping it refreshes every device
-const VERSION = "1.2.1";
+const VERSION = "2.0.0";
 const params = new URLSearchParams(location.search);
 
 // Is this the car's browser? Some versions say "Tesla" in the user agent, but current ones just say
@@ -76,6 +76,8 @@ let prev = "Shows"; // the page before, so a show page can highlight where it wa
 let day = "", // Shows: day button ("tonight", "2026-10-23", "weekend", "all")
   genre = "", // Shows: genre button
   term = "", // Shows: search box
+  searchOpen = false, // phones: the search button was tapped (the box shows even before typing)
+  searchSlide = false, // phones: play the search box's slide-out on the next draw only
   ssort = "time", // Shows: time | dist
   bsort = "soon", // Bands: soon | az
   vsort = "near", // Venues: near | az
@@ -333,6 +335,10 @@ function art(s, cls = "", band = true, photo = "") {
 const playBadge = h =>
   `<span class="pb" role="button" aria-label="Play preview" data-play="${esc(h)}"${hasPreview(h) ? "" : " hidden"}>${svg("play")}</span>`;
 
+// a round ▶ at the end of a show row
+const rowPlay = h =>
+  `<button class="rplay" aria-label="Play preview" data-play="${esc(h)}"${hasPreview(h) ? "" : " hidden"}>${svg("play")}</button>`;
+
 const artWithPlay = (h, c = "") => art(h, c).replace(/<\/div>$/, playBadge(h) + "</div>");
 
 // band tiles (Bands grid, search): the star on the photo is a button, so faving takes one tap like on rows
@@ -380,11 +386,17 @@ const groupBy = (l, f) => {
 
 // inline SVG icons, drawn on a 24×24 grid
 const ICONS = {
-  Shows: '<path d="M4 5h16v16H4zM4 9h16M8 3v4M16 3v4" fill="none" stroke="currentColor" stroke-width="2"/>',
-  Bands: '<circle cx="12" cy="8" r="4.5"/><path d="M3.5 21a8.5 8.5 0 0 1 17 0z"/>',
+  // the four tabs: line icons (calendar, mic, map pin, star)
+  Shows:
+    '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></g>',
+  Bands:
+    '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></g>',
   Venues:
-    '<path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/>',
-  Faves: '<path d="M12 2.5l2.9 6.2 6.8.8-5 4.6 1.3 6.7L12 17.5l-6 3.3 1.3-6.7-5-4.6 6.8-.8z"/>',
+    '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></g>',
+  Faves:
+    '<path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+  search:
+    '<g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></g>',
   info: '<circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 10.5v6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="7.3" r="1.4"/>',
   mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
   install:
@@ -418,29 +430,24 @@ const svg = k => `<svg viewBox="0 0 24 24" fill="currentColor">${ICONS[k]}</svg>
 
 const mapsQuery = v => encodeURIComponent([venueName(v.venue), v.city, "CA"].filter(Boolean).join(", "));
 
-// Maps listing, call, website, directions
+// Directions, Call, Website, Maps: four tiles that always sit in the same spots.
+// A tile TOPA has no details for is dimmed and can't be tapped.
 const venueActions = v => {
   // details someone added for the venue win over the built-in ones
   const tel = addedVenue(v.venue).phone || VENUE_PHONES[v.venue];
   const web = safeUrl(addedVenue(v.venue).website) || VENUE_SITES[v.venue];
-  const link = (href, icon, title, label, newTab = true) =>
-    `<a class="mi" href="${href}"${newTab ? ' target="_blank" rel="noopener"' : ""} title="${title}" aria-label="${label}">${svg(icon)}</a>`;
-  return [
-    link(
-      `https://www.google.com/maps/search/?api=1&query=${mapsQuery(v)}`,
-      "store",
-      "Look up venue",
-      "Look up venue in Maps",
-    ),
-    tel ? link(`tel:${tel.replace(/[^\d+]/g, "")}`, "tel", `Call ${esc(tel)}`, "Call venue", false) : "",
-    web ? link(web, "globe", "Website", "Venue website") : "",
-    link(
-      `https://www.google.com/maps/dir/?api=1&destination=${mapsQuery(v)}`,
-      "pin",
-      "Directions",
-      "Directions",
-    ),
-  ].join("");
+  const tile = (href, icon, label, title, cls = "", newTab = true) =>
+    href
+      ? `<a class="vt${cls}" href="${href}"${newTab ? ' target="_blank" rel="noopener"' : ""} title="${title}">${svg(icon)}<span>${label}</span></a>`
+      : `<span class="vt off" aria-disabled="true" title="No ${label.toLowerCase()} for this venue yet">${svg(icon)}<span>${label}</span></span>`;
+  return (
+    `<div class="vtiles">` +
+    tile(`https://www.google.com/maps/dir/?api=1&destination=${mapsQuery(v)}`, "pin", "Directions", "Directions", " dir") +
+    tile(tel && `tel:${tel.replace(/[^\d+]/g, "")}`, "tel", "Call", `Call ${esc(tel || "")}`, "", false) +
+    tile(web, "globe", "Website", "Venue website") +
+    tile(`https://www.google.com/maps/search/?api=1&query=${mapsQuery(v)}`, "store", "Maps", "Look up venue in Maps") +
+    `</div>`
+  );
 };
 
 // in the car: tapping a map link may not start the car's navigation, but voice always does
@@ -450,17 +457,12 @@ const voiceHint = v =>
       `${v.address ? `<i>${esc(v.address)}</i>` : ""}</span></p>`
     : "";
 
-// the TOPA wordmark: the Topa Topa ridgeline in sunset colors, with the name beneath it
-// (the ridgeline comes from the first version of the app). The name is plain text under the drawing, not
-// part of it, so every browser stacks the two the same way. `id` keeps each copy's gradient separate.
-const RIDGE =
-  "M30 150 L110 120 L180 128 L235 82 L285 116 L320 104 L370 50 L430 98 L470 84 L540 120 L600 116 L650 150";
-const ridge = id =>
-  `<svg class="wm" viewBox="20 40 640 116" aria-hidden="true">` +
-  `<defs><linearGradient id="wg-${id}" x1="0" x2="1"><stop offset="0" stop-color="#ff5f8f"/>` +
-  `<stop offset="1" stop-color="#ff9a5a"/></linearGradient></defs>` +
-  `<path class="wm-ridge" d="${RIDGE}" stroke="url(#wg-${id})"/></svg>`;
-const wordmark = id => `${ridge(id)}<span class="wm-name">TOPA</span>`;
+// the TOPA wordmark: the Topa Topa ridgeline in coral (same as the app icons), with the name in Oswald.
+// The name is plain text beside or under the drawing (the CSS for each spot decides).
+const RIDGE = "M1 15 L8 11 L13 13 L19 3 L24 9 L28 6 L33 12";
+const ridge = () =>
+  `<svg class="wm" viewBox="0 0 34 18" aria-hidden="true"><path class="wm-ridge" d="${RIDGE}"/></svg>`;
+const wordmark = id => `<span class="wmk wmk-${id}">${ridge()}<span class="wm-name">TOPA</span></span>`;
 
 const starButton = (on, attr, big) =>
   `<button class="star${on ? " on" : ""}${big ? " big" : ""}" ${attr} aria-label="${on ? "Unfave" : "Fave"}" title="${on ? "Unfave" : "Fave"}">${on ? "★" : "☆"}</button>`;
@@ -524,7 +526,7 @@ const venueDateRow = e => {
   const bill = e.artist !== bandName(e) ? ` <em>· ${esc(e.artist)}</em>` : "";
   return (
     `<div class="rw rwb" data-show="${e.id}">` +
-    `<div class="tcol"><span>${weekdayLabel(e)}</span><span>${d.getMonth() + 1}/${d.getDate()}</span><b>${timeLabel(e)}</b>${milesUnderTime(e)}</div>` +
+    `<div class="tcol"><span>${weekdayLabel(e)}</span><span>${d.getMonth() + 1}/${d.getDate()}</span><b>${timeLabel(e)}${sourceIcon(e, true)}</b>${milesUnderTime(e)}</div>` +
     `<div class="rb"><b>${esc(venueName(e.venue))}</b>` +
     `<button class="vb" data-venue="${esc(e.venue)}">${esc(e.city)}${milesPart(e)}${bill}<span>›</span></button></div></div>`
   );
@@ -535,6 +537,10 @@ const sourceIcon = (e, after) =>
   isAdded(e)
     ? `<span class="srci cm${after ? " af" : ""}" title="Sent straight to TOPA">${svg("at")}</span>`
     : `<span class="srci vr${after ? " af" : ""}" title="From the Ventura Rocks community calendar">${svg("cal")}</span>`;
+
+// the key for those icons: one quiet line at the bottom of a list of shows
+const sourceKey = () =>
+  `<div class="skey"><span>${svg("cal")}Ventura Rocks calendar</span><span class="cm">${svg("at")}Sent to TOPA</span></div>`;
 
 // a show in a list; timeOnly when the date is already in the title or a day divider,
 // atVenue on lists that are all at one venue (its name, town and distance are already in the header)
@@ -552,13 +558,13 @@ const showRow = (e, timeOnly, atVenue) => {
   ];
   const tags = labels.length ? `<div class="tg">${labels.join("")}</div>` : "";
   return (
-    `<div class="rw" data-show="${e.id}"><div class="tcol">${date}<b>${timeLabel(e)}</b>${atVenue ? "" : milesUnderTime(e)}</div>${artWithPlay(band)}` +
-    `<div class="rb"><b>${sourceIcon(e)}${esc(e.artist)}</b>` +
+    `<div class="rw" data-show="${e.id}"><div class="tcol">${date}<b>${timeLabel(e)}${sourceIcon(e, true)}</b>${atVenue ? "" : milesUnderTime(e)}</div>${artWithPlay(band)}` +
+    `<div class="rb"><b>${esc(e.artist)}</b>` +
     (atVenue
       ? ""
       : `<button class="vb" data-venue="${esc(e.venue)}">${esc(venueName(e.venue))} <em>· ${esc(e.city)}${milesPart(e)}</em><span>›</span></button>`) +
     `</div>` +
-    `${tags}${starButton(SAVED.bands.includes(band), `data-sb="${esc(band)}"`)}</div>`
+    `${tags}${rowPlay(band)}${starButton(SAVED.bands.includes(band), `data-sb="${esc(band)}"`)}</div>`
   );
 };
 
@@ -617,7 +623,9 @@ const isStillOn = e => !sameDay(new Date(e.start), NOW) || e.startMs >= NOW - 2 
 function dayOptions() {
   const t0 = dayStart(NOW),
     wk = weekendDays().map(dayKey),
-    defs = [["tonight", todayWord(), todayWord(), e => sameDay(new Date(e.start), NOW)]];
+    wd = d => d.toLocaleDateString("en-US", { weekday: "short" }),
+    // tile: the phone's day tiles, [small line, big line]
+    defs = [["tonight", todayWord(), todayWord(), e => sameDay(new Date(e.start), NOW), [wd(t0), t0.getDate()]]];
   for (let i = 1; i < 7; i++) {
     const d = new Date(t0);
     d.setDate(t0.getDate() + i);
@@ -625,16 +633,18 @@ function dayOptions() {
     defs.push([
       k,
       d.toLocaleDateString("en-US", { weekday: "short" }) + " " + d.getDate(),
-      d.toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" }),
+      // the page title: just the weekday ("Saturday"); the date goes in the line under it
+      d.toLocaleDateString("en-US", { weekday: "long" }),
       e => dayKey(new Date(e.start)) === k,
+      [wd(d), d.getDate()],
     ]);
   }
   defs.push(
-    ["weekend", "This weekend", "This weekend", e => wk.includes(dayKey(new Date(e.start)))],
-    ["all", "All", "All upcoming", () => true],
+    ["weekend", "This weekend", "Weekend", e => wk.includes(dayKey(new Date(e.start))), ["", "Weekend"]],
+    ["all", "All", "All shows", () => true, ["", "All"]],
   );
   const N = showsInRange().filter(isStillOn);
-  return defs.map(([k, l, long, f]) => ({ k, l, long, L: N.filter(f) })).filter(d => d.L.length);
+  return defs.map(([k, l, long, f, tile]) => ({ k, l, long, tile, L: N.filter(f) })).filter(d => d.L.length);
 }
 
 // a sideways-scrolling chip row; arrows show on wide screens when more chips are hidden
@@ -662,7 +672,10 @@ function pickDay() {
   if (!cur) cur = D.find(d => d.k !== "weekend" && d.k !== "all") || D[0];
   const sel = cur ? cur.k : "";
   const chips = D.map(
-    d => `<button class="chip${d.k === sel ? " on" : ""}" data-d="${d.k}">${d.l}</button>`,
+    // wide screens show the label ("Sat 31"); phones show a two-line tile (dl / dt)
+    d =>
+      `<button class="chip${d.k === sel ? " on" : ""}${d.tile[0] ? "" : " wide"}" data-d="${d.k}">` +
+      `<span class="dl">${d.l}</span><span class="dt">${d.tile[0] ? `<small>${d.tile[0]}</small>` : ""}<b>${d.tile[1]}</b></span></button>`,
   ).join("");
   const L0 = cur ? cur.L : [],
     G = [
@@ -698,8 +711,29 @@ const emptyMessage = () =>
     ? `<p class="empty">${status.c === "offline" ? "Couldn't load shows. Check your connection and try again." : "Loading shows…"}</p>`
     : `<p class="empty">No upcoming shows within ${radius >= ANY ? "the county" : radius + " mi"}.</p>${radius < ANY ? `<button class="chip pall" data-anyrad>Show all distances</button>` : ""}`;
 
+// search with nothing typed yet: one-tap ideas (towns and genres with shows coming up)
+function searchIdeas() {
+  const top = (f, n) =>
+    [...groupBy(EVENTS.filter(isStillOn).flatMap(f), x => x)]
+      .sort((a, b) => b[1].length - a[1].length)
+      .slice(0, n)
+      .map(x => x[0]);
+  const chips = l => l.map(x => `<button class="chip" data-term="${esc(x)}">${esc(x)}</button>`).join("");
+  const towns = top(e => (e.city ? [e.city] : []), 8),
+    genres = top(e => e.tags, 8);
+  return (
+    (towns.length ? `<h2 class="dh">Towns</h2><div class="ideas">${chips(towns)}</div>` : "") +
+    (genres.length ? `<h2 class="dh">Genres</h2><div class="ideas">${chips(genres)}</div>` : "")
+  );
+}
+
 function showsPage() {
   const k = searchWords();
+  if (searchOpen && !k.length)
+    return (
+      topBar("Search", `<button class="chip sx" data-searchx>Cancel</button>`, "", true, searchBox()) +
+      searchIdeas()
+    );
   if (k.length) {
     const R = byDistance(
       EVENTS.filter(e =>
@@ -711,7 +745,7 @@ function showsPage() {
     return (
       topBar(
         "Search",
-        playAllButton("Play results") + distanceButton("d-top"),
+        playAllButton("Play results") + distanceButton("d-top") + `<button class="chip sx" data-searchx>Cancel</button>`,
         countLabel(R.length, "show"),
         true,
         searchBox(),
@@ -720,7 +754,15 @@ function showsPage() {
       searchResults(k, R)
     );
   }
-  const { chips, gchips, L, lbl } = pickDay();
+  const { cur, chips, gchips, L, lbl } = pickDay();
+  // the date goes under the title: "Fri, Oct 30 · 38 shows" (Today/Tonight), "Oct 31 · 24 shows" (a day)
+  const today = !cur
+    ? ""
+    : cur.k === "tonight"
+      ? NOW.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }) + " · "
+      : /^\d{4}-/.test(cur.k)
+        ? new Date(cur.k + "T12:00").toLocaleDateString("en-US", { month: "short", day: "numeric" }) + " · "
+        : "";
   const byDay = [
     ...groupBy(
       L.slice().sort((a, b) => a.startMs - b.startMs),
@@ -743,31 +785,28 @@ function showsPage() {
   const sb = n
     ? `<button class="chip sortb" data-ssort="${ssort === "time" ? "dist" : "time"}" aria-label="Sorted by ${ssort === "time" ? "start time" : "distance"}. Tap to switch.">${svg("sort")}${ssort === "time" ? "Soonest" : "Nearest"}</button>`
     : "";
-  // "My Faves": faved bands, or anything at a faved venue, pinned on top (same filters as the list; they stay in it too)
+  // "My Faves": faved bands, or anything at a faved venue, pinned on top (same filters as the list)
   const faves = L.filter(e => SAVED.bands.includes(bandName(e)) || SAVED.venues.includes(e.venue)).sort(
     (a, b) => a.startMs - b.startMs,
   );
-  const FAVES_SHOWN = 3;
+  // every fave playing that day moves up here, so a starred show is never listed twice
+  const pinned = new Set(faves.map(x => x.id));
   const favesSection = faves.length
     ? `<section class="favsec"><h2 class="dh">My Faves</h2>` +
-      faves
-        .slice(0, FAVES_SHOWN)
-        .map(x => showRow(x, !multi))
-        .join("") +
-      (faves.length > FAVES_SHOWN
-        ? `<button class="seeall" data-v="Faves">See all in Faves<span>›</span></button>`
-        : "") +
+      faves.map(x => showRow(x, !multi)).join("") +
       // the divider alone separates My Faves from the full list; the day is already in the page title
       `</section><div class="rule"></div>`
     : "";
   // wide screens: distance sits in the header; phones: distance and sort lead the genre row
   return (
-    topBar(lbl, playAllButton() + distanceButton("d-top"), countLabel(n, "show"), true, searchBox()) +
+    topBar(lbl, playAllButton() + distanceButton("d-top"), n ? today + countLabel(n, "show") : "", true, searchBox()) +
     chips +
     `<div class="frow">${distanceButton("d-row")}${gchips}${sb}</div><div class="rule"></div>` +
     favesSection +
     (n
       ? byDay
+          .map(([k, l]) => [k, l.filter(x => !pinned.has(x.id))])
+          .filter(([, l]) => l.length)
           .map(
             ([k, l]) =>
               (multi ? `<h2 class="dh">${dh(k)}</h2>` : "") +
@@ -775,7 +814,7 @@ function showsPage() {
                 .map(x => showRow(x, true))
                 .join(""),
           )
-          .join("")
+          .join("") + sourceKey()
       : emptyMessage())
   );
 }
@@ -815,6 +854,7 @@ function searchResults(k, L) {
             .join(""),
         )
       : "") +
+    (L.length ? sourceKey() : "") +
     (B.length || V.length || L.length ? "" : '<p class="empty">No matches.</p>')
   );
 }
@@ -925,6 +965,7 @@ function bandPage(name) {
     `<div class="acts blinks">${heroPlayButton(name)}${bandLinks(name)}</div>` +
     `</div>${starButton(SAVED.bands.includes(name), `data-sb="${esc(name)}"`, 1)}</div>` +
     L.map(venueDateRow).join("") +
+    (L.length ? sourceKey() : "") +
     addLinks([
       ["add-show", "Add a show", { band: name }],
       ["add-band", "Update band info", bandNow(name)],
@@ -982,12 +1023,16 @@ function venuePage(key) {
     `<div class="hero">${venueArt(v.venue)}<div class="hx">` +
     `<small>VENUE · ${esc(v.city.toUpperCase())}${dist ? " · " + dist.toUpperCase() : ""}</small>` +
     `<h1>${esc(venueName(v.venue))}</h1>` +
-    `<div class="mrow">${L.length ? playAllButton("Play lineup") : ""}${venueActions(v)}` +
-    `<span class="sub">${L.length ? showCount(L.length) : "No shows yet"}</span></div>${voiceHint(v)}` +
+    (v.address ? `<p class="vaddr">${esc(v.address)}</p>` : "") +
+    `${venueActions(v)}${voiceHint(v)}` +
+    (L.length
+      ? `<button class="lineup" data-playall>${svg("play")}Play lineup · ${countLabel(L.length, "show")}</button>`
+      : `<p class="sub">No shows yet</p>`) +
     `</div>${starButton(SAVED.venues.includes(v.venue), `data-sv="${esc(v.venue)}"`, 1)}</div>` +
     section(todayWord(), tonight) +
     section("This week", thisWeek, tonight.length) +
     section("Later", later.slice(0, 30), tonight.length || thisWeek.length) +
+    (upcoming.length ? sourceKey() : "") +
     addLinks([
       ["add-show", "Add a show here", { venue: v.venue }],
       ["add-venue", "Update venue info", venueNow(v)],
@@ -1012,21 +1057,23 @@ function showPage(id) {
     : onIg
       ? "See the post on Instagram"
       : "Show details";
+  const short = !isAdded(e) ? "Ventura Rocks" : onIg ? "Instagram" : "Details";
   const listing = href
-    ? `<a class="mi" href="${esc(href)}" target="_blank" rel="noopener" title="${linkLabel}" ` +
-      `aria-label="${linkLabel}">${svg(onIg ? "ig" : "ext")}</a>`
+    ? `<a class="mi lb" href="${esc(href)}" target="_blank" rel="noopener" title="${linkLabel}">` +
+      `${svg(onIg ? "ig" : "ext")}<span>${short}</span></a>`
     : "";
   const tags = e.tags.length ? `<div class="tg">${e.tags.map(x => `<i>${esc(x)}</i>`).join("")}</div>` : "";
   return (
     `<div class="hero">${art(band)}<div class="hx">` +
     `<small>${date} · <span class="ac">${timeLabel(e)}</span>${sourceIcon(e, true)}</small><h1>${esc(e.artist)}</h1>` +
     `<button class="vb big" data-venue="${esc(e.venue)}">${esc(venueName(e.venue))} <em>· ${esc(e.city)}</em><span>›</span></button>` +
-    `<div class="mrow">${heroPlayButton(band)}${listing}${venueActions(e)}<span class="sub">${distanceLabel(e)}</span></div>${voiceHint(e)}` +
+    `${venueActions(e)}<div class="mrow pills">${heroPlayButton(band)}${listing}<span class="sub">${distanceLabel(e)}</span></div>${voiceHint(e)}` +
     `${tags}</div>${starButton(SAVED.bands.includes(band), `data-sb="${esc(band)}"`, 1)}</div>` +
     (otherDates.length ? `<h2>More ${esc(band)} dates</h2>${otherDates.map(venueDateRow).join("")}` : "") +
     (alsoHere.length
       ? `<h2 style="margin-top:24px">Also at ${esc(venueName(e.venue))}</h2>${alsoHere.map(x => showRow(x, false, true)).join("")}`
-      : "")
+      : "") +
+    (otherDates.length || alsoHere.length ? sourceKey() : "")
   );
 }
 
@@ -1063,7 +1110,7 @@ function favesPage() {
       `<div class="card vcard">${venueArt(n)}<div class="ci">` +
       `<button class="cn" data-venue="${esc(n)}">${esc(venueName(n))}</button>` +
       `<span>${where}${v.city ? " · " : ""}${showCount(L.length)}</span><span>${esc(v.address)}</span>` +
-      `</div>${starButton(true, `data-sv="${esc(n)}"`)}<div class="mrow vacts">${venueActions(v)}</div></div>`
+      `</div>${starButton(true, `data-sv="${esc(n)}"`)}<div class="vacts">${venueActions(v)}</div></div>`
     );
   };
   // Bands / Venues chips (with counts) switch the list instead of stacking both on one long page.
@@ -1118,11 +1165,33 @@ function render() {
   for (const w of document.querySelectorAll(".sw"))
     rowScroll[w.dataset.row] = w.querySelector(".chips").scrollLeft;
   document.getElementById("nav").innerHTML = navHtml(page);
-  // phones have no sidebar logo, so each page starts with a small TOPA that also opens About
-  const phoneLogo = `<button class="mlogo" data-about aria-label="About TOPA">${wordmark("phone")}<small>Ventura County Local Music Finder</small></button>`;
-  document.getElementById("main").innerHTML = phoneLogo + PAGES[page](arg);
+  // phones have no sidebar, so each page starts with a bar: TOPA (opens About), the county, and search
+  // in search mode the bar turns into the search box (it slides out from the search button), with an X to close
+  const searching = page === "Shows" && (searchOpen || !!term);
+  const phoneBar = searching
+    ? `<header class="mbar"><div class="msf${searchSlide ? " slide" : ""}">${svg("search")}` +
+      `<input id="ms" type="search" placeholder="Bands, venues, towns, genres" value="${esc(term)}" ` +
+      `autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" aria-label="Search">` +
+      `<button class="mbtn" data-searchx aria-label="Close search">${CLOSE_ICON}</button></div></header>`
+    : `<header class="mbar"><button class="mhome" data-about aria-label="About TOPA">${wordmark("phone")}</button>` +
+      `<span class="mcounty">${svg("Venues")}Ventura County</span>` +
+      `<button class="mbtn" data-search aria-label="Search bands, venues, towns">${svg("search")}</button></header>`;
+  searchSlide = false;
+  const main = document.getElementById("main");
+  main.classList.toggle("srch", searching);
+  main.innerHTML = phoneBar + PAGES[page](arg);
   for (const w of document.querySelectorAll(".sw"))
     w.querySelector(".chips").scrollLeft = rowScroll[w.dataset.row] || 0;
+  // the picked day stays fully in view (not half hidden under the row's fade)
+  const dayRow = document.querySelector('.sw[data-row="days"] .chips'),
+    picked = dayRow && dayRow.querySelector(".chip.on");
+  if (picked) {
+    const pad = 48,
+      l = picked.getBoundingClientRect().left - dayRow.getBoundingClientRect().left + dayRow.scrollLeft,
+      r = l + picked.offsetWidth;
+    if (r > dayRow.scrollLeft + dayRow.clientWidth - pad) dayRow.scrollLeft = r - dayRow.clientWidth + pad;
+    else if (l < dayRow.scrollLeft + pad) dayRow.scrollLeft = Math.max(0, l - pad);
+  }
   updateScrollRows();
   markScrolled();
   syncPlayIcons();
@@ -1132,7 +1201,7 @@ function render() {
 
 // typing re-renders the page; keep the cursor in the box
 function wireTextBoxes() {
-  const boxes = { bf: v => (bandFilter = v), vf: v => (venueFilter = v), s: v => (term = v) };
+  const boxes = { bf: v => (bandFilter = v), vf: v => (venueFilter = v), s: v => (term = v), ms: v => (term = v) };
   for (const [id, set] of Object.entries(boxes)) {
     const el = document.getElementById(id);
     if (!el) continue;
@@ -1487,7 +1556,11 @@ async function playCurrent() {
   showPlayer(it, t, v);
 }
 
+// what the player is showing now, so the full-screen player can draw the same thing
+let nowShowing = null;
+
 function showPlayer(it, t, v) {
+  nowShowing = { it, t, v };
   const P = document.getElementById("player"),
     e = nextShow(it.band);
   P.hidden = false;
@@ -1512,6 +1585,78 @@ function showPlayer(it, t, v) {
       artwork: pic ? [{ src: pic, sizes: "500x500", type: "image/jpeg" }] : [],
     });
   syncPlayIcons();
+  paintFull();
+}
+
+// ---- Full-screen player ----
+const inFull = s => document.querySelector("#fp " + s);
+const fullOpen = () => !document.getElementById("fp").hidden;
+
+function openFull() {
+  if (!nowShowing) return;
+  document.getElementById("fp").hidden = false;
+  paintFull();
+  countEvent("full-player");
+}
+const closeFull = () => (document.getElementById("fp").hidden = true);
+
+// fill the full player from what's playing: art, song, band, where and when they play next
+function paintFull() {
+  if (!fullOpen() || !nowShowing) return;
+  const { it, t, v } = nowShowing,
+    e = nextShow(it.band),
+    q = playback.queue;
+  const pic = safeUrl((v && v.pic) || (t && t.cover));
+  inFull(".fpart").style.backgroundImage = pic ? `url("${pic}")` : "";
+  inFull(".fpart").textContent = pic ? "" : initials(it.band);
+  const oneBand = q.every(x => x.band === it.band);
+  inFull(".fpq").textContent =
+    q.length > 1 ? `${oneBand ? "Top songs" : "Lineup"} · ${playback.index + 1} of ${q.length}` : "Preview";
+  inFull(".fpt").textContent = t ? t.title : "Loading preview…";
+  inFull(".fpb").textContent = it.band;
+  const show = inFull(".fpshow");
+  show.hidden = !e;
+  if (e) {
+    const d = new Date(e.start);
+    inFull(".fptime").textContent = timeLabel(e).toUpperCase();
+    inFull(".fpven").textContent = venueName(e.venue);
+    inFull(".fpwhen").textContent = [
+      sameDay(d, NOW) ? showDayWord(e) : `${weekdayLabel(e)} ${d.getMonth() + 1}/${d.getDate()}`,
+      e.city,
+      distanceLabel(e),
+    ]
+      .filter(Boolean)
+      .join(" · ");
+  }
+  const dir = inFull(".fpdir");
+  dir.hidden = !e;
+  if (e) dir.href = `https://www.google.com/maps/dir/?api=1&destination=${mapsQuery(e)}`;
+  const am = inFull(".fpam"),
+    amLink = safeUrl((t && t.link) || (v && v.url));
+  am.hidden = !amLink;
+  if (amLink) am.href = amLink;
+  const faved = SAVED.bands.includes(it.band);
+  const fave = inFull(".fpfave");
+  fave.classList.toggle("on", faved);
+  fave.setAttribute("aria-label", faved ? "Unfave this band" : "Fave this band");
+  fave.innerHTML = svg("Faves");
+  dir.innerHTML = svg("Venues");
+  inFull("[data-pl=prev]").innerHTML = svg("prev");
+  inFull("[data-pl=next]").innerHTML = svg("next");
+  paintFullPlay();
+  paintFullTime();
+}
+function paintFullPlay() {
+  if (!fullOpen()) return;
+  const on = playback.queue.length && !audio.paused && audio.src !== SILENT_WAV;
+  inFull(".fppp").innerHTML = svg(on ? "pause" : "play");
+}
+function paintFullTime() {
+  if (!fullOpen() || audio.src === SILENT_WAV) return;
+  const d = audio.duration || 30;
+  inFull(".fpp i").style.width = Math.min(100, (audio.currentTime / d) * 100) + "%";
+  inFull(".fpcur").textContent = mmss(audio.currentTime);
+  inFull(".fpdur").textContent = mmss(d);
 }
 
 function syncPlayIcons() {
@@ -1525,6 +1670,7 @@ function syncPlayIcons() {
   });
   const pp = inPlayer(".pp");
   if (pp) pp.innerHTML = svg(on ? "pause" : "play");
+  paintFullPlay();
   if (!inPlayer("[data-pl=prev]").firstChild) {
     inPlayer("[data-pl=prev]").innerHTML = svg("prev");
     inPlayer("[data-pl=next]").innerHTML = svg("next");
@@ -1557,6 +1703,7 @@ function closePlayer() {
   audio.pause();
   document.getElementById("player").hidden = true;
   document.getElementById("app").classList.remove("pl");
+  closeFull();
   syncPlayIcons();
 }
 
@@ -1582,6 +1729,7 @@ audio.addEventListener("timeupdate", () => {
   inPlayer(".plp i").style.width = Math.min(100, (audio.currentTime / d) * 100) + "%";
   inPlayer(".plcur").textContent = mmss(audio.currentTime);
   inPlayer(".pldur").textContent = mmss(d);
+  paintFullTime();
 });
 
 if ("mediaSession" in navigator) {
@@ -1709,8 +1857,8 @@ function aboutHtml() {
   const link = (href, label) => `<a class="chip" href="${href}" target="_blank" rel="noopener">${label}</a>`;
   return (
     `<button class="ax" data-about-close aria-label="Close">${CLOSE_ICON}</button>` +
-    `<div class="ahead">${wordmark("about")}<p>Ventura County Local Music Finder</p></div>` +
-    `<p class="astory">Made by local music lovers to find live music nearby and pick a show fast. ` +
+    `<div class="ahead">${wordmark("about")}<p>Local Music Finder</p></div>` +
+    `<p class="astory">Made for and by local live music lovers. ` +
     `Bands, fans, and venues add to it, so it keeps getting better.</p>` +
     `<h3>Where shows come from</h3>` +
     `<div class="legend">` +
@@ -1766,12 +1914,22 @@ function openAbout() {
 }
 const closeAbout = () => (document.getElementById("about").hidden = true);
 
-addEventListener("keydown", ev => ev.key === "Escape" && closeAbout());
+addEventListener("keydown", ev => ev.key === "Escape" && (closeAbout(), closeFull()));
+
+// phones: the search button opens Shows in search mode with the keyboard up
+function openSearch() {
+  searchOpen = true;
+  searchSlide = true;
+  view === "Shows" ? render() : go("Shows");
+  const box = document.getElementById("ms");
+  if (box) box.focus();
+}
 
 // ---- Taps ----
 // one click handler for the whole app; buttons say what they do with data-* attributes
 document.body.onclick = ev => {
   if (ev.target.id === "about") return closeAbout(); // tapped outside the card
+  if (ev.target.id === "fp") return closeFull(); // wide screens: tapped outside the player card
   const link = ev.target.closest("a[href]");
   if (link) {
     if (link.href.includes("/maps/dir/"))
@@ -1779,7 +1937,7 @@ document.body.onclick = ev => {
     return;
   }
   const t = ev.target.closest(
-    "[data-play],[data-playall],[data-pl],[data-plshow],[data-vsort],[data-clear],[data-show],[data-v],[data-d],[data-g],[data-band],[data-venue],[data-sort],[data-sb],[data-sv],[data-pop],[data-anyrad],[data-rad],[data-ssort],[data-ftab],[data-scroll],[data-about],[data-about-close],[data-about-add],[data-about-back],[data-install]",
+    "[data-plfull],[data-fpclose],[data-fpfave],[data-search],[data-searchx],[data-term],[data-play],[data-playall],[data-pl],[data-plshow],[data-vsort],[data-clear],[data-show],[data-v],[data-d],[data-g],[data-band],[data-venue],[data-sort],[data-sb],[data-sv],[data-pop],[data-anyrad],[data-rad],[data-ssort],[data-ftab],[data-scroll],[data-about],[data-about-close],[data-about-add],[data-about-back],[data-install]",
   );
   const pop = document.getElementById("pop");
   if (!ev.target.closest("#pop") && !(t && t.dataset.pop !== undefined)) pop.classList.remove("on");
@@ -1787,6 +1945,29 @@ document.body.onclick = ev => {
   const d = t.dataset,
     top = () => (document.getElementById("main").scrollTop = 0);
   if (d.about !== undefined) return openAbout();
+  if (d.plfull !== undefined) return openFull();
+  if (d.fpclose !== undefined) return closeFull();
+  if (d.fpfave !== undefined) {
+    const h = playback.band;
+    if (!h) return;
+    countEvent("fave-band", h);
+    toggleFave("bands", h);
+    render();
+    return paintFull();
+  }
+  // phones: the mini player's band line opens the full player; its show card leads to the show
+  if (d.plshow !== undefined && !t.closest("#fp") && matchMedia("(max-width: 700px)").matches) return openFull();
+  if (d.plshow !== undefined && t.closest("#fp")) closeFull();
+  if (d.search !== undefined) return openSearch();
+  if (d.searchx !== undefined) {
+    searchOpen = false;
+    term = "";
+    return render();
+  }
+  if (d.term) {
+    term = d.term;
+    return render();
+  }
   if (d.install !== undefined && installPrompt) {
     countEvent("install");
     installPrompt.prompt();
@@ -1824,6 +2005,12 @@ document.body.onclick = ev => {
   if (d.show) go("Show:" + d.show);
   else if (d.band || d.venue) go(d.band ? "Band:" + d.band : "Venue:" + d.venue);
   else if (d.v) {
+    // the Shows tab always leads back to the day's list, out of search
+    if (d.v === "Shows" && (searchOpen || term)) {
+      searchOpen = false;
+      term = "";
+      if (view === "Shows") return render(), top();
+    }
     if (d.v === view) top();
     else go(d.v);
   } else if (d.d !== undefined) {
@@ -1871,7 +2058,7 @@ document.body.onclick = ev => {
   }
 };
 
-// phones: the pinned TOPA header only gets its dark backing once the page is scrolled
+// phones: the top bar only gets its dark backing once the page is scrolled
 function markScrolled() {
   document.body.classList.toggle("scrolled", document.getElementById("main").scrollTop > 4);
 }

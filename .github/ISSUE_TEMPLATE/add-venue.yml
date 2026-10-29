@@ -151,6 +151,11 @@ body:
     attributes:
       label: Website
       placeholder: https://
+  - type: input
+    id: instagram
+    attributes:
+      label: Instagram
+      placeholder: "@harborlightstavern"
   - type: textarea
     id: photo
     attributes:

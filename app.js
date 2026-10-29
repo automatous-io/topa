@@ -959,10 +959,9 @@ const LINK_ICONS = {
   youtube: "yt",
   soundcloud: "sc",
 };
-// a band's links as a row of icons; empty when it has none
-const bandLinks = name => {
-  const links = (EXTRA.bands[name] && EXTRA.bands[name].links) || {};
-  const icons = Object.keys(LINK_NAMES)
+// links as a row of icons; empty when there are none
+const linkRow = (links, keys) => {
+  const icons = keys
     .filter(k => safeUrl(links[k]))
     .map(
       k =>
@@ -970,6 +969,9 @@ const bandLinks = name => {
     );
   return icons.length ? `<div class="blinks">${icons.join("")}</div>` : "";
 };
+const bandLinks = name => linkRow((EXTRA.bands[name] && EXTRA.bands[name].links) || {}, Object.keys(LINK_NAMES));
+// a venue's website has its own tile
+const venueLinks = name => linkRow(addedVenue(name), ["instagram", "facebook"]);
 
 // "+ Add a show" links at the bottom of band and venue pages, with the form filled in
 // what TOPA knows about a band or venue, to fill in its update form (keys are the form's field ids)
@@ -995,6 +997,7 @@ const venueNow = v => {
     coords: spot ? spot.join(", ") : "",
     phone: added.phone || VENUE_PHONES[v.venue],
     website: added.website || VENUE_SITES[v.venue],
+    instagram: added.instagram,
   });
 };
 
@@ -1075,7 +1078,7 @@ function venuePage(key) {
     `<small>VENUE · ${esc(v.city.toUpperCase())}${dist ? " · " + dist.toUpperCase() : ""}</small>` +
     `<h1>${esc(venueName(v.venue))}</h1>` +
     (v.address ? `<p class="vaddr">${esc(v.address)}</p>` : "") +
-    `${venueActions(v, "Venue:" + v.venue)}${voiceHint(v)}` +
+    `${venueActions(v, "Venue:" + v.venue)}${venueLinks(v.venue)}${voiceHint(v)}` +
     (L.length
       ? `<button class="lineup" data-playall>${svg("play")}Play lineup · ${countLabel(L.length, "show")}</button>`
       : `<p class="sub">No shows yet</p>`) +

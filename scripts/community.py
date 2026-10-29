@@ -306,6 +306,8 @@ def check(kind, r, today, venues):
         # an existing venue is fine (it's an update)
         if bad("website"):
             problems.append("The website doesn't look like a web address.")
+        if bad("instagram"):
+            problems.append("The Instagram should be an @handle or a link to the profile.")
         if r.get("coords_text") and not r.get("lat"):
             problems.append("Couldn't read the map location; paste a Google Maps link or numbers like 34.24, -119.26.")
     return problems
@@ -425,7 +427,7 @@ def load(root=ROOT, today=None):
     venues = {}
     for v in read_folder(root, "venue"):
         if v.get("name"):
-            keep = ("address", "city", "lat", "lng", "phone", "website", "photo")
+            keep = ("address", "city", "lat", "lng", "phone", "website", "instagram", "photo")
             venues[v["name"]] = {k: v[k] for k in keep if v.get(k) not in (None, "")}
     bands = {}
     for b in read_folder(root, "band"):

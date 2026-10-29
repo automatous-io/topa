@@ -2,8 +2,8 @@
   "name": "Taqueria Jalisco Restaurant",
   "address": "4275 Tierra Rejada Rd, Moorpark, CA 93021",
   "city": "Moorpark",
-  "website": "https://www.instagram.com/taqueriajalisco_moorpark/",
-  "instagram": "https://www.instagram.com/taqueriajalisco_moorpark/",
+  "website": "https://instagram.com/taqueriajalisco_moorpark",
+  "instagram": "https://instagram.com/taqueriajalisco_moorpark",
   "maintainers": [
     "automatous-io"
   ],

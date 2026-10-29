@@ -11,7 +11,7 @@ How to answer questions with this file:
   were sent in by local bands, fans, and venues.
 - Share a show's link when someone wants the details.
 - Venue addresses are included so a driver can say "Navigate to <venue>" or use the address.
-- Last updated: Thu Oct 29, 1:35 AM Pacific.
+- Last updated: Thu Oct 29, 12:40 PM Pacific.
 
 ## Links
 
@@ -125,7 +125,7 @@ How to answer questions with this file:
 - 2:00 PM: Vinny Berry at Topa Topa Brewing, 4880 Colt St, Ventura, CA 93003 (Ventura, Colt-Street) (Ventura Rocks). https://tockify.com/vtarocks/detail/26591/1793570400000
 - 3:00 PM: Jazz Band at Ventura College Performing Arts Center, 4700 Loma Vista Rd, Ventura, CA 93003 (Ventura, $5---$15-cover) (Ventura Rocks). https://tockify.com/vtarocks/detail/25896/1793574000000
 - 3:00 PM: Nikolay Sivchuk, Bayan & Evgeny Tonkha, Cello (new date) at Beatrice Wood Center for the Arts, 8585 N Ojai Rd, Ojai, CA 93023 (Oaji, ticketed-event) (Ventura Rocks). https://tockify.com/vtarocks/detail/25725/1793574000000
-- 3:00 PM: The Avenue Quintet Deconstructed at  (Ojai, $25-suggested-donation) (Ventura Rocks). https://tockify.com/vtarocks/detail/27088/1793574000000
+- 3:00 PM: The Avenue Quintet Deconstructed at Ojai (Ojai, $25-suggested-donation) (Ventura Rocks). https://tockify.com/vtarocks/detail/27088/1793574000000
 - 3:00 PM: Dave & Tim Faux Real at Nabu, Townsgate Rd, Westlake Village, CA 91361 (Westlake-Village, 21+) (Ventura Rocks). https://tockify.com/vtarocks/detail/26961/1793574000000
 - 3:00 PM: RJ Mischo Band at Winchesters Grill & Saloon, 632 E Main St, Ventura, CA 93001 (Ventura, no-cover-charge) (Ventura Rocks). https://tockify.com/vtarocks/detail/26905/1793574000000
 - 3:00 PM: Skin Deep at Sagebrush Cantina Restaurant & Saloon, 23527 Calabasas Rd, Calabasas, CA 91302 (Calabasas) (Ventura Rocks). https://tockify.com/vtarocks/detail/26791/1793574000000
@@ -191,6 +191,7 @@ How to answer questions with this file:
 - 6:30 PM: Doc Rogers at Wagon Wheel Brewing Co., 2601 Wagon Wheel Rd, Oxnard, CA 93036 (Oxnard) (Ventura Rocks). https://tockify.com/vtarocks/detail/26908/1794018600000
 - 6:30 PM: Teresa Russell & Stephen Geyer at Boatyard Pub, 1583 Spinnaker Dr, Ventura, CA 93001 (Ventura, Rock-&-Roll, rockin-blues) (Ventura Rocks). https://tockify.com/vtarocks/detail/26914/1794018600000
 - 6:30 PM: The Brandon Ragan Project at Camarillo Barrel Works (formerly Cantara Cellars), 126 Wood Rd, Camarillo, CA 93010 (Camarillo, popular-covers, R&B, danceable-covers) (Ventura Rocks). https://tockify.com/vtarocks/detail/26484/1794018600000
+- 6:30 PM: Tour Support at The Manhattan of Camarillo, 5800 Santa Rosa Rd, Camarillo, CA 93012 (Camarillo, classic-rock-and-roll) (Ventura Rocks). https://tockify.com/vtarocks/detail/27096/1794018600000
 - 6:30 PM: Jimi Nelson at Magnavino Cellars | Public Realm Brewing, 961 Rice Ave, Oxnard, CA 93030 (Oxnard, country) (Ventura Rocks). https://tockify.com/vtarocks/detail/26946/1794018600000
 - 7:00 PM: George Krikes at Ric's Restaurant Sports Lounge, F, 2500 Las Posas Rd, Camarillo, CA 93010 (Camarillo) (Ventura Rocks). https://tockify.com/vtarocks/detail/26563/1794020400000
 - 7:00 PM: The Brill Building Legends Show at Namba Arts, 47 S Oak St, Ventura, CA 93001 (Ventura, ticketed-event, $40-at-door) (Ventura Rocks). https://tockify.com/vtarocks/detail/26543/1794020400000
@@ -224,6 +225,7 @@ How to answer questions with this file:
 - 5:00 PM: Corey and the Folk Boys at Harbor Cove Cafe, 1867 Spinnaker Dr, Ventura, CA 93001 (Ventura, free) (Ventura Rocks). https://tockify.com/vtarocks/detail/26748/1794099600000
 - 6:00 PM: Epitome of Dreams at Boatyard Pub, 1583 Spinnaker Dr, Ventura, CA 93001 (Ventura, rock, blues, popular-covers) (Ventura Rocks). https://tockify.com/vtarocks/detail/26917/1794103200000
 - 6:00 PM: The Sons of Sunset at Nectar of the Dogs Wine, 791 Chambers Ln, Simi Valley, CA 93065 (Simi-Valley, No-cover-charge, roots, Americana, rock-and-roll, rolk) (Ventura Rocks). https://tockify.com/vtarocks/detail/26942/1794103200000
+- 6:30 PM: Jeanne Tatum Trio at The Manhattan of Camarillo, 5800 Santa Rosa Rd, Camarillo, CA 93012 (Camarillo, Restaurant, vocalist, piano, standards, pop, R&B, Modern-jazz, Latin, blues) (Ventura Rocks). https://tockify.com/vtarocks/detail/27097/1794105000000
 - 7:00 PM: Merlin Snider at Namba Arts, 47 S Oak St, Ventura, CA 93001 (Ventura, ticketed-event, $25-at-door) (Ventura Rocks). https://tockify.com/vtarocks/detail/25757/1794106800000
 - 7:00 PM: Muzical Chairz at The Original Pizza Cookery, 75 W Thousand Oaks Blvd, Thousand Oaks, CA 91360 (Thousand-Oaks, covers) (Ventura Rocks). https://tockify.com/vtarocks/detail/26558/1794106800000
 - 7:00 PM: Neon Blonde at Parque 1055, 1055 E Main St, Santa Paula, CA 93060 (Santa-Paula, modern-rock, 70s-80s-covers) (Ventura Rocks). https://tockify.com/vtarocks/detail/26418/1794106800000

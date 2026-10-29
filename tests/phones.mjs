@@ -90,6 +90,12 @@ export const layoutProblems = page =>
       (e.getAttribute("aria-label") || e.textContent).trim().replace(/\s+/g, " ").slice(0, 40);
     const problems = [],
       small = [];
+    // band, venue and show pages: the top fade starts behind the top bar, not partway down it
+    const hero = document.querySelector("#main .hero");
+    if (hero && scrollY === 0 && hero.getBoundingClientRect().top > 0)
+      problems.push(
+        `the page's top color starts ${Math.round(hero.getBoundingClientRect().top)}px below the top`,
+      );
     if (document.documentElement.scrollWidth > innerWidth + 1)
       problems.push(`page scrolls sideways (${document.documentElement.scrollWidth}px wide)`);
     for (const e of document.querySelectorAll("#main h1, #main h2, #main h3, button, .chip, #about a")) {

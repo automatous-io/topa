@@ -200,10 +200,35 @@ test("an added show uses its venue's added details and has no Ventura Rocks link
     USER = { lat: 34.448, lng: -119.243 };
     render();
   });
-  assert.match(await text(added, ".mrow .sub"), /here/);
+  assert.match(await text(added, ".hero small"), /HERE/);
 
   const listed = await open(t, { listings, query: "&view=Show:1" });
   assert.match(await text(listed, "a.srcline"), /Ventura Rocks/, "Ventura Rocks shows keep their link");
+});
+
+test("a show with no venue is listed by its town, and never as a blank venue", async t => {
+  const show = {
+    ...EVENTS[0],
+    artist: "No Venue Quartet",
+    venue: "",
+    address: "",
+    city: "Ojai",
+    tags: ["Ojai"],
+  };
+  const listings = { updated: "2026-10-24T09:00:00-07:00", events: [show, ...EVENTS.slice(1, 4)] };
+  const page = await open(t, { listings });
+  const row = await page.$$eval(
+    "#main .rw[data-show]",
+    rs => rs.find(r => /No Venue Quartet/.test(r.textContent)).textContent,
+  );
+  assert.match(row, /Venue not listed · Ojai/);
+  assert.equal(await count(page, '[data-venue=""]'), 0, "no link to a blank venue");
+  await page.$$eval("#main .rw[data-show]", rs =>
+    rs.find(r => /No Venue Quartet/.test(r.textContent)).click(),
+  );
+  assert.equal(await text(page, "h1"), "No Venue Quartet");
+  const venues = await open(t, { listings, query: "&view=Venues" });
+  assert.equal(await count(venues, "#main .vrow"), new Set(EVENTS.slice(1, 4).map(e => e.venue)).size);
 });
 
 test("a venue someone added shows up before its first show", async t => {
@@ -236,7 +261,7 @@ test("a band someone added shows up before its first show, but not under its oth
   assert.ok(!tiles.includes("The Quiet Ramblers"), "an alias isn't its own band");
   const page = await open(t, { listings, query: "&view=" + encodeURIComponent("Band:Quiet Ramblers") });
   assert.match(await text(page, ".hero small"), /FOLK/);
-  assert.equal(await text(page, ".blinks .bl"), "Website");
+  assert.equal(await text(page, ".plinks a"), "Website");
 });
 
 // ---- Layout ----

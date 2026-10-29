@@ -3789,3 +3789,38 @@ a.srcline:hover {
     margin-top: 16px;
   }
 }
+
+/* fave stars are drawn, so on and off are the same size everywhere */
+.star svg {
+  width: 1em;
+  height: 1em;
+}
+.star svg path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+.star.on svg path {
+  fill: currentColor;
+}
+/* one star size everywhere: lists, Bands, and the top of band, venue and show pages */
+.star,
+.star.big,
+.rw:not(.vrow):not(.rwb) > .star {
+  font-size: 30px;
+}
+.agrid .art.round .fv svg {
+  width: 30px;
+  height: 30px;
+}
+@media (max-width: 700px) {
+  .star,
+  .star.big,
+  .rw:not(.vrow):not(.rwb) > .star {
+    font-size: 24px;
+  }
+  .agrid .art.round .fv svg {
+    width: 24px;
+    height: 24px;
+  }
+}

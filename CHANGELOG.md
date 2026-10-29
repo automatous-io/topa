@@ -6,6 +6,19 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
 
 ---
 
+## 2.2.0
+
+**Band links on show pages, a Share button, and matching stars.**
+
+- Show pages list the band's links (Instagram, Bandcamp, Spotify and the rest) as a row of icons, then the venue's buttons.
+  Band pages use the same row.
+- The venue's Maps button is now Share: the phone's share menu, or "Link copied" where there isn't one. No Share in the car.
+- Where a show came from is a small line at the bottom of its page.
+- Fave stars are one size everywhere and drawn the same on and off.
+- New screenshots.
+
+---
+
 ## 2.1.0
 
 **An opening splash.**

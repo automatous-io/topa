@@ -7,7 +7,7 @@
 
 // ---- Settings and state ----
 // the app's version: shown in About, and it names the offline cache, so bumping it refreshes every device
-const VERSION = "2.1.0";
+const VERSION = "2.2.0";
 const params = new URLSearchParams(location.search);
 
 // Is this the car's browser? Some versions say "Tesla" in the user agent, but current ones just say
@@ -506,7 +506,7 @@ const ridge = () =>
 const wordmark = id => `<span class="wmk wmk-${id}">${ridge()}<span class="wm-name">TOPA</span></span>`;
 
 const starButton = (on, attr, big) =>
-  `<button class="star${on ? " on" : ""}${big ? " big" : ""}" ${attr} aria-label="${on ? "Unfave" : "Fave"}" title="${on ? "Unfave" : "Fave"}">${on ? "★" : "☆"}</button>`;
+  `<button class="star${on ? " on" : ""}${big ? " big" : ""}" ${attr} aria-label="${on ? "Unfave" : "Fave"}" title="${on ? "Unfave" : "Fave"}">${svg("Faves")}</button>`;
 
 // ---- Page history ----
 // every page change goes into the browser history, so swipe-back and the browser's back arrow work

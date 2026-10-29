@@ -415,6 +415,13 @@ const ICONS = {
   tel: '<path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/>',
   globe:
     '<g fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></g>',
+  // band links: simple line marks, not the services' logos
+  bc: '<path d="M3 17 9 7h12l-6 10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+  sp: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M7.5 9.5c3-1 6.5-.7 9 .8M8 12.6c2.5-.7 5.2-.4 7.2.8M8.6 15.4c1.9-.5 3.9-.3 5.5.6"/></g>',
+  yt: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.2v5.6l4.8-2.8z"/></g>',
+  sc: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17h9.5a3.5 3.5 0 0 0 0-7 5.5 5.5 0 0 0-9.5-2.6z"/><path d="M3 13.5V17M6 11v6"/></g>',
+  fb: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M15.5 7.5h-1.8a2.2 2.2 0 0 0-2.2 2.2V21M9 12.5h6"/></g>',
+  shr: '<path d="M12 15V4M8 7.5 12 4l4 3.5M7 11H6a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1h-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
   play: '<path d="M8 5.5v13l11-6.5z"/>',
   pause: '<path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/>',
   next: '<path d="M5.5 6l9 6-9 6zM16 6h2.5v12H16z"/>',
@@ -430,9 +437,10 @@ const svg = k => `<svg viewBox="0 0 24 24" fill="currentColor">${ICONS[k]}</svg>
 
 const mapsQuery = v => encodeURIComponent([venueName(v.venue), v.city, "CA"].filter(Boolean).join(", "));
 
-// Directions, Call, Website, Maps: four tiles that always sit in the same spots.
-// A tile TOPA has no details for is dimmed and can't be tapped.
-const venueActions = v => {
+// Directions, Call, Website, Share: tiles that always sit in the same spots.
+// A tile TOPA has no details for is dimmed and can't be tapped. The car has no Share (nothing to send it to).
+// share: the page Share sends ("Show:12", "Venue:The Grape")
+const venueActions = (v, share) => {
   // details someone added for the venue win over the built-in ones
   const tel = addedVenue(v.venue).phone || VENUE_PHONES[v.venue];
   const web = safeUrl(addedVenue(v.venue).website) || VENUE_SITES[v.venue];
@@ -441,14 +449,49 @@ const venueActions = v => {
       ? `<a class="vt${cls}" href="${href}"${newTab ? ' target="_blank" rel="noopener"' : ""} title="${title}">${svg(icon)}<span>${label}</span></a>`
       : `<span class="vt off" aria-disabled="true" title="No ${label.toLowerCase()} for this venue yet">${svg(icon)}<span>${label}</span></span>`;
   return (
-    `<div class="vtiles">` +
+    `<div class="vtiles${IN_TESLA ? " three" : ""}">` +
     tile(`https://www.google.com/maps/dir/?api=1&destination=${mapsQuery(v)}`, "pin", "Directions", "Directions", " dir") +
     tile(tel && `tel:${tel.replace(/[^\d+]/g, "")}`, "tel", "Call", `Call ${esc(tel || "")}`, "", false) +
     tile(web, "globe", "Website", "Venue website") +
-    tile(`https://www.google.com/maps/search/?api=1&query=${mapsQuery(v)}`, "store", "Maps", "Look up venue in Maps") +
+    (IN_TESLA ? "" : `<button class="vt" data-share="${esc(share)}">${svg("shr")}<span>Share</span></button>`) +
     `</div>`
   );
 };
+
+// a page's own web address, for Share
+const pageUrl = v => location.origin + urlFor(v);
+
+// the phone's share menu when there is one (https only); otherwise copy the link, and as a last resort show it
+async function sharePage(v) {
+  const url = pageUrl(v),
+    title = "TOPA: " + pagePath(v).split("/").pop();
+  countEvent("share", v);
+  if (navigator.share) {
+    try {
+      return await navigator.share({ title, url });
+    } catch (err) {
+      if (err && err.name === "AbortError") return; // closed the share menu
+    }
+  }
+  try {
+    await navigator.clipboard.writeText(url);
+    return toast("Link copied");
+  } catch (_) {}
+  // older or insecure pages: copy through a hidden text box
+  const box = document.createElement("textarea");
+  box.value = url;
+  box.setAttribute("readonly", "");
+  box.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+  document.body.appendChild(box);
+  box.select();
+  box.setSelectionRange(0, url.length);
+  let copied = false;
+  try {
+    copied = document.execCommand("copy");
+  } catch (_) {}
+  box.remove();
+  toast(copied ? "Link copied" : url);
+}
 
 // in the car: tapping a map link may not start the car's navigation, but voice always does
 const voiceHint = v =>
@@ -909,15 +952,25 @@ const LINK_NAMES = {
   youtube: "YouTube",
   soundcloud: "SoundCloud",
 };
+const LINK_ICONS = {
+  website: "globe",
+  instagram: "ig",
+  facebook: "fb",
+  bandcamp: "bc",
+  spotify: "sp",
+  youtube: "yt",
+  soundcloud: "sc",
+};
+// the links a band sent, as a row of round icons with their names under them ("" when none)
 const bandLinks = name => {
   const links = (EXTRA.bands[name] && EXTRA.bands[name].links) || {};
-  const chips = Object.keys(LINK_NAMES)
+  const icons = Object.keys(LINK_NAMES)
     .filter(k => safeUrl(links[k]))
     .map(
       k =>
-        `<a class="chip" href="${esc(safeUrl(links[k]))}" target="_blank" rel="noopener">${LINK_NAMES[k]}</a>`,
+        `<a class="bl" href="${esc(safeUrl(links[k]))}" target="_blank" rel="noopener"><span>${svg(LINK_ICONS[k])}</span>${LINK_NAMES[k]}</a>`,
     );
-  return chips.join("");
+  return icons.length ? `<div class="blinks">${icons.join("")}</div>` : "";
 };
 
 // "+ Add a show" links at the bottom of band and venue pages, with the form filled in
@@ -962,7 +1015,7 @@ function bandPage(name) {
   return (
     `<div class="hero">${art(name, "round")}<div class="hx">` +
     `<small>ARTIST${genres}</small><h1>${esc(name)}</h1><p>${L.length ? showCount(L.length) : "No shows yet"}</p>` +
-    `<div class="acts blinks">${heroPlayButton(name)}${bandLinks(name)}</div>` +
+    `<div class="acts">${heroPlayButton(name)}</div>${bandLinks(name)}` +
     `</div>${starButton(SAVED.bands.includes(name), `data-sb="${esc(name)}"`, 1)}</div>` +
     L.map(venueDateRow).join("") +
     (L.length ? sourceKey() : "") +
@@ -1024,7 +1077,7 @@ function venuePage(key) {
     `<small>VENUE · ${esc(v.city.toUpperCase())}${dist ? " · " + dist.toUpperCase() : ""}</small>` +
     `<h1>${esc(venueName(v.venue))}</h1>` +
     (v.address ? `<p class="vaddr">${esc(v.address)}</p>` : "") +
-    `${venueActions(v)}${voiceHint(v)}` +
+    `${venueActions(v, "Venue:" + v.venue)}${voiceHint(v)}` +
     (L.length
       ? `<button class="lineup" data-playall>${svg("play")}Play lineup · ${countLabel(L.length, "show")}</button>`
       : `<p class="sub">No shows yet</p>`) +
@@ -1049,29 +1102,29 @@ function showPage(id) {
     .toUpperCase();
   const otherDates = EVENTS.filter(x => bandName(x) === band && x.id !== e.id);
   const alsoHere = EVENTS.filter(x => x.venue === e.venue && bandName(x) !== band).slice(0, 6);
-  // the show's link: its Ventura Rocks listing, or the link it was sent with (Instagram logo for a post)
+  // where the listing came from, as a small line at the bottom: its Ventura Rocks listing, or the link it was sent with
   const href = isAdded(e) ? safeUrl(e.url) : e.url || VR_CAL;
   const onIg = isAdded(e) && /^https:\/\/(www\.)?instagram\.com\//.test(href);
-  const linkLabel = !isAdded(e)
-    ? "View on Ventura Rocks"
-    : onIg
-      ? "See the post on Instagram"
-      : "Show details";
-  const short = !isAdded(e) ? "Ventura Rocks" : onIg ? "Instagram" : "Details";
-  const listing = href
-    ? `<a class="mi lb" href="${esc(href)}" target="_blank" rel="noopener" title="${linkLabel}">` +
-      `${svg(onIg ? "ig" : "ext")}<span>${short}</span></a>`
-    : "";
+  const from = !isAdded(e)
+    ? "From the Ventura Rocks calendar · see the listing"
+    : "Sent to TOPA" + (href ? (onIg ? " · see the Instagram post" : " · see the details") : "");
+  const source = href
+    ? `<a class="srcline" href="${esc(href)}" target="_blank" rel="noopener">${sourceIcon(e)}${from} ›</a>`
+    : `<p class="srcline">${sourceIcon(e)}${from}</p>`;
   const tags = e.tags.length ? `<div class="tg">${e.tags.map(x => `<i>${esc(x)}</i>`).join("")}</div>` : "";
+  const links = bandLinks(band);
   return (
     `<div class="hero">${art(band)}<div class="hx">` +
     `<small>${date} · <span class="ac">${timeLabel(e)}</span>${sourceIcon(e, true)}</small><h1>${esc(e.artist)}</h1>` +
     `<button class="vb big" data-venue="${esc(e.venue)}">${esc(venueName(e.venue))} <em>· ${esc(e.city)}</em><span>›</span></button>` +
-    `${venueActions(e)}<div class="mrow pills">${heroPlayButton(band)}${listing}<span class="sub">${distanceLabel(e)}</span></div>${voiceHint(e)}` +
+    `<div class="mrow">${heroPlayButton(band)}<span class="sub">${distanceLabel(e)}</span></div>` +
     `${tags}</div>${starButton(SAVED.bands.includes(band), `data-sb="${esc(band)}"`, 1)}</div>` +
+    (links ? `<h2>${esc(band)}</h2>${links}` : "") +
+    `<h2>${esc(venueName(e.venue))}</h2>${venueActions(e, "Show:" + e.id)}${voiceHint(e)}` +
+    source +
     (otherDates.length ? `<h2>More ${esc(band)} dates</h2>${otherDates.map(venueDateRow).join("")}` : "") +
     (alsoHere.length
-      ? `<h2 style="margin-top:24px">Also at ${esc(venueName(e.venue))}</h2>${alsoHere.map(x => showRow(x, false, true)).join("")}`
+      ? `<h2>Also at ${esc(venueName(e.venue))}</h2>${alsoHere.map(x => showRow(x, false, true)).join("")}`
       : "") +
     (otherDates.length || alsoHere.length ? sourceKey() : "")
   );
@@ -1110,7 +1163,7 @@ function favesPage() {
       `<div class="card vcard">${venueArt(n)}<div class="ci">` +
       `<button class="cn" data-venue="${esc(n)}">${esc(venueName(n))}</button>` +
       `<span>${where}${v.city ? " · " : ""}${showCount(L.length)}</span><span>${esc(v.address)}</span>` +
-      `</div>${starButton(true, `data-sv="${esc(n)}"`)}<div class="vacts">${venueActions(v)}</div></div>`
+      `</div>${starButton(true, `data-sv="${esc(n)}"`)}<div class="vacts">${venueActions(v, "Venue:" + n)}</div></div>`
     );
   };
   // Bands / Venues chips (with counts) switch the list instead of stacking both on one long page.
@@ -1937,7 +1990,7 @@ document.body.onclick = ev => {
     return;
   }
   const t = ev.target.closest(
-    "[data-plfull],[data-fpclose],[data-fpfave],[data-search],[data-searchx],[data-term],[data-play],[data-playall],[data-pl],[data-plshow],[data-vsort],[data-clear],[data-show],[data-v],[data-d],[data-g],[data-band],[data-venue],[data-sort],[data-sb],[data-sv],[data-pop],[data-anyrad],[data-rad],[data-ssort],[data-ftab],[data-scroll],[data-about],[data-about-close],[data-about-add],[data-about-back],[data-install]",
+    "[data-share],[data-plfull],[data-fpclose],[data-fpfave],[data-search],[data-searchx],[data-term],[data-play],[data-playall],[data-pl],[data-plshow],[data-vsort],[data-clear],[data-show],[data-v],[data-d],[data-g],[data-band],[data-venue],[data-sort],[data-sb],[data-sv],[data-pop],[data-anyrad],[data-rad],[data-ssort],[data-ftab],[data-scroll],[data-about],[data-about-close],[data-about-add],[data-about-back],[data-install]",
   );
   const pop = document.getElementById("pop");
   if (!ev.target.closest("#pop") && !(t && t.dataset.pop !== undefined)) pop.classList.remove("on");
@@ -1945,6 +1998,7 @@ document.body.onclick = ev => {
   const d = t.dataset,
     top = () => (document.getElementById("main").scrollTop = 0);
   if (d.about !== undefined) return openAbout();
+  if (d.share) return sharePage(d.share);
   if (d.plfull !== undefined) return openFull();
   if (d.fpclose !== undefined) return closeFull();
   if (d.fpfave !== undefined) {

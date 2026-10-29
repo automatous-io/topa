@@ -214,18 +214,15 @@ class Updates(unittest.TestCase):
         r = s.merge({}, s.to_record("band", fields, "x", 1, TODAY, VENUES))
         self.assertEqual(r["links"], {})
 
-    def test_a_built_in_venue_update_shows_only_the_change(self):
+    def test_a_listed_venue_update_shows_only_the_change(self):
         with tempfile.TemporaryDirectory() as root:
-            with open(os.path.join(root, "data.js"), "w") as f:
-                f.write('const KNOWN_VENUES = {\n  "Old Spot": [34.2, -119.2],\n};\n'
-                        'const VENUE_PHONES = {\n  "Old Spot": "(805) 555-0100",\n};\n')
             with open(os.path.join(root, "events.json"), "w") as f:
                 json.dump({"events": [{"venue": "Old Spot", "address": "1 Main St, Ojai", "city": "Ojai"}]}, f)
             body = form(**{"Venue": "Old Spot", "Name of the new venue": "", "Street address": "1 Main St, Ojai",
-                           "Town": "Ojai", "Map location": "34.2, -119.2", "Phone": "(805) 555-0199"})
+                           "Town": "Ojai", "Phone": "(805) 555-0199"})
             r = s.to_record("venue", s.parse_form(body), "x", 1, TODAY, {"Old Spot"})
             old = s.existing(root, "venue", r)
-            self.assertEqual(s.changes(old, s.merge(old, r)), ["- **phone**: (805) 555-0100 → (805) 555-0199"])
+            self.assertEqual(s.changes(old, s.merge(old, r)), ["- **phone**: (new) → (805) 555-0199"])
 
     def test_venue_update_needs_no_address(self):
         old = {"name": "The New Spot", "address": "1 Main St", "city": "Ojai", "lat": 34.4, "lng": -119.2}

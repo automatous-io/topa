@@ -269,8 +269,7 @@ def existing(root, kind, r):
         with open(os.path.join(root, c.file_name(kind, r)), encoding="utf-8") as f:
             return json.load(f)
     except (OSError, ValueError):
-        # a built-in venue: compare with what TOPA shows now
-        return c.builtin_venue(r["name"], root) if kind == "venue" else {}
+        return c.listed_venue(r["name"], root) if kind == "venue" else {}
 
 
 def main():

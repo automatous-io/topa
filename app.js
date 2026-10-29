@@ -3,7 +3,7 @@
 //
 // TOPA Local Music Finder
 // Shows listings from events.json (written 3x a day by scripts/fetch_events.py), plays 30-second previews
-// from Apple Music, and keeps faves on the device. Venue data and the genre map live in data.js.
+// from Apple Music, and keeps faves on the device. Town centers and the genre map live in data.js.
 
 // ---- Settings and state ----
 // the app's version: shown in About, and it names the offline cache, so bumping it refreshes every device
@@ -130,9 +130,8 @@ const isAdded = e => e.source === "community";
 function toShow(o, rawTags) {
   o.url = o.url || (isAdded(o) ? "" : VR_CAL);
   o.city = o.city || townFromAddress(o.address);
-  // an added venue's map spot beats the built-in list
-  const c =
-    o.lat != null && o.lng != null ? [o.lat, o.lng] : KNOWN_VENUES[o.venue] || CITY_FALLBACK[o.city] || null;
+  // the venue's map spot, else its town's center
+  const c = o.lat != null && o.lng != null ? [o.lat, o.lng] : CITY_FALLBACK[o.city] || null;
   return {
     ...o,
     lat: c ? c[0] : null,
@@ -440,9 +439,8 @@ const mapsQuery = v => encodeURIComponent([venueName(v.venue), v.city, "CA"].fil
 // venue tiles: Directions, Call, Website, Share. Missing details show dimmed; no Share in the car.
 // share: the page to share, e.g. "Venue:The Grape"
 const venueActions = (v, share) => {
-  // details someone added for the venue win over the built-in ones
-  const tel = addedVenue(v.venue).phone || VENUE_PHONES[v.venue];
-  const web = safeUrl(addedVenue(v.venue).website) || VENUE_SITES[v.venue];
+  const tel = addedVenue(v.venue).phone;
+  const web = safeUrl(addedVenue(v.venue).website);
   const tile = (href, icon, label, title, cls = "", newTab = true) =>
     href
       ? `<a class="vt${cls}" href="${href}"${newTab ? ' target="_blank" rel="noopener"' : ""} title="${title}">${svg(icon)}<span>${label}</span></a>`
@@ -989,14 +987,14 @@ const bandNow = name => {
 };
 const venueNow = v => {
   const added = addedVenue(v.venue),
-    spot = added.lat != null ? [added.lat, added.lng] : KNOWN_VENUES[v.venue] || null;
+    spot = added.lat != null ? [added.lat, added.lng] : null;
   return filled({
     pick: v.venue,
     address: added.address || v.address,
     city: added.city || v.city,
     coords: spot ? spot.join(", ") : "",
-    phone: added.phone || VENUE_PHONES[v.venue],
-    website: added.website || VENUE_SITES[v.venue],
+    phone: added.phone,
+    website: added.website,
     instagram: added.instagram,
   });
 };

@@ -2,6 +2,10 @@
  "1031 harbor blvd, oxnard, ca 93035": {
   "miss": "2026-10-29"
  },
+ "3059 willow ln, westlake village, ca 91361": {
+  "lat": 34.166778,
+  "lng": -118.840247
+ },
  "4275 tierra rejada rd, moorpark, ca 93021": {
   "miss": "2026-10-29"
  }

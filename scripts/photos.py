@@ -2,7 +2,7 @@
 #
 # Copyright 2026 AUTOMATOUS.IO. All rights reserved. See LICENSE.
 #
-"""Shrink a band or venue photo: JPEG, 900px max, upright, no GPS.
+"""Shrink a band or venue photo: JPEG, upright, no GPS; 900px max for bands, 1600px for venues (page headers).
 
 Usage:
     python3 scripts/photos.py --url https://github.com/user-attachments/assets/... --out community/photos/bands/x.jpg
@@ -20,7 +20,8 @@ import sys
 import tempfile
 import urllib.request
 
-LONGEST = 900  # pixels
+LONGEST = 900  # pixels; bands show as small circles
+VENUE_LONGEST = 1600  # venues fill the top of their page, even on the car's screen
 QUALITY = 82
 MAX_DOWNLOAD = 20 * 1024 * 1024  # 20 MB
 USER_AGENT = "TOPA-local-music-finder/1.0 (+https://github.com/automatous-io/topa)"
@@ -45,6 +46,7 @@ def download(url, to):
 def shrink(src, out):
     """src (any common image type) -> out, a small JPEG with no hidden details."""
     os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
+    longest = VENUE_LONGEST if "/venues/" in out.replace(os.sep, "/") else LONGEST
     try:
         from PIL import Image, ImageOps
     except ImportError:
@@ -52,13 +54,13 @@ def shrink(src, out):
     if Image:
         with Image.open(src) as im:
             im = ImageOps.exif_transpose(im)  # apply the phone's rotation
-            im.thumbnail((LONGEST, LONGEST))
+            im.thumbnail((longest, longest))
             im.convert("RGB").save(out, "JPEG", quality=QUALITY, optimize=True, progressive=True)  # no exif = no GPS
         return
     if shutil.which("sips"):  # macOS
         size = subprocess.run(["sips", "-g", "pixelWidth", "-g", "pixelHeight", src], capture_output=True, text=True)
-        longest = max([int(n) for n in re.findall(r"pixel(?:Width|Height): (\d+)", size.stdout)] or [0])
-        resize = ["-Z", str(LONGEST)] if longest > LONGEST else []  # only ever smaller
+        biggest = max([int(n) for n in re.findall(r"pixel(?:Width|Height): (\d+)", size.stdout)] or [0])
+        resize = ["-Z", str(longest)] if biggest > longest else []  # only ever smaller
         subprocess.run(
             ["sips", *resize, "-s", "format", "jpeg", "-s", "formatOptions", str(QUALITY), src, "--out", out],
             check=True,

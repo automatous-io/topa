@@ -78,7 +78,7 @@ body:
     id: photo
     attributes:
       label: Photo
-      description: Drag a photo of the band into this box (JPG or PNG). Square photos look best. Only photos you took or have the rights to share.
+      description: Drag a photo of the band into this box (JPG or PNG). It shows in a circle, so a square photo at least 600 pixels across looks best, with the band in the middle. Only photos you took or have the rights to share.
   - type: textarea
     id: notes
     attributes:

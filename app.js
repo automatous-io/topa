@@ -1946,15 +1946,16 @@ function aboutHtml() {
     `<p class="astory">Made for and by local live music lovers.<br>` +
     `Bands, fans, and venues add to it, so it keeps getting better.</p></header>` +
     `<div class="abody">` +
-    `<div class="abigs${app ? "" : " one"}">` +
-    `<button class="abig add" data-about-add>${svg("at")}<span><b>Add to TOPA</b><small>Shows, bands, venues</small></span><span class="ago">›</span></button>` +
-    app +
-    `</div>` +
+    (app ? `<div class="abigs one">${app}</div>` : "") +
     `<h3>Where shows come from</h3>` +
     `<div class="legend">` +
     `<div><span class="srci vr">${svg("cal")}</span><span>The ${newTab(VR_SITE, "Ventura Rocks")} ` +
     `community calendar, checked 3x a day</span></div>` +
     `<div><span class="srci cm">${svg("at")}</span><span>Sent to TOPA by bands, fans, and venues</span></div>` +
+    `</div>` +
+    // right under the ways shows get in, so sending one is the next step
+    `<div class="abigs one aadd">` +
+    `<button class="abig add" data-about-add>${svg("at")}<span><b>Add to TOPA</b><small>Shows, bands, venues</small></span><span class="ago">›</span></button>` +
     `</div>` +
     `<h3>Good to know</h3>` +
     `<dl class="afacts">` +

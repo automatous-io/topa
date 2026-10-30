@@ -24,6 +24,7 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
 - The logo is just TOPA over LOCAL MUSIC, without the ridge above it, so it's lighter in the top bar and sidebar. The
   ridge stays in the opening splash. The app's name is now TOPA Local Music.
 - A new app icon to match: TOPA over LOCAL MUSIC, on the home screen and in the browser tab.
+- On About, Add to TOPA moved under Where shows come from, right after the ways shows get in.
 
 ---
 

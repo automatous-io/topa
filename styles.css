@@ -3958,3 +3958,265 @@ a.srcline:hover {
     height: 58px;
   }
 }
+
+/* ---- venue and show pages: the venue's photo (or its colors) behind the header, fading into the page ---- */
+.hero.ph {
+  position: relative;
+  isolation: isolate;
+  background: none;
+  align-items: flex-start;
+}
+.hbg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center 35%;
+}
+.hbg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, #17121fb3 0%, #17121f00 60%),
+    linear-gradient(180deg, #17121f33 0, #17121f26 20%, #17121f8c 50%, #17121fe0 80%, var(--panel) 100%);
+}
+/* no photo yet: the venue's colors, a little softer */
+.hbg.g {
+  filter: saturate(0.85);
+}
+/* everything on the photo stays readable */
+.hero.ph small,
+.hero.ph h1,
+.hero.ph .vaddr,
+.hero.ph .vb,
+.hero.ph .plinks {
+  text-shadow: 0 1px 12px #0a060e99;
+}
+.hero.ph small {
+  color: #e6dcef;
+}
+.hero.ph .vt:not(.dir):not(.off),
+.hero.ph .vhint {
+  background: #1e1828a0;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.hero.ph .vt.off {
+  background: #17121f66;
+}
+.hero.ph .lineup {
+  background: #17121f59;
+  border-color: #f4eef747;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+/* show page: the band's round picture beside its name, on the venue's photo */
+.hid {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.hidt {
+  min-width: 0;
+}
+.hero.ph .hid .art {
+  width: 132px;
+  height: 132px;
+  font-size: 44px;
+}
+.hero.ph .hid h1 {
+  margin: 6px 0 2px;
+}
+
+/* the car, full screen: more photo on top; the voice hint and Play lineup share a row */
+@media (min-width: 701px) {
+  .hero.ph {
+    padding-top: 120px;
+  }
+  .hero.ph:not(.sh) .hx {
+    display: grid;
+    grid-template-columns: max-content 420px;
+    column-gap: 16px;
+  }
+  .hero.ph:not(.sh) .hx > * {
+    grid-column: 1 / -1;
+  }
+  .hero.ph:not(.sh) .hx > .vhint {
+    grid-column: 1;
+  }
+  .hero.ph:not(.sh) .hx > .vhint + .lrow {
+    grid-column: 2;
+    margin-top: 16px;
+    align-items: stretch;
+  }
+  .hero.ph .vhint + .lrow .lineup {
+    height: auto;
+  }
+  .hero.ph .vhint + .lrow .star.ring {
+    align-self: center;
+  }
+}
+/* the car, half screen: everything stacked, a bit less photo */
+@media (max-width: 1000px) and (min-width: 701px) {
+  .hero.ph {
+    padding-top: 96px;
+  }
+  .hero.ph:not(.sh) .hx > * {
+    grid-column: 1 / -1 !important;
+  }
+  .hero.ph:not(.sh) .hx > .vhint + .lrow {
+    margin-top: 12px;
+  }
+  .hero.ph .vhint + .lrow .lineup {
+    height: 56px;
+  }
+  .hbg::after {
+    background: linear-gradient(180deg, #17121f33 0, #17121f26 18%, #17121f8c 48%, #17121fe0 80%, var(--panel) 100%);
+  }
+  .hero.ph .hid .art {
+    width: 104px;
+    height: 104px;
+    font-size: 36px;
+  }
+}
+/* phones: the photo starts under the top bar, darkened there so the bar stays readable */
+@media (max-width: 700px) {
+  .hero.ph {
+    padding-top: calc(176px + env(safe-area-inset-top));
+  }
+  .hbg::after {
+    background: linear-gradient(
+      180deg,
+      #17121fcc 0,
+      #17121f33 calc(96px + env(safe-area-inset-top)),
+      #17121f66 45%,
+      #17121fdb 78%,
+      var(--panel) 100%
+    );
+  }
+  .hero.ph .hid {
+    gap: 14px;
+  }
+  .hero.ph .hid .art {
+    width: 84px;
+    height: 84px;
+    font-size: 30px;
+  }
+  .hero.ph .hid h1 {
+    font-size: clamp(30px, 9.5vw, 40px);
+  }
+}
+/* short phones (iPhone SE and the like): less photo on top so the first shows still fit */
+@media (max-width: 700px) and (max-height: 700px) {
+  .hero.ph {
+    padding-top: calc(144px + env(safe-area-inset-top));
+  }
+}
+
+/* venue pages: the fave star as a round button beside Play lineup */
+.lrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  max-width: 600px;
+}
+.lrow .lineup {
+  flex: 1;
+  margin-top: 0;
+  max-width: none;
+}
+.lrow .sub {
+  flex: 1;
+  margin: 0;
+}
+.star.ring {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1.5px solid #f4eef747;
+  background: #17121f59;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.star.ring:hover {
+  background: #ffffff1a;
+}
+.mrow .tg {
+  margin-top: 0;
+}
+@media (max-width: 700px) {
+  .star.ring {
+    width: 48px;
+    height: 48px;
+  }
+  .mrow .star.ring {
+    width: 56px;
+    height: 56px;
+  }
+}
+.acts {
+  align-items: center;
+}
+.acount {
+  color: #ccc;
+  font-size: 17px;
+}
+@media (max-width: 700px) {
+  .acount {
+    font-size: 15px;
+  }
+}
+/* band and show pages: the fave star sits on the corner of the band's picture */
+.artw {
+  position: relative;
+  flex: none;
+  align-self: flex-start;
+}
+.hid .artw {
+  align-self: center;
+}
+.star.badge {
+  position: absolute;
+  right: 2%;
+  bottom: 2%;
+  width: 52px;
+  height: 52px;
+  margin: 0;
+  border-radius: 50%;
+  background: #2a2335;
+  border: 3px solid var(--panel);
+  color: var(--ink);
+  font-size: 26px;
+}
+.star.badge.on {
+  color: var(--fave);
+}
+.star.badge:hover {
+  background: #352c42;
+}
+.hid .star.badge {
+  right: -6px;
+  bottom: -6px;
+}
+@media (max-width: 1000px) and (min-width: 701px) {
+  .star.badge {
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
+  }
+}
+@media (max-width: 700px) {
+  .star.badge {
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
+  }
+  .hid .star.badge {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+}

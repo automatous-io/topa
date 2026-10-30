@@ -333,11 +333,22 @@ function art(s, cls = "", band = true, photo = "") {
   const ph = photo || (band && photoFor(s));
   if (ph)
     return `<div class="art ${cls}"${band ? ` data-a="${esc(s)}"` : ""} style="background-image:url('${ph}')"></div>`;
+  return `<div class="art g ${cls}"${band ? ` data-a="${esc(s)}"` : ""} style="background:${nameColors(s)}">${esc(initials(s))}</div>`;
+}
+
+// the two colors unique to a name, as a gradient (initials tiles and header washes)
+function nameColors(s) {
   const h = hash(s),
     a = h % 360,
     b = (a + 40 + ((h >> 9) % 100)) % 360;
-  return `<div class="art g ${cls}"${band ? ` data-a="${esc(s)}"` : ""} style="background:linear-gradient(${(h >> 4) % 360}deg,hsl(${a} 70% 45%),hsl(${b} 75% 22%))">${esc(initials(s))}</div>`;
+  return `linear-gradient(${(h >> 4) % 360}deg,hsl(${a} 70% 45%),hsl(${b} 75% 22%))`;
 }
+
+// behind a venue or show page header: the venue's photo, else its colors
+const heroBg = name => {
+  const ph = venuePhoto(name);
+  return `<div class="hbg${ph ? "" : " g"}" style="background:${ph ? `center 35% / cover url('${ph}')` : nameColors(venueName(name))}"></div>`;
+};
 
 const playBadge = h =>
   `<span class="pb" role="button" aria-label="Play preview" data-play="${esc(h)}"${hasPreview(h) ? "" : " hidden"}>${svg("play")}</span>`;
@@ -972,6 +983,14 @@ const LINK_ICONS = {
 };
 // links as one line of small icon + name links (Instagram shows the @handle); empty when there are none
 const igHandle = url => (url.match(/instagram\.com\/([^/?#]+)/i) || [])[1];
+// the fave star as a round outlined button, sitting in a row with other buttons
+const ringStar = (on, attr) => starButton(on, attr).replace('class="star', 'class="star ring');
+// a band's round picture with its fave star on the corner (band and show pages, like the Bands grid)
+const artWithStar = name =>
+  `<div class="artw">${art(name, "round")}` +
+  starButton(SAVED.bands.includes(name), `data-sb="${esc(name)}"`).replace('class="star', 'class="star badge') +
+  `</div>`;
+
 const linkLine = (links, keys) => {
   const shown = keys
     .filter(k => safeUrl(links[k]))
@@ -1027,10 +1046,11 @@ function bandPage(name) {
   const tags = L[0] && L[0].tags.length ? L[0].tags : (EXTRA.bands[name] && EXTRA.bands[name].genres) || [];
   const genres = tags.length ? " · " + esc(tags.join(", ").toUpperCase()) : "";
   return (
-    `<div class="hero">${art(name, "round")}<div class="hx">` +
-    `<small>ARTIST${genres}</small><h1>${esc(name)}</h1><p>${L.length ? showCount(L.length) : "No shows yet"}</p>` +
-    `<div class="acts">${heroPlayButton(name)}</div>${bandLinks(name)}` +
-    `</div>${starButton(SAVED.bands.includes(name), `data-sb="${esc(name)}"`, 1)}</div>` +
+    `<div class="hero">${artWithStar(name)}<div class="hx">` +
+    `<small>ARTIST${genres}</small><h1>${esc(name)}</h1>` +
+    `<div class="acts">${heroPlayButton(name)}` +
+    `<span class="acount">${L.length ? showCount(L.length) : "No shows yet"}</span></div>${bandLinks(name)}` +
+    `</div></div>` +
     L.map(venueDateRow).join("") +
     (L.length ? sourceKey() : "") +
     addLinks([
@@ -1090,16 +1110,19 @@ function venuePage(key) {
       : "";
   const dist = distanceLabel(v);
   return (
-    `<div class="hero">${venueArt(v.venue)}<div class="hx">` +
+    `<div class="hero ph">${heroBg(v.venue)}<div class="hx">` +
     `<small>VENUE · ${esc(v.city.toUpperCase())}${dist ? " · " + dist.toUpperCase() : ""}</small>` +
     `<h1>${esc(venueName(v.venue))}</h1>` +
     (v.address ? `<p class="vaddr">${esc(v.address)}</p>` : "") +
     venueLinks(v.venue) +
     `${venueActions(v, "Venue:" + v.venue)}${voiceHint(v)}` +
+    // the star shares a row with Play lineup (or "No shows yet"), never a row of its own
+    `<div class="lrow">` +
     (L.length
       ? `<button class="lineup" data-playall>${svg("play")}Play lineup · ${countLabel(L.length, "show")}</button>`
       : `<p class="sub">No shows yet</p>`) +
-    `</div>${starButton(SAVED.venues.includes(v.venue), `data-sv="${esc(v.venue)}"`, 1)}</div>` +
+    ringStar(SAVED.venues.includes(v.venue), `data-sv="${esc(v.venue)}"`) +
+    `</div></div></div>` +
     section(todayWord(), tonight) +
     section("This week", thisWeek, tonight.length) +
     section("Later", later.slice(0, 30), tonight.length || thisWeek.length) +
@@ -1131,12 +1154,12 @@ function showPage(id) {
     : `<p class="srcline">${sourceIcon(e)}${from}</p>`;
   const tags = e.tags.length ? `<div class="tg">${e.tags.map(x => `<i>${esc(x)}</i>`).join("")}</div>` : "";
   return (
-    `<div class="hero">${art(band)}<div class="hx">` +
+    `<div class="hero ph sh">${heroBg(e.venue || band)}<div class="hx"><div class="hid">${artWithStar(band)}<div class="hidt">` +
     `<small>${date} · <span class="ac">${timeLabel(e).toUpperCase()}</span>${sourceIcon(e, true)}` +
     `${distanceLabel(e) ? " · " + distanceLabel(e).toUpperCase() : ""}</small><h1>${esc(e.artist)}</h1>` +
     venueLink(e, "vb big", esc(venueLabel(e)) + (e.city ? ` <em>· ${esc(e.city)}</em>` : "")) +
-    `<div class="mrow">${heroPlayButton(band)}</div>` +
-    `${tags}${bandLinks(band)}</div>${starButton(SAVED.bands.includes(band), `data-sb="${esc(band)}"`, 1)}</div>` +
+    `</div></div><div class="mrow">${heroPlayButton(band)}${tags}</div>` +
+    `${bandLinks(band)}</div></div>` +
     (e.venue
       ? `<h2>${esc(venueName(e.venue))}</h2>${venueLinks(e.venue)}${venueActions(e, "Show:" + e.id)}${voiceHint(e)}`
       : "") +

@@ -159,7 +159,7 @@ body:
     id: photo
     attributes:
       label: Photo
-      description: Drag a photo of the venue into this box (JPG or PNG); the outside or the stage both work. It replaces any photo TOPA has. Only photos you took or have the rights to share.
+      description: Drag a photo of the venue into this box (JPG or PNG). It fills the top of the venue's page, so a wide (landscape) photo at least 1600 pixels across looks best, with the main thing in the middle, since phones trim the sides. The outside or the stage both work, and evening or inside shots look great. It replaces any photo TOPA has. Only photos you took or have the rights to share.
   - type: textarea
     id: notes
     attributes:

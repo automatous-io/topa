@@ -6,6 +6,31 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
 
 ---
 
+## 2.6.0
+
+**Venue photos behind the page header, and a better home for the fave star.**
+
+- Venue pages have no picture tile anymore. The venue's photo fills the top of the page, from the top bar down past
+  Play lineup, and fades into the list of shows. The buttons sit on frosted glass so they stay readable on any photo.
+- A venue without a photo yet gets its own colors there instead, every venue page looks the same.
+- Show pages put the venue's photo (or its colors) behind the show, with the band's round picture beside its name.
+- Without the picture tile, shows start higher on the page. Even a small phone like the iPhone SE now shows the first
+  shows without scrolling.
+- The fave star found better spots. On venue pages it sits beside Play lineup, or beside "No shows yet". On band and
+  show pages it sits on the corner of the band's picture, like on Bands, so it never takes a line of its own.
+- In the car, the same look on full and half screen. On full screen the voice hint and Play lineup share a row.
+- Venue photos are kept sharper (up to 1600 pixels across) so they fill the header on any screen. The venue and band
+  forms now suggest the best photo: wide for venues, square for bands.
+- The logo is just TOPA over LOCAL MUSIC, without the ridge above it, so it's lighter in the top bar and sidebar. The
+  ridge stays in the opening splash. The app's name is now TOPA Local Music.
+- A new app icon to match: TOPA over LOCAL MUSIC, on the home screen and in the browser tab.
+- On About, Add to TOPA moved under Where shows come from, right after the ways shows get in.
+- The logo moved down and opens About, so there's no separate About button. On phones TOPA sits left of Shows in the
+  tab bar, and the top bar is just Ventura County and search. In the car the logo sits at the bottom of the sidebar,
+  where About was.
+
+---
+
 ## 2.5.1
 
 **Fixes.**

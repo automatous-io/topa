@@ -1,6 +1,6 @@
 <p align="center"><img src="icon-512.png" alt="TOPA app icon" width="128"></p>
 
-<h1 align="center">TOPA Local Music Finder</h1>
+<h1 align="center">TOPA Local Music</h1>
 
 *Made for and by local live music lovers. Bands, fans, and venues add to it, so it keeps getting better.*
 

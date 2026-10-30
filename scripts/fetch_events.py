@@ -307,7 +307,7 @@ def llms_txt(events, now):
     """Plain-English listing for AI assistants (the llms.txt convention): upcoming shows by day, Pacific time."""
     today = now.date()
     lines = [
-        "# TOPA Local Music Finder",
+        "# TOPA Local Music",
         "",
         "> Live music in Ventura County, California: who's playing, where and when. Listings come from the",
         "> Ventura Rocks community calendar (venturarocks.com) and from bands, fans, and venues who send their",

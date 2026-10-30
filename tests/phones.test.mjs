@@ -44,7 +44,7 @@ describe("phones", { concurrency: true }, () => {
       await page.type("#ms", "jazz");
       assert.ok((await count(page, "#main .rw[data-show]")) > 0, "search found nothing");
       await tap(page, ".mbar [data-searchx]");
-      await tap(page, ".mbar .mhome");
+      await tap(page, "nav .logo");
       await tap(page, "[data-about-add]");
       assert.equal(await text(page, ".atitle"), "Add to TOPA");
       await tap(page, "[data-about-back]");

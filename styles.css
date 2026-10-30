@@ -58,18 +58,7 @@ nav {
   gap: 6px;
   padding: 22px 0;
 }
-/* TOPA wordmark: the Topa Topa ridgeline with the name beneath it */
-.wm {
-  display: block;
-  overflow: visible;
-}
-/* scales with the logo, like the splash */
-.wm-ridge {
-  fill: none;
-  stroke-width: 1.6;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-}
+/* TOPA wordmark: the name with the tagline beneath it */
 .wm-name {
   display: block;
   color: var(--acc);
@@ -79,12 +68,6 @@ nav {
   text-align: center;
   margin-right: -0.14em; /* letter spacing adds a gap after the last letter; this keeps the name centered */
 }
-/* every copy of the wordmark has the same proportions (mountain 5x the letter size); only the size changes */
-.wm {
-  width: 5em;
-  margin: 0 auto -0.08em;
-}
-nav .logo .wm,
 nav .logo .wm-name {
   font-size: 16px;
 }
@@ -1109,7 +1092,6 @@ a.pldz {
   background: var(--card);
   text-align: center;
 }
-.ahero .wm,
 .ahero .wm-name {
   font-size: 64px;
 }
@@ -2425,13 +2407,6 @@ h1,
   flex-direction: column;
   align-items: center;
 }
-.wm {
-  width: 2.6em;
-  margin: 0 auto 0.1em;
-}
-.wm-ridge {
-  stroke: var(--acc);
-}
 .wm-name {
   font-family: var(--display);
   font-weight: 600;
@@ -2517,7 +2492,6 @@ nav button.on[data-v="Faves"] svg path {
     margin-right: auto;
   }
   /* stacked, same as the sidebar */
-  .wmk-phone .wm,
   .wmk-phone .wm-name {
     font-size: 16px;
   }

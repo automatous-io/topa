@@ -21,6 +21,8 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
 - In the car, the same look on full and half screen. On full screen the voice hint and Play lineup share a row.
 - Venue photos are kept sharper (up to 1600 pixels across) so they fill the header on any screen. The venue and band
   forms now suggest the best photo: wide for venues, square for bands.
+- The logo is just the TOPA name and LOCAL MUSIC / FINDER, without the ridge above it, so it's lighter in the top bar
+  and sidebar. The ridge stays in the opening splash.
 
 ---
 

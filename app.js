@@ -517,12 +517,9 @@ const voiceHint = v =>
       `${v.address ? `<i>${esc(v.address)}</i>` : ""}</span></p>`
     : "";
 
-// TOPA wordmark: the ridgeline and the name; the CSS lays them out per spot
-const RIDGE = "M1 15 L8 11 L13 13 L19 3 L24 9 L28 6 L33 12";
-const ridge = () =>
-  `<svg class="wm" viewBox="0 0 34 18" aria-hidden="true"><path class="wm-ridge" d="${RIDGE}"/></svg>`;
+// TOPA wordmark: the name and the tagline (the ridgeline is only on the splash); the CSS sizes it per spot
 const wordmark = (id, tag) =>
-  `<span class="wmk wmk-${id}">${ridge()}<span class="wm-name">TOPA</span>` +
+  `<span class="wmk wmk-${id}"><span class="wm-name">TOPA</span>` +
   (tag ? `<span class="wm-tag">Local Music<br>Finder</span>` : "") +
   `</span>`;
 

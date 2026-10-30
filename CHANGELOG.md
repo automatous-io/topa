@@ -23,6 +23,7 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
   forms now suggest the best photo: wide for venues, square for bands.
 - The logo is just TOPA over LOCAL MUSIC, without the ridge above it, so it's lighter in the top bar and sidebar. The
   ridge stays in the opening splash. The app's name is now TOPA Local Music.
+- A new app icon to match: TOPA over LOCAL MUSIC, on the home screen and in the browser tab.
 
 ---
 

@@ -25,6 +25,9 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
   ridge stays in the opening splash. The app's name is now TOPA Local Music.
 - A new app icon to match: TOPA over LOCAL MUSIC, on the home screen and in the browser tab.
 - On About, Add to TOPA moved under Where shows come from, right after the ways shows get in.
+- The logo moved down and opens About, so there's no separate About button. On phones TOPA sits left of Shows in the
+  tab bar, and the top bar is just Ventura County and search. In the car the logo sits at the bottom of the sidebar,
+  where About was.
 
 ---
 

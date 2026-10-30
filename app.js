@@ -1241,9 +1241,9 @@ function navHtml(page) {
     .join("");
   // when the listings last changed (the Ventura Rocks credit lives in About)
   const updated = updatedLabel() ? `Updated<i>${updatedLabel()}</i>` : "";
+  // the logo opens About: at the bottom of the sidebar in the car, left of Shows on phones
   return (
     `<button class="logo" data-about aria-label="About TOPA">${wordmark("nav", true)}</button>${tabs}` +
-    `<button class="about-tab" data-about>${svg("info")}About</button>` +
     `<div class="credit">${updated}</div>`
   );
 }
@@ -1273,7 +1273,7 @@ function render() {
   for (const w of document.querySelectorAll(".sw"))
     rowScroll[w.dataset.row] = w.querySelector(".chips").scrollLeft;
   document.getElementById("nav").innerHTML = navHtml(page);
-  // phone top bar: logo (opens About), county, search
+  // phone top bar: county and search (the logo is in the tab bar)
   // in search mode the bar becomes the search box
   const searching = page === "Shows" && (searchOpen || !!term);
   const phoneBar = searching
@@ -1281,7 +1281,7 @@ function render() {
       `<input id="ms" type="search" placeholder="Bands, venues, towns, genres" value="${esc(term)}" ` +
       `autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" aria-label="Search">` +
       `<button class="mbtn" data-searchx aria-label="Close search">${CLOSE_ICON}</button></div></header>`
-    : `<header class="mbar"><button class="mhome" data-about aria-label="About TOPA">${wordmark("phone", true)}</button>` +
+    : `<header class="mbar">` +
       `<span class="mcounty">${svg("Venues")}Ventura County</span>` +
       `<button class="mbtn" data-search aria-label="Search bands, venues, towns">${svg("search")}</button></header>`;
   searchSlide = false;

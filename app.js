@@ -1,7 +1,7 @@
 //
 // Copyright 2026 AUTOMATOUS.IO. All rights reserved. See LICENSE.
 //
-// TOPA Local Music Finder
+// TOPA Local Music
 // Shows listings from events.json (written 3x a day by scripts/fetch_events.py), plays 30-second previews
 // from Apple Music, and keeps faves on the device. Town centers and the genre map live in data.js.
 
@@ -520,7 +520,7 @@ const voiceHint = v =>
 // TOPA wordmark: the name and the tagline (the ridgeline is only on the splash); the CSS sizes it per spot
 const wordmark = (id, tag) =>
   `<span class="wmk wmk-${id}"><span class="wm-name">TOPA</span>` +
-  (tag ? `<span class="wm-tag">Local Music<br>Finder</span>` : "") +
+  (tag ? `<span class="wm-tag">Local Music</span>` : "") +
   `</span>`;
 
 const starButton = (on, attr, big) =>

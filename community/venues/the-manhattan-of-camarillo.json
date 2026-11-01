@@ -4,12 +4,15 @@
   "city": "Camarillo",
   "lat": 34.225652,
   "lng": -118.989015,
+  "phone": "(805) 388-5550",
   "website": "https://www.themanhattanofcamarillo.com",
   "instagram": "https://instagram.com/manhattancamarillo",
+  "facebook": "https://www.facebook.com/TheManhattanOfCamarillo",
+  "bio": "The Manhattan of Camarillo is an Italian restaurant on Santa Rosa Road with live music, an attached beer garden and a private wine room.",
+  "bio_source": "Written by TOPA from The Manhattan's Facebook, @manhattancamarillo and Visit Camarillo.",
   "maintainers": [
     "automatous-io"
   ],
   "submitted_by": "automatous-io",
-  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29",
-  "phone": "(805) 388-5550"
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
 }

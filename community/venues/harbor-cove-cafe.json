@@ -4,12 +4,15 @@
   "city": "Ventura",
   "lat": 34.245518,
   "lng": -119.266346,
+  "phone": "(805) 658-1639",
   "website": "https://harborcovecafe.net",
   "instagram": "https://instagram.com/harborcovecafe",
+  "facebook": "https://www.facebook.com/harborcovecafe",
+  "bio": "Harbor Cove Cafe is an island-themed, dog-friendly cafe on Spinnaker Drive at Ventura Harbor, serving breakfast, lunch, dinner and tropical drinks. It has been open under its current name since 2005 and hosts live music.",
+  "bio_source": "Written by TOPA from harborcovecafe.net, @harborcovecafe and the cafe's Facebook.",
   "maintainers": [
     "automatous-io"
   ],
   "submitted_by": "automatous-io",
-  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29",
-  "phone": "(805) 658-1639"
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
 }

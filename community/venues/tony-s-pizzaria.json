@@ -7,6 +7,9 @@
   "phone": "(805) 643-8425",
   "website": "https://www.tonyspizzaria.net",
   "instagram": "https://instagram.com/tonys_pizzaria",
+  "facebook": "https://www.facebook.com/tonyspizzariaventura",
+  "bio": "Tony's Pizzaria is a family-run pizzeria on East Thompson Boulevard near Surfers Point in Ventura, open since 1959. It has an eat-in patio, outdoor games and a fire pit.",
+  "bio_source": "Written by TOPA from tonyspizzaria.net and @tonys_pizzaria.",
   "maintainers": [
     "automatous-io"
   ],

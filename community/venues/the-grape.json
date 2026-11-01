@@ -6,6 +6,9 @@
   "lng": -119.259493,
   "website": "https://thegrapeventura.com",
   "instagram": "https://instagram.com/thegrapeventura",
+  "facebook": "https://www.facebook.com/thegrapeventura",
+  "bio": "The Grape is a 21-and-over jazz club and cocktail bar on East Main Street in midtown Ventura. It grew out of Squashed Grapes, a wine bar that started hosting live jazz in 2010, and moved to its current home in 2021. It hosts jazz and blues Tuesday through Saturday, including the Gratitude Jazz Jam on Tuesdays and blues on Saturday afternoons.",
+  "bio_source": "Written by TOPA from thegrapeventura.com and The Grape's Facebook.",
   "maintainers": [
     "automatous-io"
   ],

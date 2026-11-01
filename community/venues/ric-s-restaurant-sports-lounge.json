@@ -4,12 +4,14 @@
   "city": "Camarillo",
   "lat": 34.237089,
   "lng": -119.036382,
+  "phone": "(805) 389-9919",
   "website": "https://www.ricsrestaurant.com",
   "instagram": "https://instagram.com/ricscamarillo",
+  "bio": "Ric's Restaurant & Sports Lounge is a family-owned restaurant and sports bar in Camarillo Village Square, with a patio, outdoor TVs and live entertainment.",
+  "bio_source": "Written by TOPA from @ricscamarillo and Visit Camarillo.",
   "maintainers": [
     "automatous-io"
   ],
   "submitted_by": "automatous-io",
-  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29",
-  "phone": "(805) 389-9919"
+  "source": "public web search, the venue's website and public Instagram, and US Census address lookup, 2026-10-29"
 }

@@ -6,6 +6,9 @@
   "lng": -118.881193,
   "phone": "(805) 532-1500",
   "website": "https://www.luckyfoolspub.com",
+  "facebook": "https://www.facebook.com/LuckyFoolsPub",
+  "bio": "Lucky Fools Pub is a pub on High Street in Old Town Moorpark that hosts live music.",
+  "bio_source": "Written by TOPA from the Lucky Fools Pub Facebook.",
   "maintainers": [
     "automatous-io"
   ],

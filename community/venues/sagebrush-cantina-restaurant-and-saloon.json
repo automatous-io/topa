@@ -7,6 +7,9 @@
   "phone": "(818) 222-6062",
   "website": "https://www.sagebrushcantina.com",
   "instagram": "https://instagram.com/sagebrushcantinacalabasas",
+  "facebook": "https://www.facebook.com/sagebrushcantinacalabasas",
+  "bio": "Sagebrush Cantina is a Mexican-American restaurant and saloon in Old Town Calabasas, open since 1974. It hosts live bands, solo acoustic performers, DJs and karaoke nights, with mariachi music at Sunday brunch.",
+  "bio_source": "Written by TOPA from sagebrushcantina.com and the Sagebrush Cantina Facebook.",
   "maintainers": [
     "automatous-io"
   ],

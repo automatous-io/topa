@@ -1,0 +1,60 @@
+name: Cancelled or changed?
+description: Tell TOPA a show is cancelled, moved, or listed wrong.
+title: "Show change"
+labels: ["submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for letting us know! Coming from a show page in TOPA? The show is already filled in.
+        A cancelled show is marked **Cancelled** once it's approved. Other changes get fixed by hand.
+  - type: dropdown
+    id: change
+    attributes:
+      label: What changed?
+      options:
+        - "It's cancelled"
+        - "New time"
+        - "New venue"
+        - "Something else"
+        - "It's back on"
+    validations:
+      required: true
+  - type: input
+    id: band
+    attributes:
+      label: Band or artist
+      placeholder: The Tide Pool Ramblers
+    validations:
+      required: true
+  - type: input
+    id: venue
+    attributes:
+      label: Venue
+      placeholder: Harbor Lights Tavern
+    validations:
+      required: true
+  - type: input
+    id: date
+    attributes:
+      label: Date
+      placeholder: 2026-11-07 or 11/7
+    validations:
+      required: true
+  - type: input
+    id: start
+    attributes:
+      label: Listed time
+      placeholder: 7pm
+  - type: textarea
+    id: details
+    attributes:
+      label: What's the change?
+      description: The reason, the new time or venue, or what's wrong. Optional for a cancellation.
+      placeholder: Rained out.
+  - type: input
+    id: link
+    attributes:
+      label: Where it says so
+      description: A link to the post or page about it, if there is one.
+      placeholder: https://www.instagram.com/p/...

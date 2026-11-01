@@ -343,7 +343,8 @@ def llms_txt(events, now):
         place = ", ".join(x for x in (e["venue"], e.get("address") or e.get("city")) if x)
         time = f"{start:%I:%M %p}".lstrip("0")
         credit = {"ventura-rocks": " (Ventura Rocks)", "community": " (TOPA community)"}.get(e.get("source"), "")
-        lines.append(f"- {time}: {e['artist']} at {place}{tags}{credit}. {e['url']}".rstrip())
+        off = "CANCELLED: " if e.get("cancelled") else ""
+        lines.append(f"- {time}: {off}{e['artist']} at {place}{tags}{credit}. {e['url']}".rstrip())
     return "\n".join(lines) + "\n"
 
 
@@ -410,6 +411,9 @@ def main():
     today = dt.datetime.now(community.PACIFIC).date()
     fill_from_census(events, os.path.join(os.path.dirname(os.path.abspath(a.out)), "spots.json"), today)
     community.add_own_photos(venues, bands, events, a.community)  # a venue's or band's own photo wins
+    marked = community.apply_changes(events, a.community, today)
+    if marked:
+        print(f"{marked} shows marked cancelled")
     # keep the forms' venue lists current
     known = community.known_venues(a.community) | {e["venue"] for e in events if e.get("venue")}
     for name in forms.update(a.community, known):

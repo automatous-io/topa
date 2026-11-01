@@ -53,11 +53,83 @@ def record(body, today=TODAY):
     return kind, r, c.check(kind, r, today, VENUES)
 
 
+def change_form(**over):
+    answers = {
+        "What changed?": "It's cancelled",
+        "Band or artist": "The Tide Pool Ramblers",
+        "Venue": "Harbor Lights Tavern",
+        "Date": "2026-11-07",
+        "Listed time": "7pm",
+        "What's the change?": "Rained out.",
+        "Where it says so": "instagram.com/p/abc",
+    }
+    answers.update(over)
+    return form(**answers)
+
+
+class Changes(unittest.TestCase):
+    """Cancelled or changed? reports."""
+
+    def setUp(self):
+        self.dir = tempfile.TemporaryDirectory()
+        self.root = self.dir.name
+        show = {"artist": "Tide Pool Ramblers", "venue": "Harbor Lights Tavern", "start": "2026-11-07T19:00:00-08:00"}
+        with open(os.path.join(self.root, "events.json"), "w", encoding="utf-8") as f:
+            json.dump({"events": [show]}, f)
+
+    def tearDown(self):
+        self.dir.cleanup()
+
+    def run_bot(self, body):
+        import argparse
+
+        a = argparse.Namespace(author="octocat", issue=7, write=True, report=None, root=self.root)
+        return s.change(s.parse_form(body), a, TODAY)
+
+    def test_it_is_its_own_form(self):
+        self.assertEqual(s.kind_of(s.parse_form(change_form())), "change")
+
+    def test_a_cancellation_becomes_a_file(self):
+        out = self.run_bot(change_form())
+        self.assertEqual(out["ok"], "true")
+        self.assertEqual(out["path"], "community/changes/2026-11-07-harbor-lights-tavern-the-tide-pool-ramblers.json")
+        self.assertIn("Cancelled: The Tide Pool Ramblers at Harbor Lights Tavern, Sat Nov 7", out["title"])
+        with open(os.path.join(self.root, out["path"]), encoding="utf-8") as f:
+            r = json.load(f)
+        self.assertEqual((r["change"], r["details"], r["link"]), ("cancelled", "Rained out.", "https://instagram.com/p/abc"))
+
+    def test_back_on_removes_the_file(self):
+        path = self.run_bot(change_form())["path"]
+        out = self.run_bot(change_form(**{"What changed?": "It's back on"}))
+        self.assertEqual(out["ok"], "true")
+        self.assertFalse(os.path.exists(os.path.join(self.root, path)))
+
+    def test_other_changes_are_left_for_a_person(self):
+        out = self.run_bot(change_form(**{"What changed?": "New time", "What's the change?": "Now 8pm"}))
+        self.assertEqual(out["ok"], "false")
+        self.assertFalse(os.path.isdir(os.path.join(self.root, "community", "changes")))
+
+    def test_a_show_that_is_not_listed_is_explained(self):
+        out = self.run_bot(change_form(**{"Date": "2026-11-08"}))
+        self.assertEqual((out["ok"], out["path"]), ("false", ""))
+
+    def test_listings_mark_the_show_cancelled(self):
+        self.run_bot(change_form())
+        events = [
+            {"artist": "The Tide Pool Ramblers", "venue": "Harbor Lights Tavern", "start": "2026-11-07T19:00:00-08:00"},
+            {"artist": "Someone Else", "venue": "Harbor Lights Tavern", "start": "2026-11-07T21:00:00-08:00"},
+        ]
+        self.assertEqual(c.apply_changes(events, self.root, TODAY), 1)
+        self.assertTrue(events[0]["cancelled"])
+        self.assertEqual(events[0]["cancel_note"], "Rained out.")
+        self.assertNotIn("cancelled", events[1])
+
+
 class Forms(unittest.TestCase):
     def test_labels_match_the_issue_templates(self):
         """The forms and FORMS must use the same labels."""
         folder = os.path.join(HERE, "..", ".github", "ISSUE_TEMPLATE")
-        files = {"show": "add-show.yml", "weekly": "add-weekly-show.yml", "band": "add-band.yml", "venue": "add-venue.yml"}
+        files = {"change": "report-show.yml", "show": "add-show.yml", "weekly": "add-weekly-show.yml", "band": "add-band.yml", "venue": "add-venue.yml"}
         for kind, name in files.items():
             with open(os.path.join(folder, name), encoding="utf-8") as f:
                 labels = set(re.findall(r"^\s+label: (.+)$", f.read(), re.M))

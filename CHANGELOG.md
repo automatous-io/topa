@@ -15,10 +15,16 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
 - Once a cancellation is approved, the show stays listed but is clearly marked: a **Cancelled** tag, the time crossed
   out, and the reason with a link to the post when there is one. Play all and the play buttons skip it, and the day's
   count says how many are cancelled. "It's back on" takes the mark off.
-- New times, new venues and other fixes come in the same way and get fixed by hand for now.
+- A new date or time works the same way: type it in the form's **New date** or **New time** box, and once it's
+  approved the show moves. It gets a **New time** tag in lists and "New time · was 7pm" on its page.
+- Reports match the listed time, so when a band plays two sets at one venue on the same day, only the reported one
+  changes.
+- New venues and other fixes come in the same way and get fixed by hand for now.
 - On phones, TOPA sits in a raised circle in the middle of the tab bar, between Bands and Venues, and still opens About.
 - The tab you're on is coral, with a short line above it on phones and beside it in the car.
 - Lists fade out just above the tab bar and stop clear of the circle, and the mini player moves up to make room.
+- On phones, About slides up from the bottom with a grab bar, and a swipe down closes it (so does the "What changed?"
+  sheet). With Reduce Motion on, it opens and closes without sliding.
 
 ---
 

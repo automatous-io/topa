@@ -32,7 +32,7 @@ More in [`screenshots/`](screenshots/): every page on the Tesla screen (1920×12
   shows from the Ventura Rocks community calendar get a small calendar.
 - **Cancelled or changed?** Rained out, moved, or listed wrong? Anyone can say so from the show's page. Once it's
   approved, a cancelled show stays listed but is clearly marked, with the reason and a link to the post, and Play all
-  skips it.
+  skips it. A show moved to a new date or time moves in the listings and is tagged **New time**.
 - **Faves.** Tap any star to fave a band or venue, on a row or right on a band's photo. When a fave is playing on the day
   you're looking at, it's pinned at the top of Shows, and shows at a faved venue are tagged "★ Fave venue". The Faves tab
   switches between your bands and venues.
@@ -126,8 +126,8 @@ Ventura Rocks calendar (Tockify)        Bands, fans, venues
    one file under `community/`. Updates to a band or venue change only what's filled in, and the pull request lists just
    those changes. Photos are shrunk and stripped of location data ([`scripts/photos.py`](scripts/photos.py)). Merging
    publishes it. The **Cancelled or changed?** form works the same way: a cancellation becomes a small file under
-   `community/changes/` that marks the show cancelled, "It's back on" removes it, and other changes stay open as an
-   issue to fix by hand.
+   `community/changes/` that marks the show cancelled or moves it to its new date or time, "It's back on" removes a
+   cancellation, and other changes stay open as an issue to fix by hand.
 3. **Schedule.** [`.github/workflows/update-events.yml`](.github/workflows/update-events.yml) runs the fetch around 7am, noon
    and 4pm Pacific, and right after a submission is merged. It commits `events.json`, `llms.txt` and `spots.json` only when they changed,
    and keeps the forms' venue lists current ([`scripts/forms.py`](scripts/forms.py)).

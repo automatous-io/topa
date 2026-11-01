@@ -30,6 +30,9 @@ FORMS = {
         "venue": "Venue",
         "date": "Date",
         "start": "Listed time",
+        "new_date": "New date",
+        "new_time": "New time",
+        "new_venue": "New venue",
         "details": "What's the change?",
         "link": "Where it says so",
     },
@@ -127,6 +130,9 @@ def to_record(kind, fields, author, issue, today, venues):
             "date": day.isoformat() if day else None,
             "start": c.parse_time(f["start"]) or "",
             "change": CHANGES.get(f["change"].replace("\u2019", "'"), "other"),
+            "new_date": (lambda d: d.isoformat() if d else None)(c.parse_date(f["new_date"], today)) if f["new_date"] else "",
+            "new_time": c.parse_time(f["new_time"]) if f["new_time"] else "",
+            "new_venue": " ".join(f["new_venue"].split()),
             "details": f["details"],
             "link": c.parse_link(f["link"]),
             **meta,
@@ -252,7 +258,7 @@ def title(kind, r):
     """A short PR title: 'Add show: The Tide Pool Ramblers at Harbor Lights Tavern, Sat Nov 7'."""
     if kind == "change" and r.get("date"):
         d = dt.date.fromisoformat(r["date"])
-        what = "Back on" if r.get("change") == "on" else TITLES[kind]
+        what = {"on": "Back on", "time": "New time"}.get(r.get("change"), TITLES[kind])
         return f"{what}: {r['band']} at {r['venue']}, {d:%a %b} {d.day}"
     if kind == "show" and r.get("date"):
         d = dt.date.fromisoformat(r["date"])
@@ -307,6 +313,21 @@ def listings(root):
         return []
 
 
+def save(path, r):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(r, f, indent=2, ensure_ascii=False)
+        f.write("\n")
+
+
+def saved(path):
+    try:
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return {}
+
+
 def change(fields, a, today):
     """Cancelled or changed? A cancellation (or "back on") becomes a PR; anything else gets fixed by hand."""
     r = to_record("change", fields, a.author, a.issue, today, c.known_venues(a.root))
@@ -328,11 +349,20 @@ def change(fields, a, today):
             "Merge to publish it on TOPA; close to turn it down.\n"
         )
         if a.write:
-            os.makedirs(os.path.dirname(full), exist_ok=True)
-            with open(full, "w", encoding="utf-8") as f:
-                json.dump(r, f, indent=2, ensure_ascii=False)
-                f.write("\n")
-    elif r["change"] == "on" and os.path.exists(full):
+            save(full, r)
+    elif r["change"] == "time":
+        out["ok"] = "true"
+        when = " ".join(x for x in (r["new_date"], r["new_time"]) if x)
+        note = f"\n**Why:** {r['details']}\n" if r["details"] else ""
+        src = f"\n**Source:** {r['link']}\n" if r["link"] else ""
+        text = (
+            f"Moves **{r['band']}** at **{r['venue']}** on {r['date']} to **{when}** "
+            f"(from #{r.get('issue')} by @{r.get('submitted_by')}).\n{note}{src}\n"
+            "Merge to publish it on TOPA; close to turn it down.\n"
+        )
+        if a.write:
+            save(full, r)
+    elif r["change"] == "on" and os.path.exists(full) and saved(full).get("change") == "cancelled":
         out["ok"] = "true"
         text = (
             f"Takes the Cancelled mark off **{r['band']}** at **{r['venue']}** on {r['date']} "

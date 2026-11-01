@@ -413,7 +413,8 @@ def main():
     community.add_own_photos(venues, bands, events, a.community)  # a venue's or band's own photo wins
     marked = community.apply_changes(events, a.community, today)
     if marked:
-        print(f"{marked} shows marked cancelled")
+        print(f"{marked} shows cancelled or moved")
+        events.sort(key=lambda e: dt.datetime.fromisoformat(e["start"]))  # a moved show may change places
     # keep the forms' venue lists current
     known = community.known_venues(a.community) | {e["venue"] for e in events if e.get("venue")}
     for name in forms.update(a.community, known):

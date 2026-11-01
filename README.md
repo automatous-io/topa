@@ -59,6 +59,9 @@ More in [`screenshots/`](screenshots/): every page on the Tesla screen (1920×12
 
 **Android:** open the link in **Chrome**, tap **⋮** (top right), then **Install app** (or **Add to Home screen**). The About page inside the app also has a one-tap **Install TOPA** button when Chrome offers it.
 
+**On a computer:** Chrome and Edge show an install icon at the right end of the address bar. Firefox needs an add-on to
+install web apps, so a bookmark is simpler there.
+
 **Tesla:** open the link in the car's browser and bookmark it. **Best viewed full screen:** tap the expand arrows at the
 left of the browser's address bar. It also works with the car's side panel open, just with less room. If show pages don't
 show the **Say "Navigate to…"** card, open [topa.automatous.io/?tesla=1](https://topa.automatous.io/?tesla=1)

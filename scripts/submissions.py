@@ -329,7 +329,7 @@ def saved(path):
 
 
 def change(fields, a, today):
-    """Cancelled or changed? A cancellation (or "back on") becomes a PR; anything else gets fixed by hand."""
+    """A Cancelled or changed? report: cancel and back on become a PR, the rest is fixed by hand."""
     r = to_record("change", fields, a.author, a.issue, today, c.known_venues(a.root))
     problems = c.check("change", r, today, c.known_venues(a.root))
     if not problems and not c.listed_show(r, listings(a.root)):

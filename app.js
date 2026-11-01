@@ -7,7 +7,7 @@
 
 // ---- Settings and state ----
 // the app's version: shown in About, and it names the offline cache, so bumping it refreshes every device
-const VERSION = "2.6.0";
+const VERSION = "2.7.0";
 const params = new URLSearchParams(location.search);
 
 // Is this the car's browser? Some versions say "Tesla" in the user agent, but current ones just say
@@ -1146,7 +1146,7 @@ function venuePage(key) {
   );
 }
 
-// why a show is off, under the venue on its page: "Rained out · see the post ›"
+// reason under the venue on a cancelled show
 const cancelLine = e => {
   const href = safeUrl(e.cancel_link);
   const text = esc(e.cancel_note || "Cancelled") + (href ? " · see the post ›" : "");
@@ -1155,14 +1155,14 @@ const cancelLine = e => {
     : `<p class="offwhy">${text}</p>`;
 };
 
-// "Cancelled or changed?" on a show page; "Back on?" once it's marked cancelled
+// report row on a show page
 const reportRow = e =>
   `<button class="report" data-report="${e.id}"><span class="ri">${svg(e.cancelled ? "check" : "flag")}</span>` +
   `<span><b>${e.cancelled ? "Back on?" : "Cancelled or changed?"}</b>` +
   `<small>${e.cancelled ? "Let us know if it's happening after all" : "Let us know and we'll fix it for everyone"}</small></span>` +
   `<span class="ago">›</span></button>`;
 
-// the form for a show, filled in
+// prefilled report form
 const reportUrl = (e, change) => {
   const d = new Date(e.start);
   return formUrl("report-show", {
@@ -1188,7 +1188,7 @@ const CHANGES = [
   ["Something else", "chat", "Something else", "Wrong band, wrong date…"],
 ];
 
-// the "What changed?" sheet (in the About popup); a cancelled show goes straight to "It's back on"
+// "What changed?" sheet
 function reportHtml(e) {
   const d = new Date(e.start).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
   const opt = ([value, icon, title, sub]) =>

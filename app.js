@@ -1313,7 +1313,7 @@ const backHome = page =>
 // Home row
 const homeRow = (e, withDay) => {
   const d = new Date(e.start);
-  const day = !withDay ? "" : sameDay(d, NOW) ? todayWord() : `${weekdayLabel(e)} ${d.getMonth() + 1}/${d.getDate()}`;
+  const day = !withDay ? "" : sameDay(d, NOW) ? showDayWord(e) : `${weekdayLabel(e)} ${d.getMonth() + 1}/${d.getDate()}`;
   const faveVenue = withDay && SAVED.venues.includes(e.venue) && !SAVED.bands.includes(bandName(e));
   return (
     `<div class="rw hrow${e.cancelled ? " off" : ""}" data-show="${e.id}">${art(bandName(e))}` +
@@ -1365,12 +1365,13 @@ const greeting = () => (store.get(GREET_KEY) || "").trim() || timeGreeting();
 
 function homePage() {
   const soon = EVENTS.filter(isStillOn);
-  const faves = faveNext(soon);
-  const tonight = soon.filter(e => sameDay(new Date(e.start), NOW));
+  const faves = faveNext(soon).slice(0, 5);
+  // shows already in the faves list don't repeat under Today/Tonight
+  const tonight = soon.filter(e => sameDay(new Date(e.start), NOW) && !faves.includes(e));
   const left =
     homeHead("Your faves are playing", faves.length, 'data-v="Faves" data-fromhome') +
     (faves.length
-      ? `<div class="hlist">${faves.slice(0, 5).map(e => homeRow(e, true)).join("")}</div>`
+      ? `<div class="hlist">${faves.map(e => homeRow(e, true)).join("")}</div>`
       : `<p class="hempty">Tap ☆ on a band or venue and their next shows magically show up here.</p>`) +
     featuredCard();
   const right =

@@ -411,6 +411,7 @@ def main():
     today = dt.datetime.now(community.PACIFIC).date()
     fill_from_census(events, os.path.join(os.path.dirname(os.path.abspath(a.out)), "spots.json"), today)
     community.add_own_photos(venues, bands, events, a.community)  # a venue's or band's own photo wins
+    picks = community.featured(a.community)
     marked = community.apply_changes(events, a.community, today)
     if marked:
         print(f"{marked} shows cancelled or moved")
@@ -430,7 +431,7 @@ def main():
     # llms.txt sits next to events.json; it lists shows from today on, so it changes once a day at most
     llms_path = os.path.join(os.path.dirname(os.path.abspath(a.out)), "llms.txt")
     updated = None
-    if (old.get("events"), old.get("bands", {}), old.get("venues", {}), old.get("credit")) == (events, bands, venues, CREDIT):
+    if (old.get("events"), old.get("bands", {}), old.get("venues", {}), old.get("featured", []), old.get("credit")) == (events, bands, venues, picks, CREDIT):
         updated = old.get("updated")
     stamp = dt.datetime.fromisoformat(updated) if updated else now
     if write_text_if_changed(llms_path, llms_txt(events, stamp)):
@@ -451,6 +452,8 @@ def main():
             # band and venue details people added (links, genres, map spots)
             **({"bands": bands} if bands else {}),
             **({"venues": venues} if venues else {}),
+            # bands TOPA features on Home (community/featured.json)
+            **({"featured": picks} if picks else {}),
         },
     )
     print(f"wrote {len(events)} events ({parser}) to {a.out}")

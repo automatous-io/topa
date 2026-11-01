@@ -2822,6 +2822,32 @@ nav button.on[data-v="Faves"] svg path {
     border-radius: 28px 28px 0 0;
     background: var(--panel);
   }
+  .about:not([hidden]) .acard {
+    animation: sheet-up 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  /* grab bar: swipe down to close */
+  .acard::before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    top: 8px;
+    left: 50%;
+    width: 40px;
+    height: 5px;
+    margin-left: -20px;
+    border-radius: 3px;
+    background: #ffffff40;
+  }
+  @keyframes sheet-up {
+    from {
+      transform: translateY(100%);
+    }
+  }
+}
+@media (max-width: 700px) and (prefers-reduced-motion: reduce) {
+  .about:not([hidden]) .acard {
+    animation: none;
+  }
   .abody {
     padding-bottom: calc(28px + env(safe-area-inset-bottom));
   }

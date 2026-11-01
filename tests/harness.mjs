@@ -90,6 +90,7 @@ export async function open(t, { query = "", viewport = TESLA, now = NOON, faves,
   });
   await page.emulateTimezone(TZ);
   await page.setViewport(viewport);
+  await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]); // no slide-ins mid-tap
   if (userAgent) await page.setUserAgent(userAgent);
   await page.setBypassServiceWorker(true);
   await page.setRequestInterception(true);

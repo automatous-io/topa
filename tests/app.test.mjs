@@ -266,14 +266,17 @@ test("a band someone added shows up before its first show, but not under its oth
 
 // ---- Layout ----
 
-test("phones get the county top bar and a tab bar with TOPA left of the four tabs", async t => {
+test("phones get the county top bar and a tab bar with TOPA in the middle", async t => {
   const page = await open(t, { viewport: PHONE });
   assert.match(await text(page, ".mbar .mcounty"), /Ventura County/);
   assert.deepEqual(
     await page.$$eval("nav button", bs =>
-      bs.filter(b => getComputedStyle(b).display !== "none").map(b => b.innerText.trim()),
+      bs
+        .filter(b => getComputedStyle(b).display !== "none")
+        .sort((a, b) => a.getBoundingClientRect().left - b.getBoundingClientRect().left)
+        .map(b => b.innerText.trim()),
     ),
-    ["TOPA", "Shows", "Bands", "Venues", "Faves"],
+    ["Shows", "Bands", "TOPA", "Venues", "Faves"],
   );
   // About opens from the logo
   await tap(page, "nav .logo");

@@ -1241,7 +1241,7 @@ function navHtml(page) {
     .join("");
   // when the listings last changed (the Ventura Rocks credit lives in About)
   const updated = updatedLabel() ? `Updated<i>${updatedLabel()}</i>` : "";
-  // the logo opens About: at the bottom of the sidebar in the car, left of Shows on phones
+  // logo opens About
   return (
     `<button class="logo" data-about aria-label="About TOPA">${wordmark("nav", true)}</button>${tabs}` +
     `<div class="credit">${updated}</div>`

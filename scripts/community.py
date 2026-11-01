@@ -21,7 +21,7 @@ WEEKLY_MAX_DAYS = 183  # weekly shows run up to ~6 months
 SHOW_MAX_DAYS = 366  # one-off shows up to a year out
 NOT_LISTED = "Not listed (add it first with Add or update a venue)"  # the last choice in the show forms' venue list
 NEW_VENUE = "New venue (type its name below)"  # the first choice in the venue form's list
-BIO_MAX = 1000  # characters in "About the band"
+BIO_MAX = 1000  # characters in "About the band" or "About the venue"
 LINK_KEYS = ["website", "instagram", "facebook", "bandcamp", "spotify", "youtube", "soundcloud"]
 
 
@@ -295,6 +295,10 @@ def check(kind, r, today, venues):
             problems.append("The website doesn't look like a web address.")
         if bad("instagram"):
             problems.append("The Instagram should be an @handle or a link to the profile.")
+        if bad("facebook"):
+            problems.append("The Facebook link doesn't look like a web address.")
+        if len(r.get("bio") or "") > BIO_MAX:
+            problems.append(f"Please keep About the venue under {BIO_MAX:,} characters.")
         if r.get("coords_text") and not r.get("lat"):
             problems.append("Couldn't read the map location; paste a Google Maps link or numbers like 34.24, -119.26.")
     return problems
@@ -414,7 +418,7 @@ def load(root=ROOT, today=None):
     venues = {}
     for v in read_folder(root, "venue"):
         if v.get("name"):
-            keep = ("address", "city", "lat", "lng", "phone", "website", "instagram", "photo")
+            keep = ("address", "city", "lat", "lng", "phone", "website", "instagram", "facebook", "photo", "bio", "bio_source")
             venues[v["name"]] = {k: v[k] for k in keep if v.get(k) not in (None, "")}
     bands = {}
     for b in read_folder(root, "band"):

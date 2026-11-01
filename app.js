@@ -142,7 +142,7 @@ function toShow(o, rawTags) {
     ...o,
     lat: c ? c[0] : null,
     lng: c ? c[1] : null,
-    tags: classifyGenres(rawTags),
+    tags: classifyGenres(/karaoke/i.test(o.artist) ? [...rawTags, "karaoke"] : rawTags),
     tix: isTicketed(rawTags),
   };
 }

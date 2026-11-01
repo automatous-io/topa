@@ -208,6 +208,15 @@ def check(kind, r, today, venues):
             problems.append(f"The date {d} has already passed.")
         if bad("link"):
             problems.append("The link doesn't look like a web address (it should start with https://).")
+        if r.get("change") == "time":
+            if bad("new_date"):
+                problems.append("The new date should look like 2026-11-08 or 11/8.")
+            elif r.get("new_date") and dt.date.fromisoformat(r["new_date"]) < today:
+                problems.append(f"The new date {r['new_date']} has already passed.")
+            if bad("new_time"):
+                problems.append("The new time should look like 8pm or 20:00.")
+            if not r.get("new_date") and not r.get("new_time") and not bad("new_date") and not bad("new_time"):
+                problems.append("Please add the new date or the new time.")
         return problems
     if kind in ("show", "weekly"):
         need("band", "the band or artist name")
@@ -444,33 +453,59 @@ def as_show(r):
     return {"artist": r.get("band") or "", "venue": r.get("venue") or "", "start": r.get("date") or ""}
 
 
+def matches(r, events):
+    """The listed shows a change is about: same band, venue and day, and the listed time when it has one."""
+    try:
+        hits = [e for e in events if same_show(e, as_show(r))]
+    except (KeyError, TypeError):
+        return []
+    timed = [e for e in hits if r.get("start") and e["start"][11:16] == r["start"]]
+    return timed or hits
+
+
 def listed_show(r, events):
     """The listed show a change is about, or None."""
-    try:
-        return next((e for e in events if same_show(e, as_show(r))), None)
-    except (KeyError, TypeError):
-        return None
+    return (matches(r, events) or [None])[0]
+
+
+def moved(e, r):
+    """Move a show to the change's new date and/or time; the end moves with it."""
+    old = dt.datetime.fromisoformat(e["start"])
+    day = dt.date.fromisoformat(r["new_date"]) if r.get("new_date") else old.date()
+    start = at(day, r.get("new_time") or old.strftime("%H:%M"))
+    e["start"] = start.isoformat()
+    if e.get("end"):
+        e["end"] = (dt.datetime.fromisoformat(e["end"]) + (start - old)).isoformat()
+    if e.get("when"):
+        e["when"] = f"{start:%a %b} {start.day}, {start:%-I:%M %p}"
+    e["moved_from"] = old.isoformat()
 
 
 def apply_changes(events, root=ROOT, today=None):
-    """Mark shows cancelled from community/changes/. Returns how many were marked."""
+    """Mark shows cancelled or move them to a new time, from community/changes/. Returns how many changed."""
     today = today or dt.datetime.now(PACIFIC).date()
     marked = 0
     for r in read_folder(root, "change"):
         try:
-            if r.get("change") != "cancelled" or dt.date.fromisoformat(r["date"]) < today - dt.timedelta(days=1):
+            if r.get("change") not in ("cancelled", "time") or dt.date.fromisoformat(r["date"]) < today - dt.timedelta(days=1):
                 continue
         except (KeyError, ValueError, TypeError):
             print(f"skipping community/changes/{r['_file']}: missing or bad date")
             continue
-        for e in events:
-            if same_show(e, as_show(r)):
+        for e in matches(r, events):
+            if r["change"] == "time":
+                try:
+                    moved(e, r)
+                except (KeyError, ValueError, TypeError):
+                    print(f"skipping community/changes/{r['_file']}: bad new date or time")
+                    continue
+            else:
                 e["cancelled"] = True
                 if r.get("details"):
                     e["cancel_note"] = r["details"]
                 if r.get("link"):
                     e["cancel_link"] = r["link"]
-                marked += 1
+            marked += 1
     return marked
 
 

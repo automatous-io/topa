@@ -622,6 +622,7 @@ const showRow = (e, timeOnly, atVenue) => {
   const off = e.cancelled;
   const labels = [
     ...(off ? ['<i class="offtag">Cancelled</i>'] : []),
+    ...(e.moved_from && !off ? ['<i class="newtag">New time</i>'] : []),
     ...(faveVenue ? ['<i class="fvtag">★ Fave venue</i>'] : []),
     ...e.tags.slice(0, faveVenue ? 2 : 3).map(x => `<i>${esc(x)}</i>`),
   ];
@@ -1173,6 +1174,13 @@ const reportUrl = (e, change) => {
   });
 };
 
+// "New time · was 7pm"
+const movedLine = e => {
+  const was = { start: e.moved_from };
+  const day = sameDay(new Date(was.start), new Date(e.start)) ? "" : weekdayLabel(was) + " ";
+  return `<p class="newwhy">New time · was ${day}${timeLabel(was)}</p>`;
+};
+
 const CHANGES = [
   ["It's cancelled", "x", "It's cancelled", "Rained out, sick, venue closed…"],
   ["New time", "clock", "New time", "Same place, different time"],
@@ -1225,7 +1233,7 @@ function showPage(id) {
     : `<p class="srcline">${sourceIcon(e)}${from}</p>`;
   const tags = e.tags.length ? `<div class="tg">${e.tags.map(x => `<i>${esc(x)}</i>`).join("")}</div>` : "";
   const off = e.cancelled;
-  const why = off && (e.cancel_note || e.cancel_link) ? cancelLine(e) : "";
+  const why = off && (e.cancel_note || e.cancel_link) ? cancelLine(e) : e.moved_from && !off ? movedLine(e) : "";
   return (
     `<div class="hero ph sh${off ? " off" : ""}">${heroBg(e.venue || band)}<div class="hx"><div class="hid">${artWithStar(band)}<div class="hidt">` +
     (off ? `<span class="offpill">${CLOSE_ICON}Cancelled</span>` : "") +

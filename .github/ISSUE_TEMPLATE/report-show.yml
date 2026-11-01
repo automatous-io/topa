@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         Thanks for letting us know! Coming from a show page in TOPA? The show is already filled in.
-        A cancelled show is marked **Cancelled** once it's approved. Other changes get fixed by hand.
+        A cancelled show is marked **Cancelled** once it's approved, and a new date or time moves it. Other changes get fixed by hand.
   - type: dropdown
     id: change
     attributes:
@@ -20,6 +20,9 @@ body:
         - "It's back on"
     validations:
       required: true
+  - type: markdown
+    attributes:
+      value: "### The show as listed\nLeave these as they are, even if the time changed. They tell TOPA which show this is."
   - type: input
     id: band
     attributes:
@@ -46,11 +49,30 @@ body:
     attributes:
       label: Listed time
       placeholder: 7pm
+  - type: markdown
+    attributes:
+      value: "### What's new\nFor a new date, time or venue. Leave blank for a cancellation."
+  - type: input
+    id: new_date
+    attributes:
+      label: New date
+      description: Only if the day changed.
+      placeholder: 11/8
+  - type: input
+    id: new_time
+    attributes:
+      label: New time
+      placeholder: 8pm
+  - type: input
+    id: new_venue
+    attributes:
+      label: New venue
+      placeholder: The Grape
   - type: textarea
     id: details
     attributes:
       label: What's the change?
-      description: The reason, the new time or venue, or what's wrong. Optional for a cancellation.
+      description: The reason, or what's wrong. Optional.
       placeholder: Rained out.
   - type: input
     id: link

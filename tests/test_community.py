@@ -60,6 +60,9 @@ def change_form(**over):
         "Venue": "Harbor Lights Tavern",
         "Date": "2026-11-07",
         "Listed time": "7pm",
+        "New date": "",
+        "New time": "",
+        "New venue": "",
         "What's the change?": "Rained out.",
         "Where it says so": "instagram.com/p/abc",
     }
@@ -123,6 +126,66 @@ class Changes(unittest.TestCase):
         self.assertTrue(events[0]["cancelled"])
         self.assertEqual(events[0]["cancel_note"], "Rained out.")
         self.assertNotIn("cancelled", events[1])
+
+
+class NewTimes(unittest.TestCase):
+    """New time reports move the show; reports match the listed time."""
+
+    def setUp(self):
+        self.dir = tempfile.TemporaryDirectory()
+        self.root = self.dir.name
+        self.events = [
+            {"artist": "The Tide Pool Ramblers", "venue": "Harbor Lights Tavern", "start": "2026-11-07T14:00:00-08:00"},
+            {"artist": "The Tide Pool Ramblers", "venue": "Harbor Lights Tavern", "start": "2026-11-07T19:00:00-08:00",
+             "end": "2026-11-07T22:00:00-08:00"},
+        ]
+        with open(os.path.join(self.root, "events.json"), "w", encoding="utf-8") as f:
+            json.dump({"events": self.events}, f)
+
+    def tearDown(self):
+        self.dir.cleanup()
+
+    def run_bot(self, body):
+        import argparse
+
+        a = argparse.Namespace(author="octocat", issue=8, write=True, report=None, root=self.root)
+        return s.change(s.parse_form(body), a, TODAY)
+
+    def test_a_new_time_moves_only_that_show(self):
+        out = self.run_bot(change_form(**{"What changed?": "New time", "New time": "8:30pm"}))
+        self.assertEqual(out["ok"], "true")
+        self.assertIn("New time: The Tide Pool Ramblers", out["title"])
+        events = json.loads(json.dumps(self.events))
+        self.assertEqual(c.apply_changes(events, self.root, TODAY), 1)
+        self.assertEqual(events[0]["start"], "2026-11-07T14:00:00-08:00")  # the afternoon set stays put
+        self.assertEqual(events[1]["start"], "2026-11-07T20:30:00-08:00")
+        self.assertEqual(events[1]["end"], "2026-11-07T23:30:00-08:00")
+        self.assertEqual(events[1]["moved_from"], "2026-11-07T19:00:00-08:00")
+
+    def test_a_new_date_keeps_the_time(self):
+        self.run_bot(change_form(**{"What changed?": "New time", "New date": "11/14"}))
+        events = json.loads(json.dumps(self.events))
+        c.apply_changes(events, self.root, TODAY)
+        self.assertEqual(events[1]["start"], "2026-11-14T19:00:00-08:00")
+
+    def test_a_new_time_needs_a_date_or_time(self):
+        out = self.run_bot(change_form(**{"What changed?": "New time"}))
+        self.assertEqual((out["ok"], out["path"]), ("false", ""))
+        out = self.run_bot(change_form(**{"What changed?": "New time", "New time": "soon"}))
+        self.assertEqual(out["ok"], "false")
+
+    def test_cancelling_one_set_leaves_the_other(self):
+        self.run_bot(change_form(**{"Listed time": "2pm"}))
+        events = json.loads(json.dumps(self.events))
+        c.apply_changes(events, self.root, TODAY)
+        self.assertTrue(events[0].get("cancelled"))
+        self.assertNotIn("cancelled", events[1])
+
+    def test_back_on_leaves_a_new_time_alone(self):
+        path = self.run_bot(change_form(**{"What changed?": "New time", "New time": "8:30pm"}))["path"]
+        out = self.run_bot(change_form(**{"What changed?": "It's back on"}))
+        self.assertEqual(out["ok"], "false")
+        self.assertTrue(os.path.exists(os.path.join(self.root, path)))
 
 
 class Forms(unittest.TestCase):

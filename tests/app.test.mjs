@@ -330,3 +330,15 @@ test("Cancelled or changed? opens the form for that show", async t => {
   assert.equal(q.get("change"), "New time");
   assert.ok(q.get("band") && q.get("venue") && /^\d{4}-\d{2}-\d{2}$/.test(q.get("date")));
 });
+
+test("a show moved to a new time says so", async t => {
+  const i = EVENTS.findIndex(e => e.artist.startsWith("Ukulele"));
+  const was = EVENTS[i].start;
+  const start = new Date(new Date(was).getTime() + 36e5).toISOString();
+  const events = EVENTS.map((e, k) => (k === i ? { ...e, start, moved_from: was } : e));
+  const page = await open(t, { viewport: PHONE, listings: { updated: "2026-10-24T09:00:00-07:00", events } });
+  const row = await page.$$eval("#main .rw[data-show]", rs => rs.find(r => /Ukulele/.test(r.textContent)).textContent);
+  assert.match(row, /New time/);
+  await page.$$eval("#main .rw[data-show]", rs => rs.find(r => /Ukulele/.test(r.textContent)).querySelector(".tcol").click());
+  assert.match(await text(page, ".newwhy"), /New time · was 10am/);
+});

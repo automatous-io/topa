@@ -10,10 +10,11 @@
 
 <table>
   <tr>
+    <td width="25%"><img src="screenshots/phone-00-home.png" alt="Home on a phone: your faves' next shows and tonight's lineup"></td>
     <td width="25%"><img src="screenshots/phone-01-shows.png" alt="Tonight's shows on a phone, with faves pinned on top"></td>
     <td width="25%"><img src="screenshots/phone-13-full-player.png" alt="The full-screen player on a phone"></td>
     <td width="25%"><img src="screenshots/phone-07-venue-page.png" alt="A venue's lineup on a phone"></td>
-    <td width="25%"><img src="screenshots/phone-03-search.png" alt="Search on a phone"></td>
+
   </tr>
 </table>
 
@@ -23,12 +24,15 @@ More in [`screenshots/`](screenshots/): every page on the Tesla screen (1920×12
 
 - **Today first.** It opens on today's shows ("Today" until 4pm, then "Tonight") with big start times, then lets you pick
   another day, the weekend, or a genre. Each row shows the band, venue, town and distance.
+- **Home.** Tap the TOPA circle in the middle of the tab bar for Home: your faves' next shows, each band once, and
+  tonight's lineup. Settings can make TOPA open there instead of Shows.
 - **Hear before you go.** ▶ plays 30-second previews from Apple Music. "Play all" runs through a whole night's lineup
   like a radio. Tap the player to open it full screen.
 - **Bands and venues.** Every band and venue has its own page: dates, lineup, directions, call and website, plus the
-  band's links and photo when it has sent them. The Venues tab lists each venue's town, distance, show count and next show.
+  band's links and photo when it has sent them. Bands can add a short bio and their genres, which show on their band page
+  and their shows. The Venues tab lists each venue's town, distance, show count and next show.
 - **Anyone can add a show.** Bands, fans, and venues send shows, band info, and venue photos through short forms
-  (tap the TOPA logo → Add your show). Each one is checked before it goes live. Shows sent this way get a small **@**;
+  (Home → ⓘ → Add to TOPA). Each one is checked before it goes live. Shows sent this way get a small **@**;
   shows from the Ventura Rocks community calendar get a small calendar.
 - **Cancelled or changed?** Rained out, moved, or listed wrong? Anyone can say so from the show's page. Once it's
   approved, a cancelled show stays listed but is clearly marked, with the reason and a link to the post, and Play all
@@ -44,7 +48,8 @@ More in [`screenshots/`](screenshots/): every page on the Tesla screen (1920×12
   [`llms.txt`](https://topa.automatous.io/llms.txt), a plain-English copy of the listings, with no app needed.
 - **Works like an app.** Add it to a phone's home screen (see [Try it](#try-it)) and it opens full-screen. It keeps working
   offline with the last listings, pull down to refresh, and the back button (or swipe-back) moves through pages.
-- **About.** Credits and links live behind the TOPA logo, in the middle of the phone's tab bar.
+- **About and Settings.** The ⓘ on Home has credits, links and Settings: your area, your own Home greeting, and whether
+  TOPA opens on Shows or Home.
 
 ## Try it
 

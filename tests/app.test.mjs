@@ -429,10 +429,14 @@ test("Home: each faved band shows once, with its next show", async t => {
   assert.equal(rows.filter(n => n === band).length, 1);
 });
 
-test("Settings: Open to Shows makes the app start on Shows", async t => {
+test("the app opens on Shows; Settings: Open to Home makes it start on Home", async t => {
   const page = await open(t, { viewport: PHONE, query: "&view=Home" });
-  await tap(page, ".hinfo");
-  await tap(page, '[data-start="Shows"]');
-  await page.goto(page.url().replace(/&view=Home/, ""), { waitUntil: "networkidle0" });
+  const plain = page.url().replace(/&view=Home/, "");
+  await page.goto(plain, { waitUntil: "networkidle0" });
   assert.match(await text(page, "h1"), /^(Today|Tonight)$/);
+  await tap(page, "nav .logo");
+  await tap(page, ".hinfo");
+  await tap(page, '[data-start="Home"]');
+  await page.goto(plain, { waitUntil: "networkidle0" });
+  assert.match(await text(page, ".hhead h1"), /^Good (morning|afternoon|evening)$/);
 });

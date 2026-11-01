@@ -71,7 +71,8 @@ let status = { c: "loading" }; // c: loading | cached | live | offline; updated:
 // the current page: "Home", "Shows", "Bands", "Band:<name>", "Venues", "Venue:<name>", "Show:<id>", "Faves"
 // start page
 const START_KEY = "topa.start.v1";
-let view = (v => (v && v !== "Search" ? v : store.get(START_KEY) === "Shows" ? "Shows" : "Home"))(params.get("view"));
+const START = store.get(START_KEY) === "Home" ? "Home" : "Shows";
+let view = (v => (v && v !== "Search" ? v : START))(params.get("view"));
 
 let fromHome = false; // came from See all on Home
 
@@ -551,7 +552,7 @@ const starButton = (on, attr, big) =>
 // every page change goes into the browser history, so swipe-back and the browser's back arrow work
 const urlFor = v => {
   const u = new URLSearchParams(location.search);
-  v === "Home" ? u.delete("view") : u.set("view", v);
+  v === START ? u.delete("view") : u.set("view", v);
   const s = u.toString();
   return location.pathname + (s ? "?" + s : "");
 };
@@ -582,8 +583,8 @@ function go(v) {
 
 addEventListener("popstate", ev => {
   const st = ev.state || {};
-  view = st.v || "Home";
-  prev = st.prev || "Home";
+  view = st.v || START;
+  prev = st.prev || START;
   render();
   document.getElementById("main").scrollTop = 0;
   countView();
@@ -1480,7 +1481,7 @@ function fitTitle() {
 addEventListener("resize", fitTitle);
 
 function render() {
-  if (!PAGES[view.split(":")[0]]) view = "Home";
+  if (!PAGES[view.split(":")[0]]) view = START;
   const page = view.split(":")[0];
   const arg = view.slice(page.length + 1);
   // keep chip rows where they were scrolled (tapping a genre re-renders the page)
@@ -2166,8 +2167,8 @@ function aboutHtml() {
     `<input id="greet" maxlength="${GREET_MAX}" placeholder="${timeGreeting()}" value="${esc(store.get(GREET_KEY) || "")}" ` +
     `autocomplete="off" aria-label="Greeting on Home"></label>` +
     `<div class="aset">${svg("Shows")}<span><b>Open to</b><small>Where TOPA starts</small></span>` +
-    `<span class="aseg">${["Home", "Shows"]
-      .map(k => `<button data-start="${k}" class="${(store.get(START_KEY) || "Home") === k ? "on" : ""}">${k}</button>`)
+    `<span class="aseg">${["Shows", "Home"]
+      .map(k => `<button data-start="${k}" class="${(store.get(START_KEY) || "Shows") === k ? "on" : ""}">${k}</button>`)
       .join("")}</span></div>` +
     (app ? `<div class="abigs one">${app}</div>` : "") +
     `<h3>Where shows come from</h3>` +

@@ -6,6 +6,22 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
 
 ---
 
+## 2.7.0
+
+**Tell us when a show is cancelled, and a new tab bar.**
+
+- Rained out? Every show page has a **Cancelled or changed?** row. Tap it, pick what changed (it's cancelled, a new
+  time, a new venue, or something else), and a short form opens with the show already filled in.
+- Once a cancellation is approved, the show stays listed but is clearly marked: a **Cancelled** tag, the time crossed
+  out, and the reason with a link to the post when there is one. Play all and the play buttons skip it, and the day's
+  count says how many are cancelled. "It's back on" takes the mark off.
+- New times, new venues and other fixes come in the same way and get fixed by hand for now.
+- On phones, TOPA sits in a raised circle in the middle of the tab bar, between Bands and Venues, and still opens About.
+- The tab you're on is coral, with a short line above it on phones and beside it in the car.
+- Lists fade out just above the tab bar and stop clear of the circle, and the mini player moves up to make room.
+
+---
+
 ## 2.6.0
 
 **Venue photos behind the page header, and a better home for the fave star.**

@@ -1,16 +1,56 @@
 {
+ "10245 telephone rd, ventura, ca 93004": {
+  "lat": 34.277467,
+  "lng": -119.161736
+ },
  "1031 harbor blvd, oxnard, ca 93035": {
   "miss": "2026-10-29"
+ },
+ "122 e ojai ave, ojai, ca 93023": {
+  "lat": 34.447822,
+  "lng": -119.246817
+ },
+ "1920 goodyear avenue, ventura": {
+  "lat": 34.255318,
+  "lng": -119.232352
+ },
+ "2024 ventura blvd, camarillo, ca 93010": {
+  "lat": 34.216941,
+  "lng": -119.043585
+ },
+ "2215 michael dr, newbury park, ca 91320": {
+  "lat": 34.181575,
+  "lng": -118.925997
  },
  "3059 willow ln, westlake village, ca 91361": {
   "lat": 34.166778,
   "lng": -118.840247
  },
+ "350 n lantana st, camarillo, ca 93010": {
+  "lat": 34.219575,
+  "lng": -119.055034
+ },
+ "4235 mar vista dr, camarillo, ca 93010": {
+  "lat": 34.243893,
+  "lng": -119.014482
+ },
  "4275 tierra rejada rd, moorpark, ca 93021": {
   "miss": "2026-10-29"
+ },
+ "543 s ventura rd, oxnard, ca 93030": {
+  "lat": 34.197116,
+  "lng": -119.194827
  },
  "5777 valentine rd, ventura, ca 93003": {
   "lat": 34.251935,
   "lng": -119.212564
+ },
+ "926 e main st, santa paula, ca 93060": {
+  "lat": 34.353382,
+  "lng": -119.061564
+ },
+ "951 n rice ave, oxnard, ca 93030": {
+  "lat": 34.210133,
+  "lng": -119.142192
  }
 }

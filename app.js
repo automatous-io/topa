@@ -1207,6 +1207,7 @@ function reportHtml(e) {
 function openReport(e) {
   if (e.cancelled) return window.open(reportUrl(e, "It's back on").replace(/&amp;/g, "&"), "_blank", "noopener");
   const a = document.getElementById("about");
+  settleAbout();
   a.querySelector(".acard").innerHTML = reportHtml(e);
   a.setAttribute("aria-label", "What changed?");
   a.classList.add("rep");
@@ -2101,12 +2102,85 @@ const aboutPage = html => {
 
 function openAbout() {
   const a = document.getElementById("about");
+  settleAbout();
   a.setAttribute("aria-label", "About TOPA");
   a.classList.remove("rep");
   a.querySelector(".acard").innerHTML = aboutHtml();
   a.hidden = false;
 }
-const closeAbout = () => (document.getElementById("about").hidden = true);
+const ON_PHONE = () => matchMedia("(max-width: 700px)").matches;
+const CALM = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// put the popup back where it rests (after a drag or a close)
+const settleAbout = () => {
+  const a = document.getElementById("about"),
+    card = a.querySelector(".acard");
+  card.style.transition = card.style.transform = a.style.background = "";
+};
+
+// phones: the popup slides down before it hides
+function closeAbout() {
+  const a = document.getElementById("about");
+  if (a.hidden) return;
+  if (!ON_PHONE() || CALM()) return (a.hidden = true);
+  const card = a.querySelector(".acard");
+  card.style.transition = "transform 0.22s ease-in";
+  card.style.transform = "translateY(100%)";
+  a.style.transition = "background 0.22s";
+  a.style.background = "#0000";
+  setTimeout(() => {
+    a.hidden = true;
+    a.style.transition = "";
+    settleAbout();
+  }, 220);
+}
+
+// phones: swipe the popup down from its top to close it
+(() => {
+  const a = document.getElementById("about"),
+    card = a.querySelector(".acard");
+  let y0 = null,
+    dy = 0,
+    t0 = 0;
+  const drag = d => {
+    card.style.transition = "none";
+    card.style.transform = `translateY(${d}px)`;
+    a.style.background = `rgba(0, 0, 0, ${0.73 * (1 - Math.min(d / 500, 1))})`;
+  };
+  card.addEventListener(
+    "touchstart",
+    ev => {
+      y0 = ON_PHONE() && card.scrollTop <= 0 && ev.touches.length === 1 ? ev.touches[0].clientY : null;
+      dy = 0;
+      t0 = Date.now();
+    },
+    { passive: true },
+  );
+  card.addEventListener(
+    "touchmove",
+    ev => {
+      if (y0 === null) return;
+      dy = ev.touches[0].clientY - y0;
+      if (dy <= 0 || card.scrollTop > 0) {
+        y0 = null;
+        return settleAbout();
+      }
+      ev.preventDefault();
+      drag(dy);
+    },
+    { passive: false },
+  );
+  card.addEventListener("touchend", () => {
+    if (y0 === null) return;
+    y0 = null;
+    const flick = dy > 40 && dy / (Date.now() - t0) > 0.6;
+    if (dy > 120 || flick) return closeAbout();
+    card.style.transition = "transform 0.2s ease-out";
+    card.style.transform = "";
+    a.style.background = "";
+    setTimeout(settleAbout, 200);
+  });
+})();
 
 addEventListener("keydown", ev => ev.key === "Escape" && (closeAbout(), closeFull()));
 

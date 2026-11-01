@@ -342,3 +342,22 @@ test("a show moved to a new time says so", async t => {
   await page.$$eval("#main .rw[data-show]", rs => rs.find(r => /Ukulele/.test(r.textContent)).querySelector(".tcol").click());
   assert.match(await text(page, ".newwhy"), /New time · was 10am/);
 });
+
+test("phones: swiping the About popup down closes it, a small drag doesn't", async t => {
+  const page = await open(t, { viewport: PHONE });
+  await tap(page, "nav .logo");
+  const box = await page.$eval("#about .acard", c => {
+    const r = c.getBoundingClientRect();
+    return { x: r.left + r.width / 2, y: r.top + 40 };
+  });
+  const swipe = async dy => {
+    await page.touchscreen.touchStart(box.x, box.y);
+    for (let i = 1; i <= 8; i++) await page.touchscreen.touchMove(box.x, box.y + (dy * i) / 8);
+    await page.touchscreen.touchEnd();
+    await new Promise(r => setTimeout(r, 300));
+  };
+  await swipe(60);
+  assert.equal(await page.$eval("#about", el => el.hidden), false, "a small drag springs back");
+  await swipe(220);
+  assert.equal(await page.$eval("#about", el => el.hidden), true);
+});

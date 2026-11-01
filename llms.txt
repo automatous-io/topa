@@ -11,7 +11,7 @@ How to answer questions with this file:
   were sent in by local bands, fans, and venues.
 - Share a show's link when someone wants the details.
 - Venue addresses are included so a driver can say "Navigate to <venue>" or use the address.
-- Last updated: Sun Nov 1, 10:57 AM Pacific.
+- Last updated: Sun Nov 1, 11:44 AM Pacific.
 
 ## Links
 
@@ -104,6 +104,7 @@ How to answer questions with this file:
 - 6:30 PM: The Brandon Ragan Project at Camarillo Barrel Works (formerly Cantara Cellars), 126 Wood Rd, Camarillo, CA 93010 (Camarillo, popular-covers, R&B, danceable-covers) (Ventura Rocks). https://tockify.com/vtarocks/detail/26484/1794018600000
 - 6:30 PM: Tour Support at The Manhattan of Camarillo, 5800 Santa Rosa Rd, Camarillo, CA 93012 (Camarillo, classic-rock-and-roll) (Ventura Rocks). https://tockify.com/vtarocks/detail/27096/1794018600000
 - 6:30 PM: Jimi Nelson at Magnavino Cellars | Public Realm Brewing, 961 Rice Ave, Oxnard, CA 93030 (Oxnard, country) (Ventura Rocks). https://tockify.com/vtarocks/detail/26946/1794018600000
+- 7:00 PM: Josephoenix at Ojai Ranch House, 102 Besant Rd, Ojai, CA 93023 (free, covers) (TOPA community). https://www.instagram.com/p/DfKx7ozhqLb/
 - 7:00 PM: George Krikes at Ric's Restaurant Sports Lounge, F, 2500 Las Posas Rd, Camarillo, CA 93010 (Camarillo) (Ventura Rocks). https://tockify.com/vtarocks/detail/26563/1794020400000
 - 7:00 PM: The Brill Building Legends Show at Namba Arts, 47 S Oak St, Ventura, CA 93001 (Ventura, ticketed-event, $40-at-door) (Ventura Rocks). https://tockify.com/vtarocks/detail/26543/1794020400000
 - 7:00 PM: Wild the River at Nectar of the Dogs Wine, 791 Chambers Ln, Simi Valley, CA 93065 (Simi-Valley, No-cover-charge, popular-covers) (Ventura Rocks). https://tockify.com/vtarocks/detail/26969/1794020400000
@@ -269,8 +270,8 @@ How to answer questions with this file:
 - 7:00 PM: Mark Goldenberg at Ojai Underground Exchange, 616 Pearl St, Ojai, CA 93023 (Ojai, ticketed-event, bz) (Ventura Rocks). https://tockify.com/vtarocks/detail/26979/1794711600000
 - 7:00 PM: Comfort Club w/ Big Sierra at The Mystery Shop, 420 S A St, Oxnard, CA 93030 (Oxnard, ticketed-event) (Ventura Rocks). https://tockify.com/vtarocks/detail/26872/1794711600000
 - 7:00 PM: Jager Malone at Lucky Fools Pub, 75 E High St, Moorpark, CA 93021 (Moorpark) (Ventura Rocks). https://tockify.com/vtarocks/detail/26517/1794711600000
+- 7:00 PM: One Foot in the Grave, 90 Proof at The Yard, 328 E Main St, Ventura, CA 93001 (Ventura, free-show, back-patio, popular-covers, rock) (Ventura Rocks). https://tockify.com/vtarocks/detail/27078/1794711600000
 - 7:00 PM: Superfreak / M'80s at Tony's Pizzaria, 186 E Thompson Blvd, Ventura, CA 93001 (Ventura, Free, All-ages) (Ventura Rocks). https://tockify.com/vtarocks/detail/26852/1794711600000
-- 7:00 PM: Zepp Heads at The Yard, 328 E Main St, Ventura, CA 93001 (Ventura, free-show, back-patio, popular-covers, classic-rock) (Ventura Rocks). https://tockify.com/vtarocks/detail/27078/1794711600000
 - 7:00 PM: Nekrogoblikon, Aborted, Signs of the Swarm, Party Cannon at The Majestic Ventura Theater, 26 S Chestnut St, Ventura, CA 93001 (Ventura, ticketed-event, General-admission) (Ventura Rocks). https://tockify.com/vtarocks/detail/24902/1794711600000
 - 7:30 PM: Jane Monheit sings Cole Porter at Scherr Forum Theatre, 2100 E Thousand Oaks Blvd, Thousand Oaks, CA 91362 (Thousand-Oaks, TOPAC, ticketed-event) (Ventura Rocks). https://tockify.com/vtarocks/detail/26471/1794713400000
 - 8:00 PM: Tribute to The Beatles at Samuelson Chapel, 165 Chapel Ln, Thousand Oaks, CA 91360 (Thousand-Oaks, ticketed-event) (Ventura Rocks). https://tockify.com/vtarocks/detail/26832/1794715200000

@@ -2,9 +2,12 @@
   "name": "Jared Nels",
   "aliases": [],
   "genres": [
-    "country"
+    "singer-songwriter",
+    "yodel"
   ],
-  "town": "",
+  "town": "Santa Barbara",
+  "bio": "Jared Nels is a Santa Barbara singer-songwriter, guitarist and yodeler who grew up in Des Moines, Iowa, where he won the Iowa State Fair yodeling contest several times. He performs across Southern and Central California and is working on his first album.",
+  "bio_source": "Written by TOPA from @yodelnels and his artist bio.",
   "links": {
     "instagram": "https://instagram.com/yodelnels"
   },

@@ -2,11 +2,15 @@
   "name": "Vinyl Gypsies",
   "aliases": [],
   "genres": [
-    "classic rock"
+    "classic rock",
+    "covers"
   ],
   "town": "",
+  "bio": "The Vinyl Gypsies are a Southern California classic rock band playing well-known hits with their own twist. Along with their full electric show, they also play acoustic sets.",
+  "bio_source": "Written by TOPA from vinylgypsies.com and @vinyl_gypsies.",
   "links": {
-    "instagram": "https://instagram.com/vinyl_gypsies"
+    "instagram": "https://instagram.com/vinyl_gypsies",
+    "website": "https://www.vinylgypsies.com"
   },
   "apple": "",
   "photo": "",

@@ -3,11 +3,15 @@
   "aliases": [],
   "genres": [
     "covers",
-    "classic rock"
+    "rock",
+    "pop"
   ],
   "town": "Ventura",
+  "bio": "Cinnamon Whiskey is a Ventura County cover band playing hits from the 1960s to today, at venues around the county like Winchesters Grill and Harbor Cove Cafe.",
+  "bio_source": "Written by TOPA from their website and @cinnamonwhiskeyband.",
   "links": {
-    "instagram": "https://instagram.com/cinnamonwhiskeyband"
+    "instagram": "https://instagram.com/cinnamonwhiskeyband",
+    "website": "https://sites.google.com/view/cinnamon-whiskey/home"
   },
   "apple": "",
   "photo": "",

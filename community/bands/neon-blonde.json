@@ -1,0 +1,26 @@
+{
+  "name": "Neon Blonde",
+  "aliases": [],
+  "genres": [
+    "covers",
+    "post-punk",
+    "new wave",
+    "80s"
+  ],
+  "town": "Ventura",
+  "bio": "Neon Blonde is a Ventura and Santa Barbara cover band playing post-punk and new wave, with songs by artists like Talking Heads, Elvis Costello, The Cure, Devo, Depeche Mode and David Bowie.",
+  "bio_source": "Written by TOPA from neonblonde.band and @neonblonde.band.",
+  "links": {
+    "website": "https://neonblonde.band",
+    "instagram": "https://instagram.com/neonblonde.band",
+    "facebook": "https://www.facebook.com/neonblondeband",
+    "youtube": "https://www.youtube.com/@NeonBlondeBand"
+  },
+  "apple": "",
+  "photo": "",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search and local show listings, 2026-11-01"
+}

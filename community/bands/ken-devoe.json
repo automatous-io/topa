@@ -1,0 +1,24 @@
+{
+  "name": "Ken Devoe",
+  "aliases": [
+    "Ken DeVoe",
+    "Kenny Devoe"
+  ],
+  "genres": [
+    "covers",
+    "acoustic"
+  ],
+  "town": "Ventura",
+  "bio": "Ken DeVoe plays acoustic music around Ventura County, with a regular Tuesday evening spot at the Boatyard Pub in Ventura.",
+  "bio_source": "Written by TOPA from Ken's Facebook and local show listings.",
+  "links": {
+    "facebook": "https://www.facebook.com/ken.devoe.9"
+  },
+  "apple": "",
+  "photo": "",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search and local show listings, 2026-11-01"
+}

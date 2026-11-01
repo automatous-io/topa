@@ -2,11 +2,15 @@
   "name": "Crosscut 805",
   "aliases": [],
   "genres": [
-    "rock"
+    "covers",
+    "dance"
   ],
-  "town": "Ventura",
+  "town": "Ventura County",
+  "bio": "Crosscut is a Ventura County band that has been playing since 1992. They describe themselves as a \"Big Mix\" dance band playing a wide variety of songs.",
+  "bio_source": "Written by TOPA from @crosscutband805 and their Facebook page.",
   "links": {
-    "instagram": "https://instagram.com/crosscutband805"
+    "instagram": "https://instagram.com/crosscutband805",
+    "facebook": "https://www.facebook.com/crosscutbandventura"
   },
   "apple": "",
   "photo": "",

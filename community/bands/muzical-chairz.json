@@ -2,12 +2,14 @@
   "name": "Muzical Chairz",
   "aliases": [],
   "genres": [
-    "covers",
-    "rock"
+    "covers"
   ],
   "town": "",
+  "bio": "Muzical Chairz is a cover band playing multi-genre hits. They play venues around Thousand Oaks like Tarantula Hill Brewing and Crown and Anchor, and they also play private parties and weddings.",
+  "bio_source": "Written by TOPA from the Muzical Chairz Facebook page.",
   "links": {
-    "instagram": "https://instagram.com/muzical_chairz"
+    "instagram": "https://instagram.com/muzical_chairz",
+    "facebook": "https://www.facebook.com/profile.php?id=61586734924870"
   },
   "apple": "",
   "photo": "",

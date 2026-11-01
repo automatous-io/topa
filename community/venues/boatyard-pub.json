@@ -7,6 +7,9 @@
   "phone": "(805) 850-0202",
   "website": "https://boatyardpub.com",
   "instagram": "https://instagram.com/boatyardpub",
+  "facebook": "https://www.facebook.com/boatyardpub",
+  "bio": "The Boatyard Pub is a seafood pub and restaurant at Ventura Harbor, with local craft beers on tap and a patio overlooking the harbor. It hosts live music most days of the week.",
+  "bio_source": "Written by TOPA from boatyardpub.com and @boatyardpub.",
   "maintainers": [
     "automatous-io"
   ],

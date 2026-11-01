@@ -7,6 +7,9 @@
   "phone": "(805) 482-0747",
   "website": "https://www.harleysbowl.com",
   "instagram": "https://instagram.com/rocknrollpizzabar",
+  "facebook": "https://www.facebook.com/rocknrollpizzabar",
+  "bio": "Rock & Roll Pizza Bar is the pizza bar and live entertainment room inside harley's Valley Bowl on Cochran Street in Simi Valley, serving New York-style pizza, craft beer and cocktails. It hosts local bands each week, along with comedy, karaoke and line dancing.",
+  "bio_source": "Written by TOPA from harleysbowl.com and @rocknrollpizzabar.",
   "maintainers": [
     "automatous-io"
   ],

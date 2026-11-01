@@ -6,6 +6,9 @@
   "lng": -119.291028,
   "website": "https://www.winchestersgrill.com",
   "instagram": "https://instagram.com/winchestersgrill",
+  "facebook": "https://www.facebook.com/WinchestersGrill",
+  "bio": "Winchesters Grill & Saloon is a steakhouse and saloon on East Main Street in downtown Ventura, open since 1997, with around 40 beers on tap and a large patio. It hosts live music Thursday through Sunday.",
+  "bio_source": "Written by TOPA from @winchestersgrill, its Facebook and Visit Ventura.",
   "maintainers": [
     "automatous-io"
   ],

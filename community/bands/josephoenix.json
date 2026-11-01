@@ -1,8 +1,15 @@
 {
   "name": "Josephoenix",
   "aliases": [],
-  "genres": [],
+  "genres": [
+    "funk",
+    "soul",
+    "covers",
+    "jazz"
+  ],
   "town": "Ojai",
+  "bio": "Josephoenix takes songs you already know by heart and turns them inside out, with funk grooves, jazz-style solos and a lot of soul. A big voice out front and a rhythm section and keys that like to stretch out mean a familiar chorus can turn into something new halfway through. Bring dancing shoes: they describe themselves as a bottomless barrel of grooves with a twist.",
+  "bio_source": "Written by TOPA from josephoenix.com and @josephoenixband.",
   "links": {
     "website": "https://www.josephoenix.com",
     "instagram": "https://instagram.com/josephoenixband"

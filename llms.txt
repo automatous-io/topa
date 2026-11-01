@@ -11,7 +11,7 @@ How to answer questions with this file:
   were sent in by local bands, fans, and venues.
 - Share a show's link when someone wants the details.
 - Venue addresses are included so a driver can say "Navigate to <venue>" or use the address.
-- Last updated: Sun Nov 1, 11:44 AM Pacific.
+- Last updated: Sun Nov 1, 2:15 PM Pacific.
 
 ## Links
 
@@ -23,7 +23,6 @@ How to answer questions with this file:
 ## Upcoming shows
 
 ### Sunday, November 1
-- 10:00 AM: Unkle Monkey at Harbor Cove Cafe, 1867 Spinnaker Dr, Ventura, CA 93001 (Ventura, free, popular-covers) (Ventura Rocks). https://tockify.com/vtarocks/detail/26750/1793556000000
 - 12:00 PM: Los Padres Horn Quartet, Ventvm Qvintet, Phoenyx Big Band with Eliya Frantz at Libbey Bowl, 210 S Signal St, Ojai, CA 93023 (Ojai) (Ventura Rocks). https://tockify.com/vtarocks/detail/25258/1793563200000
 - 12:00 PM: Mariachi bands at Downtown Ventura, E Main St & S California St, Ventura, CA 93001 (Ventura) (Ventura Rocks). https://tockify.com/vtarocks/detail/26866/1793563200000
 - 1:00 PM: Robin and the Love Letters & Friends at Sam's Place (The Vine), 308 E Ojai Ave, Ojai, CA 93023 (Ojai, 21+) (Ventura Rocks). https://tockify.com/vtarocks/detail/24671/1793566800000

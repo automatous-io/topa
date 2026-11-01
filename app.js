@@ -446,6 +446,12 @@ const ICONS = {
   next: '<path d="M5.5 6l9 6-9 6zM16 6h2.5v12H16z"/>',
   prev: '<path d="M18.5 6l-9 6 9 6zM5.5 6H8v12H5.5z"/>',
   sort: '<path d="M7 3 2.5 8H6v13h2V8h3.5zM17 21l4.5-5H18V3h-2v13h-3.5z"/>',
+  // Cancelled or changed?
+  flag: '<path d="M5 21V4h12l-2.5 4L17 12H5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+  check: '<path d="M5 12.5l4.5 4.5L19 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',
+  x: '<path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>',
+  clock: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></g>',
+  chat: '<path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
 };
 
 // a close / clear "×" drawn as an icon, so it sits dead center in its round button
@@ -584,9 +590,10 @@ const venueDateRow = e => {
   const d = new Date(e.start);
   const bill = e.artist !== bandName(e) ? ` <em>· ${esc(e.artist)}</em>` : "";
   return (
-    `<div class="rw rwb" data-show="${e.id}">` +
+    `<div class="rw rwb${e.cancelled ? " off" : ""}" data-show="${e.id}">` +
     `<div class="tcol"><span>${weekdayLabel(e)}</span><span>${d.getMonth() + 1}/${d.getDate()}</span><b>${timeLabel(e)}${sourceIcon(e, true)}</b>${milesUnderTime(e)}</div>` +
     `<div class="rb"><b>${esc(venueLabel(e))}</b>` +
+    (e.cancelled ? `<i class="offtag">Cancelled</i>` : "") +
     venueLink(e, "vb", `${esc(e.city)}${milesPart(e)}${bill}`) +
     `</div></div>`
   );
@@ -612,19 +619,21 @@ const showRow = (e, timeOnly, atVenue) => {
     : `<span>${weekdayLabel(e)}</span><span>${d.getMonth() + 1}/${d.getDate()}</span>`;
   // the star is for the band, so a show that's here because its venue is faved says so
   const faveVenue = !atVenue && SAVED.venues.includes(e.venue) && !SAVED.bands.includes(band);
+  const off = e.cancelled;
   const labels = [
+    ...(off ? ['<i class="offtag">Cancelled</i>'] : []),
     ...(faveVenue ? ['<i class="fvtag">★ Fave venue</i>'] : []),
     ...e.tags.slice(0, faveVenue ? 2 : 3).map(x => `<i>${esc(x)}</i>`),
   ];
   const tags = labels.length ? `<div class="tg">${labels.join("")}</div>` : "";
   return (
-    `<div class="rw" data-show="${e.id}"><div class="tcol">${date}<b>${timeLabel(e)}${sourceIcon(e, true)}</b>${atVenue ? "" : milesUnderTime(e)}</div>${artWithPlay(band)}` +
+    `<div class="rw${off ? " off" : ""}" data-show="${e.id}"><div class="tcol">${date}<b>${timeLabel(e)}${sourceIcon(e, true)}</b>${atVenue ? "" : milesUnderTime(e)}</div>${off ? art(band) : artWithPlay(band)}` +
     `<div class="rb"><b>${esc(e.artist)}</b>` +
     (atVenue
       ? ""
       : venueLink(e, "vb", esc(venueLabel(e)) + townPart(e))) +
     `</div>` +
-    `${tags}${rowPlay(band)}${starButton(SAVED.bands.includes(band), `data-sb="${esc(band)}"`)}</div>`
+    `${tags}${off ? "" : rowPlay(band)}${starButton(SAVED.bands.includes(band), `data-sb="${esc(band)}"`)}</div>`
   );
 };
 
@@ -660,6 +669,11 @@ const showsInRange = () => EVENTS.filter(inRadius);
 
 // "35 shows", "1 band"
 const countLabel = (n, what) => (n ? `${n} ${what}${n > 1 ? "s" : ""}` : "");
+// " · 2 cancelled", after a show count
+const offCount = l => {
+  const k = l.filter(e => e.cancelled).length;
+  return k ? ` · ${k} cancelled` : "";
+};
 
 // opens the distance picker
 const distanceButton = (c = "") =>
@@ -859,7 +873,7 @@ function showsPage() {
     : "";
   // wide screens: distance sits in the header; phones: distance and sort lead the genre row
   return (
-    topBar(lbl, playAllButton() + distanceButton("d-top"), n ? today + countLabel(n, "show") : "", true, searchBox()) +
+    topBar(lbl, playAllButton() + distanceButton("d-top"), n ? today + countLabel(n, "show") + offCount(L) : "", true, searchBox()) +
     chips +
     `<div class="frow">${distanceButton("d-row")}${gchips}${sb}</div><div class="rule"></div>` +
     favesSection +
@@ -1131,6 +1145,66 @@ function venuePage(key) {
   );
 }
 
+// why a show is off, under the venue on its page: "Rained out · see the post ›"
+const cancelLine = e => {
+  const href = safeUrl(e.cancel_link);
+  const text = esc(e.cancel_note || "Cancelled") + (href ? " · see the post ›" : "");
+  return href
+    ? `<a class="offwhy" href="${esc(href)}" target="_blank" rel="noopener">${text}</a>`
+    : `<p class="offwhy">${text}</p>`;
+};
+
+// "Cancelled or changed?" on a show page; "Back on?" once it's marked cancelled
+const reportRow = e =>
+  `<button class="report" data-report="${e.id}"><span class="ri">${svg(e.cancelled ? "check" : "flag")}</span>` +
+  `<span><b>${e.cancelled ? "Back on?" : "Cancelled or changed?"}</b>` +
+  `<small>${e.cancelled ? "Let us know if it's happening after all" : "Let us know and we'll fix it for everyone"}</small></span>` +
+  `<span class="ago">›</span></button>`;
+
+// the form for a show, filled in
+const reportUrl = (e, change) => {
+  const d = new Date(e.start);
+  return formUrl("report-show", {
+    change,
+    band: e.artist,
+    venue: e.venue || "",
+    date: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`,
+    start: timeLabel(e),
+  });
+};
+
+const CHANGES = [
+  ["It's cancelled", "x", "It's cancelled", "Rained out, sick, venue closed…"],
+  ["New time", "clock", "New time", "Same place, different time"],
+  ["New venue", "pin", "New venue", "Moved somewhere else"],
+  ["Something else", "chat", "Something else", "Wrong band, wrong date…"],
+];
+
+// the "What changed?" sheet (in the About popup); a cancelled show goes straight to "It's back on"
+function reportHtml(e) {
+  const d = new Date(e.start).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+  const opt = ([value, icon, title, sub]) =>
+    `<button class="ropt" data-rpick="${esc(value)}" data-href="${reportUrl(e, value)}"><span class="ri">${svg(icon)}</span>` +
+    `<span><b>${title}</b><small>${sub}</small></span></button>`;
+  return (
+    `<div class="rsheet"><div class="rtop"><div><h2 class="rtitle">What changed?</h2>` +
+    `<p class="rsub">${esc(e.artist)} · ${d} · ${timeLabel(e)}</p></div>` +
+    `<button class="ax" data-about-close aria-label="Close">${CLOSE_ICON}</button></div>` +
+    `<div class="ropts">${CHANGES.map(opt).join("")}</div>` +
+    `<a class="rgo" aria-disabled="true" target="_blank" rel="noopener">Pick one</a>` +
+    `<p class="rnote">Opens a short form on GitHub, already filled in. Live once it's checked.</p></div>`
+  );
+}
+
+function openReport(e) {
+  if (e.cancelled) return window.open(reportUrl(e, "It's back on").replace(/&amp;/g, "&"), "_blank", "noopener");
+  const a = document.getElementById("about");
+  a.querySelector(".acard").innerHTML = reportHtml(e);
+  a.setAttribute("aria-label", "What changed?");
+  a.classList.add("rep");
+  a.hidden = false;
+}
+
 function showPage(id) {
   const e = EVENTS[+id];
   if (!e) return `<p class="empty">That show is no longer listed.</p>`;
@@ -1150,16 +1224,21 @@ function showPage(id) {
     ? `<a class="srcline" href="${esc(href)}" target="_blank" rel="noopener">${sourceIcon(e)}${from} ›</a>`
     : `<p class="srcline">${sourceIcon(e)}${from}</p>`;
   const tags = e.tags.length ? `<div class="tg">${e.tags.map(x => `<i>${esc(x)}</i>`).join("")}</div>` : "";
+  const off = e.cancelled;
+  const why = off && (e.cancel_note || e.cancel_link) ? cancelLine(e) : "";
   return (
-    `<div class="hero ph sh">${heroBg(e.venue || band)}<div class="hx"><div class="hid">${artWithStar(band)}<div class="hidt">` +
-    `<small>${date} · <span class="ac">${timeLabel(e).toUpperCase()}</span>${sourceIcon(e, true)}` +
+    `<div class="hero ph sh${off ? " off" : ""}">${heroBg(e.venue || band)}<div class="hx"><div class="hid">${artWithStar(band)}<div class="hidt">` +
+    (off ? `<span class="offpill">${CLOSE_ICON}Cancelled</span>` : "") +
+    `<small><span class="when">${date} · <span class="ac">${timeLabel(e).toUpperCase()}</span></span>${sourceIcon(e, true)}` +
     `${distanceLabel(e) ? " · " + distanceLabel(e).toUpperCase() : ""}</small><h1>${esc(e.artist)}</h1>` +
     venueLink(e, "vb big", esc(venueLabel(e)) + (e.city ? ` <em>· ${esc(e.city)}</em>` : "")) +
+    why +
     `</div></div><div class="mrow">${heroPlayButton(band)}${tags}</div>` +
     `${bandLinks(band)}</div></div>` +
     (e.venue
       ? `<h2>${esc(venueName(e.venue))}</h2>${venueLinks(e.venue)}${venueActions(e, "Show:" + e.id)}${voiceHint(e)}`
       : "") +
+    reportRow(e) +
     source +
     (otherDates.length ? `<h2>More ${esc(band)} dates</h2>${otherDates.map(venueDateRow).join("")}` : "") +
     (alsoHere.length
@@ -2014,6 +2093,8 @@ const aboutPage = html => {
 
 function openAbout() {
   const a = document.getElementById("about");
+  a.setAttribute("aria-label", "About TOPA");
+  a.classList.remove("rep");
   a.querySelector(".acard").innerHTML = aboutHtml();
   a.hidden = false;
 }
@@ -2042,7 +2123,7 @@ document.body.onclick = ev => {
     return;
   }
   const t = ev.target.closest(
-    "[data-share],[data-plfull],[data-fpclose],[data-fpfave],[data-search],[data-searchx],[data-term],[data-play],[data-playall],[data-pl],[data-plshow],[data-vsort],[data-clear],[data-show],[data-v],[data-d],[data-g],[data-band],[data-venue],[data-sort],[data-sb],[data-sv],[data-pop],[data-anyrad],[data-rad],[data-ssort],[data-ftab],[data-scroll],[data-about],[data-about-close],[data-about-add],[data-about-back],[data-install]",
+    "[data-share],[data-plfull],[data-fpclose],[data-fpfave],[data-search],[data-searchx],[data-term],[data-play],[data-playall],[data-pl],[data-plshow],[data-vsort],[data-clear],[data-show],[data-v],[data-d],[data-g],[data-band],[data-venue],[data-sort],[data-sb],[data-sv],[data-pop],[data-anyrad],[data-rad],[data-ssort],[data-ftab],[data-scroll],[data-about],[data-about-close],[data-about-add],[data-about-back],[data-install],[data-report],[data-rpick]",
   );
   const pop = document.getElementById("pop");
   if (!ev.target.closest("#pop") && !(t && t.dataset.pop !== undefined)) pop.classList.remove("on");
@@ -2050,6 +2131,15 @@ document.body.onclick = ev => {
   const d = t.dataset,
     top = () => (document.getElementById("main").scrollTop = 0);
   if (d.about !== undefined) return openAbout();
+  if (d.report) return EVENTS[+d.report] && (countEvent("report-open"), openReport(EVENTS[+d.report]));
+  if (d.rpick) {
+    t.parentNode.querySelectorAll(".ropt").forEach(b => b.classList.toggle("on", b === t));
+    const go = document.querySelector("#about .rgo");
+    go.href = d.href;
+    go.removeAttribute("aria-disabled");
+    go.textContent = "Next: the form";
+    return;
+  }
   if (d.share) return sharePage(d.share);
   if (d.plfull !== undefined) return openFull();
   if (d.fpclose !== undefined) return closeFull();

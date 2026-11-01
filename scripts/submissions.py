@@ -24,6 +24,15 @@ import community as c
 
 # each form's field labels, exactly as in .github/ISSUE_TEMPLATE/*.yml (a test keeps the two in sync)
 FORMS = {
+    "change": {
+        "change": "What changed?",
+        "band": "Band or artist",
+        "venue": "Venue",
+        "date": "Date",
+        "start": "Listed time",
+        "details": "What's the change?",
+        "link": "Where it says so",
+    },
     "show": {
         "band": "Band or artist",
         "venue": "Venue",
@@ -77,8 +86,9 @@ FORMS = {
     },
 }
 # the one field that tells the forms apart
-MARKERS = {"weekly": "Day of the week", "show": "Date", "band": "Band or artist name", "venue": "Name of the new venue"}
-TITLES = {"show": "Add show", "weekly": "Add weekly show", "band": "Add band", "venue": "Add venue"}
+MARKERS = {"change": "What changed?", "weekly": "Day of the week", "show": "Date", "band": "Band or artist name", "venue": "Name of the new venue"}
+CHANGES = {"It's cancelled": "cancelled", "New time": "time", "New venue": "venue", "Something else": "other", "It's back on": "on"}
+TITLES = {"change": "Cancelled", "show": "Add show", "weekly": "Add weekly show", "band": "Add band", "venue": "Add venue"}
 
 
 def parse_form(body):
@@ -108,6 +118,19 @@ def to_record(kind, fields, author, issue, today, venues):
     """Form answers -> the record saved under community/. Unreadable values become None."""
     f = {key: fields.get(label, "").strip() for key, label in FORMS[kind].items()}
     meta = {"submitted_by": author or "", "issue": issue or None}
+    if kind == "change":
+        venue, _ = c.match_venue(f["venue"], venues)
+        day = c.parse_date(f["date"], today)
+        return {
+            "band": " ".join(f["band"].split()),
+            "venue": venue or f["venue"],
+            "date": day.isoformat() if day else None,
+            "start": c.parse_time(f["start"]) or "",
+            "change": CHANGES.get(f["change"].replace("\u2019", "'"), "other"),
+            "details": f["details"],
+            "link": c.parse_link(f["link"]),
+            **meta,
+        }
     if kind in ("show", "weekly"):
         venue, _ = c.match_venue(f["venue"], venues)
         r = {
@@ -227,6 +250,10 @@ def changes(old, new):
 
 def title(kind, r):
     """A short PR title: 'Add show: The Tide Pool Ramblers at Harbor Lights Tavern, Sat Nov 7'."""
+    if kind == "change" and r.get("date"):
+        d = dt.date.fromisoformat(r["date"])
+        what = "Back on" if r.get("change") == "on" else TITLES[kind]
+        return f"{what}: {r['band']} at {r['venue']}, {d:%a %b} {d.day}"
     if kind == "show" and r.get("date"):
         d = dt.date.fromisoformat(r["date"])
         return f"{TITLES[kind]}: {r['band']} at {r['venue']}, {d:%a %b} {d.day}"
@@ -272,6 +299,61 @@ def existing(root, kind, r):
         return c.listed_venue(r["name"], root) if kind == "venue" else {}
 
 
+def listings(root):
+    try:
+        with open(os.path.join(root, "events.json"), encoding="utf-8") as f:
+            return json.load(f).get("events") or []
+    except (OSError, ValueError):
+        return []
+
+
+def change(fields, a, today):
+    """Cancelled or changed? A cancellation (or "back on") becomes a PR; anything else gets fixed by hand."""
+    r = to_record("change", fields, a.author, a.issue, today, c.known_venues(a.root))
+    problems = c.check("change", r, today, c.known_venues(a.root))
+    if not problems and not c.listed_show(r, listings(a.root)):
+        problems.append("Couldn't find this show on TOPA. Check the band, venue and date.")
+    path = "" if problems else c.file_name("change", r)
+    full = os.path.join(a.root, path) if path else ""
+    out = {"ok": "false", "path": path, "title": " ".join(title("change", r).split())[:120] if r.get("date") else ""}
+    if problems:
+        text = report("change", r, problems, path, "")
+    elif r["change"] == "cancelled":
+        out["ok"] = "true"
+        note = f"\n**Why:** {r['details']}\n" if r["details"] else ""
+        src = f"\n**Source:** {r['link']}\n" if r["link"] else ""
+        text = (
+            f"Marks **{r['band']}** at **{r['venue']}** on {r['date']} as cancelled "
+            f"(from #{r.get('issue')} by @{r.get('submitted_by')}).\n{note}{src}\n"
+            "Merge to publish it on TOPA; close to turn it down.\n"
+        )
+        if a.write:
+            os.makedirs(os.path.dirname(full), exist_ok=True)
+            with open(full, "w", encoding="utf-8") as f:
+                json.dump(r, f, indent=2, ensure_ascii=False)
+                f.write("\n")
+    elif r["change"] == "on" and os.path.exists(full):
+        out["ok"] = "true"
+        text = (
+            f"Takes the Cancelled mark off **{r['band']}** at **{r['venue']}** on {r['date']} "
+            f"(from #{r.get('issue')} by @{r.get('submitted_by')}).\n\nMerge to publish it on TOPA.\n"
+        )
+        if a.write:
+            os.remove(full)
+    elif r["change"] == "on":
+        text = "Thanks! This show isn't marked cancelled on TOPA, so there's nothing to change."
+    else:
+        text = (
+            "Thanks for letting us know! This kind of change gets fixed by hand, "
+            "so it stays open until someone updates the listing."
+        )
+    print(text)
+    if a.report:
+        with open(a.report, "w", encoding="utf-8") as f:
+            f.write(text)
+    return out
+
+
 def main():
     args = argparse.ArgumentParser()
     args.add_argument("--body-file", required=True, help="the issue text ('-' reads stdin)")
@@ -290,7 +372,9 @@ def main():
     kind = kind_of(fields)
     out = {"kind": kind, "ok": "false", "path": "", "title": "", "photo": "", "photo_url": ""}
 
-    if kind:
+    if kind == "change":
+        out.update(change(fields, a, today))
+    elif kind:
         venues = c.known_venues(a.root)
         r = to_record(kind, fields, a.author, a.issue, today, venues)
         old = existing(a.root, kind, r)

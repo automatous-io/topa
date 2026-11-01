@@ -301,3 +301,32 @@ test("About opens and closes, and shows the version", async t => {
   await tap(page, ".ax");
   assert.equal(await page.$eval("#about", el => el.hidden), true);
 });
+
+// ---- Cancelled or changed? ----
+
+test("a cancelled show is marked, skipped by Play all, and its page offers Back on", async t => {
+  const i = EVENTS.findIndex(e => e.artist.startsWith("Ukulele"));
+  const events = EVENTS.map((e, k) => (k === i ? { ...e, cancelled: true, cancel_note: "Rained out" } : e));
+  const page = await open(t, { viewport: PHONE, listings: { updated: "2026-10-24T09:00:00-07:00", events } });
+  assert.match(await text(page, ".top"), /1 cancelled/);
+  const row = await page.$("#main .rw.off");
+  assert.match(await row.evaluate(r => r.textContent), /Ukulele Weekly Jam.*Cancelled/);
+  assert.equal(await row.$("[data-play]"), null, "no play button on a cancelled show");
+  await tap(page, "#main .rw.off .tcol");
+  assert.match(await text(page, ".offpill"), /Cancelled/);
+  assert.match(await text(page, ".offwhy"), /Rained out/);
+  assert.match(await text(page, ".report"), /Back on\?/);
+});
+
+test("Cancelled or changed? opens the form for that show", async t => {
+  const page = await open(t, { viewport: PHONE });
+  await tap(page, "#main .rw[data-show] .tcol");
+  await tap(page, ".report");
+  assert.equal(await page.$eval(".rgo", a => a.hasAttribute("href")), false, "nothing picked yet");
+  await tap(page, '.ropt[data-rpick="New time"]');
+  const href = await page.$eval(".rgo", a => a.href);
+  const q = new URL(href).searchParams;
+  assert.equal(q.get("template"), "report-show.yml");
+  assert.equal(q.get("change"), "New time");
+  assert.ok(q.get("band") && q.get("venue") && /^\d{4}-\d{2}-\d{2}$/.test(q.get("date")));
+});

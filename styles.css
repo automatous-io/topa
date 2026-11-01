@@ -15,6 +15,8 @@
   --on-acc: #1a0f14; /* text and icons sitting on coral */
   --fave: #ffc857;
   --community: #5ee0c1; /* teal: shows sent to TOPA */
+  --off: #ff8f9a; /* cancelled shows */
+  --off-bg: #3a1d26;
   --display: Oswald, "Arial Narrow", sans-serif; /* names and times */
 }
 * {
@@ -4304,4 +4306,224 @@ a.srcline:hover {
     border-radius: 0 3px 3px 0;
     background: var(--acc);
   }
+}
+
+/* cancelled shows */
+i.offtag {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--off-bg);
+  color: var(--off);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.tg i.offtag {
+  color: var(--off);
+  background: var(--off-bg);
+}
+.rw.off .tcol b {
+  color: var(--mute);
+  text-decoration: line-through;
+  text-decoration-color: var(--off);
+  text-decoration-thickness: 2px;
+}
+.rw.off .rb > b {
+  color: #8e8199;
+}
+.rw.off > .art {
+  opacity: 0.55;
+}
+.offpill {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  margin-bottom: 6px;
+  padding: 0 10px;
+  border-radius: 13px;
+  background: var(--off-bg);
+  color: var(--off);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.offpill svg {
+  width: 13px;
+  height: 13px;
+}
+.hero.off .when,
+.hero.off .when .ac {
+  color: var(--mute);
+  text-decoration: line-through;
+  text-decoration-color: var(--off);
+}
+.hero.off h1 {
+  color: #cfc4d8;
+}
+.hero.off .hid .art {
+  opacity: 0.6;
+}
+.offwhy {
+  display: block;
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--off);
+  text-decoration: none;
+}
+.hero.off ~ .vtiles .vt.dir {
+  background: var(--hi);
+  color: var(--ink);
+}
+
+/* "Cancelled or changed?" on show pages */
+.report {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #1c1625;
+  color: var(--ink);
+  font: inherit;
+  line-height: 1.35;
+  text-align: left;
+}
+@media (min-width: 701px) {
+  .report {
+    max-width: 600px;
+  }
+}
+.report:hover {
+  background: var(--hi);
+}
+.report > span:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+}
+.ri {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--hi);
+  color: var(--mute);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ri svg {
+  width: 18px;
+  height: 18px;
+}
+.report b,
+.ropt b {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+}
+.report small,
+.ropt small {
+  font-size: 13px;
+  color: var(--mute);
+}
+
+/* the "What changed?" sheet */
+.about.rep .acard {
+  max-width: 460px;
+}
+.rsheet {
+  padding: 22px 20px calc(24px + env(safe-area-inset-bottom));
+}
+.rtop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.rsheet .ax {
+  position: static;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  background: var(--bg);
+}
+.rtitle {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.rsub {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--mute);
+}
+.ropts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+.ropt {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid transparent;
+  border-radius: 14px;
+  background: var(--hi);
+  color: var(--ink);
+  font: inherit;
+  line-height: 1.3;
+  text-align: left;
+}
+.ropt .ri {
+  background: var(--panel);
+}
+.ropt.on {
+  border-color: var(--acc);
+  background: #2a1f2a;
+}
+.ropt.on .ri {
+  color: var(--acc);
+}
+.acard .rgo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  margin-top: 16px;
+  border-radius: 25px;
+  background: var(--acc);
+  color: var(--on-acc);
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.acard .rgo[aria-disabled] {
+  background: #2d2439;
+  color: #6f6380;
+  pointer-events: none;
+}
+.rnote {
+  margin: 10px 0 0;
+  text-align: center;
+  font-size: 12px;
+  color: var(--mute);
 }

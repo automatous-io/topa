@@ -15,7 +15,7 @@ from zoneinfo import ZoneInfo
 
 PACIFIC = ZoneInfo("America/Los_Angeles")  # all venues are in Ventura County
 ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
-FOLDERS = {"show": "shows", "weekly": "weekly", "band": "bands", "venue": "venues"}
+FOLDERS = {"show": "shows", "weekly": "weekly", "band": "bands", "venue": "venues", "change": "changes"}
 WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 WEEKLY_MAX_DAYS = 183  # weekly shows run up to ~6 months
 SHOW_MAX_DAYS = 366  # one-off shows up to a year out
@@ -198,6 +198,17 @@ def check(kind, r, today, venues):
     need = lambda key, what: problems.append(f"Please add {what}.") if not r.get(key) else None
     bad = lambda key: key in r and r[key] is None  # filled in, but it didn't read right (blank is fine)
 
+    if kind == "change":
+        need("band", "the band or artist name")
+        need("venue", "the venue")
+        d = r.get("date")
+        if not d:
+            problems.append("Please add the date like 2026-11-07 or 11/7.")
+        elif dt.date.fromisoformat(d) < today:
+            problems.append(f"The date {d} has already passed.")
+        if bad("link"):
+            problems.append("The link doesn't look like a web address (it should start with https://).")
+        return problems
     if kind in ("show", "weekly"):
         need("band", "the band or artist name")
         if not r.get("venue"):
@@ -279,7 +290,7 @@ def check(kind, r, today, venues):
 
 def file_name(kind, r):
     """Where a record lives, e.g. community/shows/2026-11-07-<venue>-<band>.json."""
-    if kind == "show":
+    if kind in ("show", "change"):
         base = f"{r['date']}-{slug(short_name(r['venue']))}-{slug(r['band'])}"
     elif kind == "weekly":
         base = f"{slug(short_name(r['venue']))}-{slug(r['band'])}-{r['weekday'].lower()}"
@@ -426,6 +437,41 @@ def load(root=ROOT, today=None):
         except (KeyError, ValueError, TypeError):
             print(f"skipping community/weekly/{r['_file']}: missing or bad fields")
     return events, bands, venues
+
+
+def as_show(r):
+    """A change record in the shape same_show compares."""
+    return {"artist": r.get("band") or "", "venue": r.get("venue") or "", "start": r.get("date") or ""}
+
+
+def listed_show(r, events):
+    """The listed show a change is about, or None."""
+    try:
+        return next((e for e in events if same_show(e, as_show(r))), None)
+    except (KeyError, TypeError):
+        return None
+
+
+def apply_changes(events, root=ROOT, today=None):
+    """Mark shows cancelled from community/changes/. Returns how many were marked."""
+    today = today or dt.datetime.now(PACIFIC).date()
+    marked = 0
+    for r in read_folder(root, "change"):
+        try:
+            if r.get("change") != "cancelled" or dt.date.fromisoformat(r["date"]) < today - dt.timedelta(days=1):
+                continue
+        except (KeyError, ValueError, TypeError):
+            print(f"skipping community/changes/{r['_file']}: missing or bad date")
+            continue
+        for e in events:
+            if same_show(e, as_show(r)):
+                e["cancelled"] = True
+                if r.get("details"):
+                    e["cancel_note"] = r["details"]
+                if r.get("link"):
+                    e["cancel_link"] = r["link"]
+                marked += 1
+    return marked
 
 
 def add_own_photos(venues, bands, events, root=ROOT):

@@ -2,9 +2,12 @@
   "name": "Jerry Breiner",
   "aliases": [],
   "genres": [
-    "singer-songwriter"
+    "singer-songwriter",
+    "covers"
   ],
-  "town": "",
+  "town": "Ventura County",
+  "bio": "Jerry Breiner is a Ventura County multi-instrumentalist and singer-songwriter. He also plays in the Big Adventure Band, which plays covers from across the decades.",
+  "bio_source": "Written by TOPA from @jbreiner and Winchester's Grill.",
   "links": {
     "instagram": "https://instagram.com/jbreiner"
   },

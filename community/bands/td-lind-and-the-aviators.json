@@ -3,10 +3,17 @@
   "aliases": [
     "TD Lind and the Aviators"
   ],
-  "genres": [],
-  "town": "",
+  "genres": [
+    "indie rock",
+    "rock"
+  ],
+  "town": "Ojai",
+  "bio": "TD Lind & the Aviators are an indie rock band from Ojai, formed in 2022. TD Lind, who was born in England, toured the U.S. and Europe for about 30 years and made four albums before starting the band. They released the live album Into the Light in 2023 and the studio album Golden in 2024, and their newest album is The Copper Room.",
+  "bio_source": "Written by TOPA from undergroundsun.com, The Grape and @tdlindandtheaviators.",
   "links": {
-    "instagram": "https://instagram.com/tdlindandtheaviators"
+    "instagram": "https://instagram.com/tdlindandtheaviators",
+    "facebook": "https://www.facebook.com/tdlindandtheaviators",
+    "spotify": "https://open.spotify.com/artist/3u8mUJGPBDFvo7SthGGER2"
   },
   "apple": "1714353441",
   "photo": "",

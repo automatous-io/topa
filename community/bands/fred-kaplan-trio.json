@@ -5,11 +5,17 @@
   ],
   "genres": [
     "blues",
-    "jazz"
+    "jazz",
+    "piano"
   ],
   "town": "",
+  "bio": "Fred Kaplan is a blues pianist whose career goes back to the early 1970s, when he helped form the Hollywood Fats Band. He records and tours as a solo pianist and as a sideman and producer for blues artists, and his trio plays Friday evenings at The Grape in Ventura.",
+  "bio_source": "Written by TOPA from fredkaplanmusic.com and @fredkaplanmusic.",
   "links": {
-    "instagram": "https://instagram.com/fredkaplanmusic"
+    "instagram": "https://instagram.com/fredkaplanmusic",
+    "website": "https://fredkaplanmusic.com",
+    "facebook": "https://www.facebook.com/fredkaplan",
+    "youtube": "https://www.youtube.com/@fredkaplanmusic"
   },
   "apple": "",
   "photo": "",

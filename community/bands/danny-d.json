@@ -1,0 +1,19 @@
+{
+  "name": "Danny D",
+  "aliases": [],
+  "genres": [
+    "covers",
+    "standards"
+  ],
+  "town": "Ventura",
+  "bio": "Danny D sings the Frank Sinatra songbook on Tuesday evenings at Prime Steakhouse & Wine Bar in Ventura.",
+  "bio_source": "Written by TOPA from local show listings.",
+  "links": {},
+  "apple": "",
+  "photo": "",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "public web search and local show listings, 2026-11-01"
+}

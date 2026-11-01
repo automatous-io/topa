@@ -2,11 +2,17 @@
   "name": "Natalie Wattre",
   "aliases": [],
   "genres": [
-    "singer-songwriter"
+    "singer-songwriter",
+    "acoustic",
+    "covers",
+    "soul"
   ],
   "town": "",
+  "bio": "Natalie Wattre is a Southern California singer-songwriter who performs with her guitar, and Music Connection magazine has praised her vocal range. Her covers run from Aretha Franklin, Marvin Gaye and Prince to Fleetwood Mac, Queen, Adele and Bruno Mars, and she also plays her own songs, including \"After the Drought\" and \"Follow Through.\"",
+  "bio_source": "Written by TOPA from nataliewattre.com and @nataliewattre.",
   "links": {
-    "instagram": "https://instagram.com/nataliewattre"
+    "instagram": "https://instagram.com/nataliewattre",
+    "website": "https://nataliewattre.com"
   },
   "apple": "",
   "photo": "",

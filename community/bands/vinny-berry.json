@@ -1,10 +1,18 @@
 {
   "name": "Vinny Berry",
   "aliases": [],
-  "genres": [],
+  "genres": [
+    "rock",
+    "blues",
+    "covers",
+    "singer-songwriter"
+  ],
   "town": "",
+  "bio": "Vinny Berry is a rock and roll and blues singer who grew up in Los Angeles and now lives on the coast near Ventura. He plays his own songs alongside covers of artists from Otis Redding and the Beatles to Tom Petty, Chris Stapleton, Pearl Jam and Amy Winehouse. He also released the album Seeker and the Sound with his band, the Vinny Berry Connection.",
+  "bio_source": "Written by TOPA from vinnyberrymusic.com and @vinnyberrymusic.",
   "links": {
-    "instagram": "https://instagram.com/vinnyberrymusic"
+    "instagram": "https://instagram.com/vinnyberrymusic",
+    "website": "https://www.vinnyberrymusic.com"
   },
   "apple": "1860139606",
   "photo": "",

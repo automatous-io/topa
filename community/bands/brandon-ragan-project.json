@@ -5,11 +5,16 @@
   ],
   "genres": [
     "funk",
-    "blues"
+    "blues",
+    "jazz"
   ],
-  "town": "",
+  "town": "Ventura",
+  "bio": "The Brandon Ragan Project is a funk and blues band from Ventura. Brandon Ragan is a saxophonist from Alabama with a background in gospel jazz who now calls Downtown Ventura home. The band plays regularly at Tony's Pizzaria in Ventura.",
+  "bio_source": "Written by TOPA from brandonragan.com and @thebrandonraganproject5000.",
   "links": {
-    "instagram": "https://instagram.com/thebrandonraganproject5000"
+    "instagram": "https://instagram.com/thebrandonraganproject5000",
+    "website": "https://brandonragan.com",
+    "facebook": "https://www.facebook.com/brandonraganproject"
   },
   "apple": "",
   "photo": "",

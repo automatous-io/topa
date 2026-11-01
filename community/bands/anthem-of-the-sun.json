@@ -2,9 +2,14 @@
   "name": "Anthem of the Sun",
   "aliases": [],
   "genres": [
-    "tribute"
+    "tribute",
+    "grateful dead",
+    "jam",
+    "rock"
   ],
   "town": "Ventura",
+  "bio": "Anthem of the Sun is a Ventura Grateful Dead tribute band, formerly known as Peoples Dead. They host Ventura Dead Night on Thursdays at 7pm at Winchester's Grill & Saloon downtown.",
+  "bio_source": "Written by TOPA from @anthemofthesun.band and venturagratefuldead.com.",
   "links": {
     "instagram": "https://instagram.com/anthemofthesun.band"
   },

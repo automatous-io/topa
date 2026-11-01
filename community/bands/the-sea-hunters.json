@@ -4,11 +4,15 @@
   "genres": [
     "surf",
     "rock",
-    "pop"
+    "pop",
+    "covers"
   ],
   "town": "Ventura",
+  "bio": "The Sea Hunters are a Ventura surf, rock and pop band playing covers and their own songs. They play happy hour on Tuesdays at Vaquero y Mar in Ventura.",
+  "bio_source": "Written by TOPA from @the_sea_hunters.",
   "links": {
-    "instagram": "https://instagram.com/the_sea_hunters"
+    "instagram": "https://instagram.com/the_sea_hunters",
+    "facebook": "https://www.facebook.com/theseahuntersmusic"
   },
   "apple": "",
   "photo": "",

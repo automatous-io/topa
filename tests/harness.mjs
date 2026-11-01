@@ -103,13 +103,16 @@ export async function open(t, { query = "", viewport = TESLA, now = NOON, faves,
   if (faves) {
     await page.evaluateOnNewDocument(f => localStorage.setItem("topa.faves.v1", JSON.stringify(f)), faves);
   }
-  await page.goto(`${base}?now=${now}${query}`, { waitUntil: "networkidle0" });
+  await page.goto(`${base}?now=${now}${withView(query)}`, { waitUntil: "networkidle0" });
   return page;
 }
 
+// tests start on Shows unless a view is given
+const withView = q => (/[?&]view=/.test(q) ? q : q + "&view=Shows");
+
 // another page in the same session (faster than open)
 export async function visit(page, { query = "", now = NOON } = {}) {
-  await page.goto(`${base}?now=${now}${query}`, { waitUntil: "domcontentloaded" });
+  await page.goto(`${base}?now=${now}${withView(query)}`, { waitUntil: "domcontentloaded" });
   await page.waitForFunction(() => document.querySelector("#main")?.children.length > 1); // more than the top bar
 }
 

@@ -68,8 +68,13 @@ let EVENTS = []; // upcoming shows, soonest first; a show's id is its position h
 
 let status = { c: "loading" }; // c: loading | cached | live | offline; updated: when events.json last changed
 
-// the current page: "Shows", "Bands", "Band:<name>", "Venues", "Venue:<name>", "Show:<id>", "Faves"
-let view = (v => (v && v !== "Search" && v !== "Home" ? v : "Shows"))(params.get("view"));
+// the current page: "Home", "Shows", "Bands", "Band:<name>", "Venues", "Venue:<name>", "Show:<id>", "Faves"
+// start page
+const START_KEY = "topa.start.v1";
+let view = (v => (v && v !== "Search" ? v : store.get(START_KEY) === "Shows" ? "Shows" : "Home"))(params.get("view"));
+
+let fromHome = false; // came from See all on Home
+
 
 let prev = "Shows"; // the page before, so a show page can highlight where it was opened from
 
@@ -149,9 +154,15 @@ const dayStart = d => {
 
 const dropPast = l => l.filter(e => e.startMs >= dayStart(NOW).getTime());
 
+// band genres first, then listing tags
+function withBandGenres(e) {
+  const own = ((EXTRA.bands[bandName(e)] || {}).genres || []).map(g => classifyGenres([g])[0] || g.toLowerCase());
+  return [...new Set([...own, ...(e.tags || [])])];
+}
+
 function setEvents(l) {
   const was = view.startsWith("Show:") && EVENTS[+view.slice(5)];
-  EVENTS = l.map((e, i) => ({ ...e, id: i }));
+  EVENTS = l.map((e, i) => ({ ...e, id: i, tags: withBandGenres(e) }));
   if (was) {
     const m = EVENTS.find(e => e.artist === was.artist && e.startMs === was.startMs);
     if (m && String(m.id) !== view.slice(5)) {
@@ -173,13 +184,16 @@ async function fetchListings() {
   return {
     updated: d.updated,
     events: d.events.map(e => toShow({ ...e, startMs: new Date(e.start).getTime() }, e.tags || [])),
-    extra: { bands: d.bands || {}, venues: d.venues || {} },
+    extra: { bands: d.bands || {}, venues: d.venues || {}, featured: d.featured || [] },
   };
 }
 
 // band and venue details people added (events.json "bands" and "venues")
-let EXTRA = { bands: {}, venues: {} };
-const setExtra = x => (EXTRA = { bands: (x && x.bands) || {}, venues: (x && x.venues) || {} });
+let EXTRA = { bands: {}, venues: {}, featured: [] };
+const setExtra = x =>
+  (EXTRA = { bands: (x && x.bands) || {}, venues: (x && x.venues) || {}, featured: (x && x.featured) || [] });
+// featured band, if any
+const featuredBand = name => EXTRA.featured.find(f => f.band === name);
 const addedVenue = name => EXTRA.venues[name] || {};
 // an added venue as a stand-in show, for venues with nothing scheduled yet (town, address, map spot)
 const venueSpot = name => {
@@ -446,6 +460,7 @@ const ICONS = {
   next: '<path d="M5.5 6l9 6-9 6zM16 6h2.5v12H16z"/>',
   prev: '<path d="M18.5 6l-9 6 9 6zM5.5 6H8v12H5.5z"/>',
   sort: '<path d="M7 3 2.5 8H6v13h2V8h3.5zM17 21l4.5-5H18V3h-2v13h-3.5z"/>',
+  back: '<path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',
   // Cancelled or changed?
   flag: '<path d="M5 21V4h12l-2.5 4L17 12H5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
   check: '<path d="M5 12.5l4.5 4.5L19 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',
@@ -536,7 +551,7 @@ const starButton = (on, attr, big) =>
 // every page change goes into the browser history, so swipe-back and the browser's back arrow work
 const urlFor = v => {
   const u = new URLSearchParams(location.search);
-  v === "Shows" ? u.delete("view") : u.set("view", v);
+  v === "Home" ? u.delete("view") : u.set("view", v);
   const s = u.toString();
   return location.pathname + (s ? "?" + s : "");
 };
@@ -567,8 +582,8 @@ function go(v) {
 
 addEventListener("popstate", ev => {
   const st = ev.state || {};
-  view = st.v || "Shows";
-  prev = st.prev || "Shows";
+  view = st.v || "Home";
+  prev = st.prev || "Home";
   render();
   document.getElementById("main").scrollTop = 0;
   countView();
@@ -779,7 +794,7 @@ function pickDay() {
 }
 
 const searchBox = () =>
-  `<div class="sf"><input class="search" id="s" placeholder="Search bands, venues, towns" value="${esc(term)}" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search"><button class="clr" data-clear="s" aria-label="Clear search"${term ? "" : " hidden"}>${CLOSE_ICON}</button></div>`;
+  `<div class="sf"><input class="search" id="s" placeholder="Search bands, venues, towns, genres" value="${esc(term)}" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search"><button class="clr" data-clear="s" aria-label="Clear search"${term ? "" : " hidden"}>${CLOSE_ICON}</button></div>`;
 
 const emptyMessage = () =>
   !EVENTS.length
@@ -1027,6 +1042,7 @@ const bandNow = name => {
     name,
     genres: (b.genres || []).join(", "),
     town: b.town,
+    bio: b.bio,
     ...Object.fromEntries(Object.keys(LINK_NAMES).map(k => [k, links[k]])),
     apple: b.apple && b.apple !== "none" ? `https://music.apple.com/us/artist/${b.apple}` : b.apple,
   });
@@ -1053,17 +1069,45 @@ const addLinks = list =>
     )
     .join("")}</div>`;
 
+// band page About
+const aboutBand = (name, chips = true) => {
+  const b = EXTRA.bands[name] || {};
+  if (!b.bio) return "";
+  const genres = chips ? (b.genres || []).map(g => `<i>${esc(g)}</i>`).join("") : "";
+  return (
+    `<h2>About</h2><section class="bio"><p>${esc(b.bio)}</p>` +
+    (genres ? `<div class="tg">${genres}</div>` : "") +
+    (b.town ? `<p class="bfrom">From ${esc(b.town)}</p>` : "") +
+    (b.bio_source ? `<p class="bsrc">${esc(b.bio_source)} The band can update it with the band form.</p>` : "") +
+    `</section>`
+  );
+};
+
+// band page members
+const bandMembers = name => {
+  const m = (EXTRA.bands[name] || {}).members || [];
+  if (!m.length) return "";
+  return (
+    `<h2>The band</h2><dl class="members">` +
+    m.map(([who, what]) => `<div><dt>${esc(who)}</dt><dd>${esc(what || "")}</dd></div>`).join("") +
+    `</dl>`
+  );
+};
+
 function bandPage(name) {
   const L = EVENTS.filter(e => bandName(e) === name);
-  const tags = L[0] && L[0].tags.length ? L[0].tags : (EXTRA.bands[name] && EXTRA.bands[name].genres) || [];
+  const own = (EXTRA.bands[name] && EXTRA.bands[name].genres) || [];
+  const tags = own.length ? own : L[0] ? L[0].tags : [];
   const genres = tags.length ? " · " + esc(tags.join(", ").toUpperCase()) : "";
   return (
     `<div class="hero">${artWithStar(name)}<div class="hx">` +
-    `<small>ARTIST${genres}</small><h1>${esc(name)}</h1>` +
+    `<small>ARTIST${genres}${featuredBand(name) ? `<i class="ftag">Featured on TOPA</i>` : ""}</small><h1>${esc(name)}</h1>` +
     `<div class="acts">${heroPlayButton(name)}` +
     `<span class="acount">${L.length ? showCount(L.length) : "No shows yet"}</span></div>${bandLinks(name)}` +
     `</div></div>` +
     L.map(venueDateRow).join("") +
+    aboutBand(name) +
+    bandMembers(name) +
     (L.length ? sourceKey() : "") +
     addLinks([
       ["add-show", "Add a show", { band: name }],
@@ -1239,7 +1283,7 @@ function showPage(id) {
     `<div class="hero ph sh${off ? " off" : ""}">${heroBg(e.venue || band)}<div class="hx"><div class="hid">${artWithStar(band)}<div class="hidt">` +
     (off ? `<span class="offpill">${CLOSE_ICON}Cancelled</span>` : "") +
     `<small><span class="when">${date} · <span class="ac">${timeLabel(e).toUpperCase()}</span></span>${sourceIcon(e, true)}` +
-    `${distanceLabel(e) ? " · " + distanceLabel(e).toUpperCase() : ""}</small><h1>${esc(e.artist)}</h1>` +
+    `${distanceLabel(e) ? " · " + distanceLabel(e).toUpperCase() : ""}</small><h1 class="tobd" data-band="${esc(band)}">${esc(e.artist)}</h1>` +
     venueLink(e, "vb big", esc(venueLabel(e)) + (e.city ? ` <em>· ${esc(e.city)}</em>` : "")) +
     why +
     `</div></div><div class="mrow">${heroPlayButton(band)}${tags}</div>` +
@@ -1249,11 +1293,94 @@ function showPage(id) {
       : "") +
     reportRow(e) +
     source +
+    aboutBand(band, false) +
     (otherDates.length ? `<h2>More ${esc(band)} dates</h2>${otherDates.map(venueDateRow).join("")}` : "") +
     (alsoHere.length
       ? `<h2>Also at ${esc(venueName(e.venue))}</h2>${alsoHere.map(x => showRow(x, false, true)).join("")}`
       : "") +
     (otherDates.length || alsoHere.length ? sourceKey() : "")
+  );
+}
+
+// ---- Home (the TOPA button) ----
+
+const backHome = page =>
+  fromHome && (page === "Shows" || page === "Faves")
+    ? `<button class="mback" data-v="Home">${svg("back")}Home</button>`
+    : `<span class="mgap"></span>`;
+
+// Home row
+const homeRow = (e, withDay) => {
+  const d = new Date(e.start);
+  const day = !withDay ? "" : sameDay(d, NOW) ? todayWord() : `${weekdayLabel(e)} ${d.getMonth() + 1}/${d.getDate()}`;
+  const faveVenue = withDay && SAVED.venues.includes(e.venue) && !SAVED.bands.includes(bandName(e));
+  return (
+    `<div class="rw hrow${e.cancelled ? " off" : ""}" data-show="${e.id}">${art(bandName(e))}` +
+    `<div class="rb"><b>${esc(e.artist)}</b><span class="vmeta">${esc(venueLabel(e))}${e.city ? " · " + esc(e.city) : ""}</span>` +
+    `${faveVenue ? `<i class="fvtag">★ Fave venue</i>` : ""}</div>` +
+    `<div class="hwhen">${day ? `<small>${day}</small>` : ""}<b>${timeLabel(e)}</b></div></div>`
+  );
+};
+
+const homeHead = (title, more, attr) =>
+  `<div class="hsec"><h2>${title}</h2>${more ? `<button class="hmore" ${attr}>See all</button>` : ""}</div>`;
+
+// Featured card
+function featuredCard() {
+  const f = EXTRA.featured.find(x => EVENTS.some(e => bandName(e) === x.band && isStillOn(e)));
+  if (!f) return "";
+  const next = EVENTS.find(e => bandName(e) === f.band && isStillOn(e));
+  return (
+    homeHead("Featured") +
+    `<div class="feat" data-band="${esc(f.band)}">${art(f.band, "fpic")}<div class="fbody">` +
+    `<i class="ftag">Featured</i><b>${esc(f.band)}</b>${f.blurb ? `<p>${esc(f.blurb)}</p>` : ""}` +
+    `<div class="frow2"><small>${nextLabel(next)} · ${esc(venueLabel(next))}</small>${heroPlayButton(f.band)}</div></div></div>`
+  );
+}
+
+// one row per band, max 2 from faved venues
+function faveNext(soon) {
+  const seen = new Set();
+  let fromVenues = 0;
+  return soon.filter(e => {
+    const band = bandName(e);
+    const forBand = SAVED.bands.includes(band);
+    if (!forBand && !SAVED.venues.includes(e.venue)) return false;
+    if (seen.has(band) || (!forBand && fromVenues >= 2)) return false;
+    seen.add(band);
+    if (!forBand) fromVenues++;
+    return true;
+  });
+}
+
+// Home title
+const GREET_KEY = "topa.greeting.v1",
+  GREET_MAX = 24;
+const timeGreeting = () => {
+  const h = NOW.getHours();
+  return h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
+};
+const greeting = () => (store.get(GREET_KEY) || "").trim() || timeGreeting();
+
+function homePage() {
+  const soon = EVENTS.filter(isStillOn);
+  const faves = faveNext(soon);
+  const tonight = soon.filter(e => sameDay(new Date(e.start), NOW));
+  const left =
+    homeHead("Your faves are playing", faves.length, 'data-v="Faves" data-fromhome') +
+    (faves.length
+      ? `<div class="hlist">${faves.slice(0, 5).map(e => homeRow(e, true)).join("")}</div>`
+      : `<p class="hempty">Tap ☆ on a band or venue and their next shows magically show up here.</p>`) +
+    featuredCard();
+  const right =
+    homeHead(todayWord(), tonight.length, 'data-v="Shows" data-fromhome') +
+    (tonight.length
+      ? `<div class="hlist">${tonight.slice(0, 6).map(e => homeRow(e, false)).join("")}</div>`
+      : `<p class="hempty">Nothing else ${todayWord().toLowerCase()}. <button class="hmore" data-v="Shows" data-fromhome>See this week</button></p>`);
+  return (
+    `<div class="hhead"><h1>${esc(greeting())}</h1>` +
+    `<button class="hinfo" data-about aria-label="About TOPA">${svg("info")}</button></div>` +
+    `<div class="hgrid"><div>${left}</div><div>${right}</div></div>`
   );
 }
 
@@ -1308,6 +1435,7 @@ function favesPage() {
 }
 
 const PAGES = {
+  Home: homePage,
   Shows: showsPage,
   Bands: bandsPage,
   Band: bandPage,
@@ -1329,9 +1457,8 @@ function navHtml(page) {
     .join("");
   // when the listings last changed (the Ventura Rocks credit lives in About)
   const updated = updatedLabel() ? `Updated<i>${updatedLabel()}</i>` : "";
-  // logo opens About
   return (
-    `<button class="logo" data-about aria-label="About TOPA">${wordmark("nav", true)}</button>${tabs}` +
+    `<button class="logo${page === "Home" ? " on" : ""}" data-v="Home" aria-label="Home">${wordmark("nav", true)}</button>${tabs}` +
     `<div class="credit">${updated}</div>`
   );
 }
@@ -1353,7 +1480,7 @@ function fitTitle() {
 addEventListener("resize", fitTitle);
 
 function render() {
-  if (!PAGES[view.split(":")[0]]) view = "Shows";
+  if (!PAGES[view.split(":")[0]]) view = "Home";
   const page = view.split(":")[0];
   const arg = view.slice(page.length + 1);
   // keep chip rows where they were scrolled (tapping a genre re-renders the page)
@@ -1361,7 +1488,7 @@ function render() {
   for (const w of document.querySelectorAll(".sw"))
     rowScroll[w.dataset.row] = w.querySelector(".chips").scrollLeft;
   document.getElementById("nav").innerHTML = navHtml(page);
-  // phone top bar: county and search (the logo is in the tab bar)
+  // phone top bar (none on Home)
   // in search mode the bar becomes the search box
   const searching = page === "Shows" && (searchOpen || !!term);
   const phoneBar = searching
@@ -1369,13 +1496,14 @@ function render() {
       `<input id="ms" type="search" placeholder="Bands, venues, towns, genres" value="${esc(term)}" ` +
       `autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" aria-label="Search">` +
       `<button class="mbtn" data-searchx aria-label="Close search">${CLOSE_ICON}</button></div></header>`
-    : `<header class="mbar">` +
-      `<span class="mcounty">${svg("Venues")}Ventura County</span>` +
-      `<button class="mbtn" data-search aria-label="Search bands, venues, towns">${svg("search")}</button></header>`;
+    : page === "Home"
+      ? ""
+      : `<header class="mbar">${backHome(page)}` +
+        `<button class="mbtn" data-search aria-label="Search bands, venues, towns, genres">${svg("search")}</button></header>`;
   searchSlide = false;
   const main = document.getElementById("main");
   main.classList.toggle("srch", searching);
-  main.innerHTML = phoneBar + PAGES[page](arg);
+  main.innerHTML = phoneBar + (page === "Home" ? "" : `<div class="wback">${backHome(page)}</div>`) + PAGES[page](arg);
   for (const w of document.querySelectorAll(".sw"))
     w.querySelector(".chips").scrollLeft = rowScroll[w.dataset.row] || 0;
   // keep the picked day tile in view
@@ -2004,22 +2132,20 @@ const formUrl = (form, fill = {}) =>
 // and when it's already running from the home screen.
 const INSTALLED = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
 const ON_IPHONE = /iPhone|iPad|iPod/.test(navigator.userAgent);
-const ON_ANDROID = /Android/.test(navigator.userAgent);
 let installPrompt = null; // Android/Chrome hands us this when the app can be installed with one tap
 addEventListener("beforeinstallprompt", ev => {
   ev.preventDefault();
   installPrompt = ev;
 });
 
-// "Get the app": one tap where the browser allows it, otherwise the steps
+// "Get the app": one-tap install or iPhone steps only
 function installTile() {
   if (IN_TESLA || INSTALLED) return "";
   const tile = (tag, attrs, icon, sub) =>
     `<${tag} class="abig inst"${attrs}>${svg(icon)}<span><b>Get the app</b><small>${sub}</small></span></${tag}>`;
   if (installPrompt) return tile("button", " data-install", "install", "Install with one tap");
   if (ON_IPHONE) return tile("div", "", "share", "Share › Add to Home Screen");
-  if (ON_ANDROID) return tile("div", "", "install", "⋮ › Install app");
-  return tile("div", "", "install", "Add it from your phone's browser");
+  return "";
 }
 
 const newTab = (href, label) => `<a href="${href}" target="_blank" rel="noopener">${label}</a>`;
@@ -2034,6 +2160,15 @@ function aboutHtml() {
     `<p class="astory">Made for and by local live music lovers.<br>` +
     `Bands, fans, and venues add to it, so it keeps getting better.</p></header>` +
     `<div class="abody">` +
+    `<h3>Settings</h3>` +
+    `<div class="aset">${svg("Venues")}<span><b>Area</b><small>Ventura County</small></span></div>` +
+    `<label class="aset">${svg("info")}<span><b>Greeting</b><small>The title on Home</small></span>` +
+    `<input id="greet" maxlength="${GREET_MAX}" placeholder="${timeGreeting()}" value="${esc(store.get(GREET_KEY) || "")}" ` +
+    `autocomplete="off" aria-label="Greeting on Home"></label>` +
+    `<div class="aset">${svg("Shows")}<span><b>Open to</b><small>Where TOPA starts</small></span>` +
+    `<span class="aseg">${["Home", "Shows"]
+      .map(k => `<button data-start="${k}" class="${(store.get(START_KEY) || "Home") === k ? "on" : ""}">${k}</button>`)
+      .join("")}</span></div>` +
     (app ? `<div class="abigs one">${app}</div>` : "") +
     `<h3>Where shows come from</h3>` +
     `<div class="legend">` +
@@ -2092,6 +2227,14 @@ function addHtml() {
     `</div>`
   );
 }
+
+// Settings: greeting
+addEventListener("input", ev => {
+  if (ev.target.id !== "greet") return;
+  store.set(GREET_KEY, ev.target.value.slice(0, GREET_MAX));
+  const h = document.querySelector(".hhead h1");
+  if (h) h.textContent = greeting();
+});
 
 // show one of About's pages from the top
 const aboutPage = html => {
@@ -2205,7 +2348,7 @@ document.body.onclick = ev => {
     return;
   }
   const t = ev.target.closest(
-    "[data-share],[data-plfull],[data-fpclose],[data-fpfave],[data-search],[data-searchx],[data-term],[data-play],[data-playall],[data-pl],[data-plshow],[data-vsort],[data-clear],[data-show],[data-v],[data-d],[data-g],[data-band],[data-venue],[data-sort],[data-sb],[data-sv],[data-pop],[data-anyrad],[data-rad],[data-ssort],[data-ftab],[data-scroll],[data-about],[data-about-close],[data-about-add],[data-about-back],[data-install],[data-report],[data-rpick]",
+    "[data-share],[data-plfull],[data-fpclose],[data-fpfave],[data-search],[data-searchx],[data-term],[data-play],[data-playall],[data-pl],[data-plshow],[data-vsort],[data-clear],[data-show],[data-v],[data-d],[data-g],[data-band],[data-venue],[data-sort],[data-sb],[data-sv],[data-pop],[data-anyrad],[data-rad],[data-ssort],[data-ftab],[data-scroll],[data-about],[data-about-close],[data-about-add],[data-about-back],[data-install],[data-report],[data-rpick],[data-start]",
   );
   const pop = document.getElementById("pop");
   if (!ev.target.closest("#pop") && !(t && t.dataset.pop !== undefined)) pop.classList.remove("on");
@@ -2213,6 +2356,11 @@ document.body.onclick = ev => {
   const d = t.dataset,
     top = () => (document.getElementById("main").scrollTop = 0);
   if (d.about !== undefined) return openAbout();
+  if (d.start) {
+    store.set(START_KEY, d.start);
+    t.parentNode.querySelectorAll("button").forEach(b => b.classList.toggle("on", b === t));
+    return;
+  }
   if (d.report) return EVENTS[+d.report] && (countEvent("report-open"), openReport(EVENTS[+d.report]));
   if (d.rpick) {
     t.parentNode.querySelectorAll(".ropt").forEach(b => b.classList.toggle("on", b === t));
@@ -2283,6 +2431,7 @@ document.body.onclick = ev => {
   if (d.show) go("Show:" + d.show);
   else if (d.band || d.venue) go(d.band ? "Band:" + d.band : "Venue:" + d.venue);
   else if (d.v) {
+    fromHome = d.fromhome !== undefined;
     // the Shows tab exits search
     if (d.v === "Shows" && (searchOpen || term)) {
       searchOpen = false;

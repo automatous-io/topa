@@ -33,6 +33,12 @@ body:
     attributes:
       label: Hometown
       placeholder: Ventura
+  - type: textarea
+    id: bio
+    attributes:
+      label: About the band
+      description: A few sentences for your band page, like your sound and where you play. Up to 1,000 characters.
+      placeholder: Surf-soul from Ventura with a horn section and three-part harmonies.
   - type: input
     id: website
     attributes:

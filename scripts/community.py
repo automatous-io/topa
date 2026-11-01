@@ -21,6 +21,7 @@ WEEKLY_MAX_DAYS = 183  # weekly shows run up to ~6 months
 SHOW_MAX_DAYS = 366  # one-off shows up to a year out
 NOT_LISTED = "Not listed (add it first with Add or update a venue)"  # the last choice in the show forms' venue list
 NEW_VENUE = "New venue (type its name below)"  # the first choice in the venue form's list
+BIO_MAX = 1000  # characters in "About the band"
 LINK_KEYS = ["website", "instagram", "facebook", "bandcamp", "spotify", "youtube", "soundcloud"]
 
 
@@ -277,6 +278,8 @@ def check(kind, r, today, venues):
         for key in LINK_KEYS:
             if key in links and links[key] is None:
                 problems.append(f"The {key} link doesn't look like a web address.")
+        if len(r.get("bio") or "") > BIO_MAX:
+            problems.append(f"Please keep About the band under {BIO_MAX:,} characters.")
         if bad("apple"):
             problems.append(
                 "The Apple Music link should look like https://music.apple.com/us/artist/name/12345 (or say none)."
@@ -416,7 +419,7 @@ def load(root=ROOT, today=None):
     bands = {}
     for b in read_folder(root, "band"):
         if b.get("name"):
-            info = {k: b[k] for k in ("genres", "town", "apple", "photo") if b.get(k)}
+            info = {k: b[k] for k in ("genres", "town", "apple", "photo", "bio", "bio_source", "members") if b.get(k)}
             links = {k: u for k, u in (b.get("links") or {}).items() if u}
             if links:
                 info["links"] = links
@@ -507,6 +510,16 @@ def apply_changes(events, root=ROOT, today=None):
                     e["cancel_link"] = r["link"]
             marked += 1
     return marked
+
+
+def featured(root=ROOT):
+    """community/featured.json: [{"band": ..., "blurb": ...}], or [] if missing."""
+    try:
+        with open(os.path.join(root, "community", "featured.json"), encoding="utf-8") as f:
+            items = json.load(f)
+    except (OSError, ValueError):
+        return []
+    return [{k: x[k] for k in ("band", "blurb") if x.get(k)} for x in items if isinstance(x, dict) and x.get("band")]
 
 
 def add_own_photos(venues, bands, events, root=ROOT):

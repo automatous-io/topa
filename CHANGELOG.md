@@ -6,6 +6,29 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
 
 ---
 
+## 2.8.0
+
+**Home behind the TOPA button, and band bios.**
+
+- Tap the TOPA circle for Home: your faves' next shows (each band once, with its day and time) and tonight's lineup.
+  Shows at a faved venue are tagged ★ Fave venue, and faved venues take at most two spots so your bands always fit.
+  See all opens Faves or Shows with a ‹ Home button.
+- When you're on Home the TOPA circle glows. In the car it moved to the middle of the sidebar, with "Updated" back at
+  the bottom.
+- TOPA still opens on Shows. Settings can switch it to Home.
+- The ⓘ on Home has About and new Settings: your area (Ventura County), your own greeting for Home (up to 24
+  characters), and where TOPA opens. Ventura County left the top bar.
+- Bands can add a short bio with the band form's new **About the band** box. It shows as an About section on the band
+  page and its show pages, with its genres and hometown. Josephoenix is the first.
+- A band's own genres now show first on its band page, show pages and rows, and its shows come up under those genres in
+  filters and search. Ventura Rocks' tags are kept after them.
+- The band's name on a show page opens its band page.
+- Get the app only shows where it's one simple step: one-tap install, or iPhone's Share › Add to Home Screen. The
+  README has the steps for every browser.
+- The search box on wide screens mentions genres too.
+
+---
+
 ## 2.7.0
 
 **Tell us when a show is cancelled, and a new tab bar.**

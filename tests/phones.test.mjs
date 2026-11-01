@@ -45,11 +45,13 @@ describe("phones", { concurrency: true }, () => {
       assert.ok((await count(page, "#main .rw[data-show]")) > 0, "search found nothing");
       await tap(page, ".mbar [data-searchx]");
       await tap(page, "nav .logo");
+      await tap(page, ".hinfo");
       await tap(page, "[data-about-add]");
       assert.equal(await text(page, ".atitle"), "Add to TOPA");
       await tap(page, "[data-about-back]");
       await tap(page, ".ax");
       assert.equal(await page.$eval("#about", el => el.hidden), true);
+      await tap(page, 'nav [data-v="Shows"]');
       await tap(page, "#main .rw[data-show] .star");
       assert.ok((await count(page, ".favsec .rw[data-show]")) > 0, "faving a band didn't pin it to My Faves");
     });

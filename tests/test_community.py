@@ -188,6 +188,16 @@ class NewTimes(unittest.TestCase):
         self.assertTrue(os.path.exists(os.path.join(self.root, path)))
 
 
+class Featured(unittest.TestCase):
+    def test_featured_list_is_read_and_empty_when_missing(self):
+        with tempfile.TemporaryDirectory() as root:
+            self.assertEqual(c.featured(root), [])
+            os.makedirs(os.path.join(root, "community"))
+            with open(os.path.join(root, "community", "featured.json"), "w", encoding="utf-8") as f:
+                json.dump([{"band": "Josephoenix", "blurb": "Grooves."}, {"blurb": "no band"}], f)
+            self.assertEqual(c.featured(root), [{"band": "Josephoenix", "blurb": "Grooves."}])
+
+
 class Forms(unittest.TestCase):
     def test_labels_match_the_issue_templates(self):
         """The forms and FORMS must use the same labels."""
@@ -244,6 +254,13 @@ class Forms(unittest.TestCase):
         self.assertEqual(r["skip"], ["2026-11-24", "2026-12-29"])
         too_long = record(body.replace("2027-01-26", "2027-09-01"))[2]
         self.assertTrue(any("6 months" in p for p in too_long))
+
+    def test_a_band_bio_is_kept_and_capped(self):
+        body = form(**{"Band or artist name": "The Tide Pool Ramblers", "About the band": "Surf-soul\nfrom Ventura."})
+        _, r, problems = record(body)
+        self.assertEqual((r["bio"], problems), ("Surf-soul from Ventura.", []))
+        _, _, problems = record(form(**{"Band or artist name": "The Tide Pool Ramblers", "About the band": "x" * 1001}))
+        self.assertIn("under 1,000 characters", " ".join(problems))
 
     def test_band_and_venue(self):
         band = form(

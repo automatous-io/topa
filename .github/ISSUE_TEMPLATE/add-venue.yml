@@ -165,6 +165,17 @@ body:
     attributes:
       label: Instagram
       placeholder: "@harborlightstavern"
+  - type: input
+    id: facebook
+    attributes:
+      label: Facebook
+      placeholder: https://facebook.com/...
+  - type: textarea
+    id: bio
+    attributes:
+      label: About the venue
+      description: A few sentences for the venue page, like what kind of place it is and the music it hosts. Up to 1,000 characters.
+      placeholder: A harborside tavern with live music on the patio every weekend.
   - type: textarea
     id: photo
     attributes:

@@ -1059,6 +1059,8 @@ const venueNow = v => {
     phone: added.phone,
     website: added.website,
     instagram: added.instagram,
+    facebook: added.facebook,
+    bio: added.bio,
   });
 };
 
@@ -1080,6 +1082,17 @@ const aboutBand = (name, chips = true) => {
     (genres ? `<div class="tg">${genres}</div>` : "") +
     (b.town ? `<p class="bfrom">From ${esc(b.town)}</p>` : "") +
     (b.bio_source ? `<p class="bsrc">${esc(b.bio_source)} The band can update it with the band form.</p>` : "") +
+    `</section>`
+  );
+};
+
+// venue page About
+const aboutVenue = name => {
+  const v = addedVenue(name);
+  if (!v.bio) return "";
+  return (
+    `<h2>About</h2><section class="bio"><p>${esc(v.bio)}</p>` +
+    (v.bio_source ? `<p class="bsrc">${esc(v.bio_source)} The venue can update it with the venue form.</p>` : "") +
     `</section>`
   );
 };
@@ -1183,6 +1196,7 @@ function venuePage(key) {
     section(todayWord(), tonight) +
     section("This week", thisWeek, tonight.length) +
     section("Later", later.slice(0, 30), tonight.length || thisWeek.length) +
+    aboutVenue(v.venue) +
     (upcoming.length ? sourceKey() : "") +
     addLinks([
       ["add-show", "Add a show here", { venue: v.venue }],
@@ -1366,7 +1380,6 @@ const greeting = () => (store.get(GREET_KEY) || "").trim() || timeGreeting();
 function homePage() {
   const soon = EVENTS.filter(isStillOn);
   const faves = faveNext(soon).slice(0, 5);
-  // shows already in the faves list don't repeat under Today/Tonight
   const tonight = soon.filter(e => sameDay(new Date(e.start), NOW) && !faves.includes(e));
   const left =
     homeHead("Your faves are playing", faves.length, 'data-v="Faves" data-fromhome') +

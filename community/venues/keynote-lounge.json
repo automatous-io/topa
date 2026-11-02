@@ -1,11 +1,13 @@
 {
-  "name": "Keynote Lounge",
+  "name": "C Note Bar & Lounge",
   "address": "10245 Telephone Rd, Ventura, CA 93004",
   "city": "Ventura",
   "lat": 34.277467,
   "lng": -119.161736,
-  "website": "https://instagram.com/keynotelounge",
   "instagram": "https://instagram.com/keynotelounge",
+  "facebook": "https://www.facebook.com/cnotebarventura",
+  "bio": "C Note Bar & Lounge, formerly the Keynote Lounge, is a bar on Telephone Road in East Ventura with patio seating and TVs. It hosts karaoke on Sunday nights.",
+  "bio_source": "Written by TOPA from the C Note Bar & Lounge Facebook and @keynotelounge.",
   "maintainers": [
     "automatous-io"
   ],

@@ -1,0 +1,16 @@
+{
+  "band": "Karaoke Sundays",
+  "venue": "C Note Bar & Lounge",
+  "weekday": "Sunday",
+  "start": "21:00",
+  "end": "",
+  "first": "2026-11-08",
+  "until": "2026-12-31",
+  "skip": [],
+  "tags": [
+    "karaoke"
+  ],
+  "link": "https://www.facebook.com/cnotebarventura",
+  "submitted_by": "automatous-io",
+  "source": "C Note Bar & Lounge's Facebook posts, October 2026"
+}

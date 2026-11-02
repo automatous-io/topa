@@ -403,7 +403,14 @@ const toggleFave = (k, n) => {
   store.set(FAVES_KEY, SAVED);
 };
 
-const searchWords = () => term.toLowerCase().split(/\s+/).filter(Boolean);
+// karoke, kareoke, carioke… -> karaoke
+const KARAOKE_TYPO = /^[kc]a?r+[aeiouy]{1,3}k+[aeiy]{0,2}$/;
+const searchWords = () =>
+  term
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(w => (KARAOKE_TYPO.test(w) ? "karaoke" : w));
 const byDistance = a =>
   a.slice().sort((x, y) => (milesTo(x) ?? 1e9) - (milesTo(y) ?? 1e9) || x.startMs - y.startMs);
 
@@ -812,6 +819,7 @@ function searchIdeas() {
   const chips = l => l.map(x => `<button class="chip" data-term="${esc(x)}">${esc(x)}</button>`).join("");
   const towns = top(e => (e.city ? [e.city] : []), 8),
     genres = top(e => e.tags, 8);
+  if (!genres.includes("karaoke") && EVENTS.some(e => isStillOn(e) && e.tags.includes("karaoke"))) genres.push("karaoke");
   return (
     (towns.length ? `<h2 class="dh">Towns</h2><div class="ideas">${chips(towns)}</div>` : "") +
     (genres.length ? `<h2 class="dh">Genres</h2><div class="ideas">${chips(genres)}</div>` : "")

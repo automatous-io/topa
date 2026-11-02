@@ -6,6 +6,15 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
 
 ---
 
+## 2.9.1
+
+**New icons for Bands and Venues.**
+
+- Bands is a guitar pick now, and Venues a theater marquee, on phones and in the car. The mic means karaoke, and the
+  map pin still marks distance, your area and directions.
+
+---
+
 ## 2.9.0
 
 **Karaoke mode, and an About for bands and venues.**

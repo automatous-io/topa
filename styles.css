@@ -10,14 +10,20 @@
   --line: #2a2235;
   --ink: #f4eef7;
   --mute: #a99bb5;
-  --acc: #ff8a66; /* sunset coral: times, play buttons, the ridge */
-  --sunset: #ff8a66; /* the big play buttons */
-  --on-acc: #1a0f14; /* text and icons sitting on coral */
+  --acc: #ff8a66;
+  /* sunset coral: times, play buttons, the ridge */
+  --sunset: #ff8a66;
+  /* the big play buttons */
+  --on-acc: #1a0f14;
+  /* text and icons sitting on coral */
   --fave: #ffc857;
-  --community: #5ee0c1; /* teal: shows sent to TOPA */
-  --off: #ff8f9a; /* cancelled shows */
+  --community: #5ee0c1;
+  /* teal: shows sent to TOPA */
+  --off: #ff8f9a;
+  /* cancelled shows */
   --off-bg: #3a1d26;
-  --display: Oswald, "Arial Narrow", sans-serif; /* names and times */
+  --display: Oswald, "Arial Narrow", sans-serif;
+  /* names and times */;
 }
 * {
   box-sizing: border-box;
@@ -36,6 +42,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
+  font-family:
+    Figtree,
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 button {
   all: unset;
@@ -45,11 +56,12 @@ button {
   display: grid;
   grid-template-columns: 96px minmax(0, 1fr);
   grid-template-rows: 1fr;
-  /* dvh = the visible screen; plain vh on phones includes the area behind the browser's toolbars */
+  /* dvh = the visible screen;
+  plain vh on phones includes the area behind the browser's toolbars */
   height: 100vh;
   height: 100dvh;
   gap: 8px;
-  padding: 8px;
+  padding: 8px;;
 }
 nav {
   background: var(--panel);
@@ -63,12 +75,15 @@ nav {
 /* TOPA wordmark: the name with the tagline beneath it */
 .wm-name {
   display: block;
-  color: var(--acc);
-  font-weight: 900;
-  letter-spacing: 0.14em;
   line-height: 1.1;
   text-align: center;
-  margin-right: -0.14em; /* letter spacing adds a gap after the last letter; this keeps the name centered */
+  /* letter spacing adds a gap after the last letter;
+  this keeps the name centered */;
+  font-family: var(--display);
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.08em;
+  margin-right: -0.08em;
 }
 nav .logo .wm-name {
   font-size: 16px;
@@ -128,10 +143,10 @@ nav svg {
 }
 main {
   min-width: 0;
-  background: linear-gradient(#2a1630 0, var(--panel) 340px);
   border-radius: 12px;
   overflow-y: auto;
   padding: 28px 36px 40px;
+  background: var(--panel);
 }
 .top {
   display: flex;
@@ -401,7 +416,8 @@ h1 {
   width: 100%;
   padding: 16px 22px;
   border-radius: 999px;
-  border: 1px solid #ffffff24; /* a faint outline so it stands out on the dusk background */
+  border: 1px solid #ffffff24;
+  /* a faint outline so it stands out on the dusk background */
   background: #2f2539;
   color: var(--ink);
   font: inherit;
@@ -523,7 +539,7 @@ h2 {
   gap: 32px;
   margin: -28px -36px 26px;
   padding: 60px 36px 30px;
-  background: linear-gradient(#4a1f45, transparent);
+  background: linear-gradient(#2b2236, transparent);
 }
 .hero .art {
   width: 232px;
@@ -556,14 +572,17 @@ h2 {
   width: 100%;
   border-radius: 8px;
   font-size: 18px;
+  display: grid;
+  grid-template-columns: 76px 56px minmax(0, 1fr) auto auto;
+  gap: 18px;
+  align-items: center;
+  padding: 8px 16px;
 }
 .rw:hover,
 .rw.sel {
   background: #ffffff14;
 }
 .rw .art {
-  width: 64px;
-  height: 64px;
   font-size: 20px;
   padding: 6px;
 }
@@ -765,13 +784,7 @@ h2 {
   font-size: 14px;
 }
 /* show row: time | art | band + venue line | genre tags | star */
-.rw {
-  display: grid;
-  grid-template-columns: 76px 56px minmax(0, 1fr) auto auto;
-  gap: 18px;
-  align-items: center;
-  padding: 8px 16px;
-}
+
 .rw .art {
   width: 56px;
   height: 56px;
@@ -808,7 +821,6 @@ h2 {
 .tcol b {
   color: var(--acc);
   font-size: 16px;
-  text-transform: none;
   letter-spacing: 0;
   margin-top: 3px;
 }
@@ -816,9 +828,7 @@ h2 {
   margin-top: 0;
   font-size: 18px;
 }
-.rw.rwb {
-  grid-template-columns: 76px minmax(0, 1fr);
-}
+
 .rb {
   min-width: 0;
 }
@@ -1034,19 +1044,21 @@ a.pldz {
   color: #cfc4d8;
   /* slim dark scrollbar instead of the browser's light gray one */
   scrollbar-width: thin;
-  scrollbar-color: #ffffff2e transparent;
+  scrollbar-color: #ffffff2e transparent;;
 }
 .acard::-webkit-scrollbar {
   width: 10px;
 }
 .acard::-webkit-scrollbar-track {
   background: transparent;
-  margin: 16px 0; /* clear of the rounded corners */
+  margin: 16px 0;
+  /* clear of the rounded corners */;
 }
 .acard::-webkit-scrollbar-thumb {
   background: #ffffff2e;
   border-radius: 10px;
-  border: 3px solid var(--panel); /* the card's color, for a thinner-looking thumb */
+  border: 3px solid var(--panel);
+  /* the card's color, for a thinner-looking thumb */;
 }
 .acard::-webkit-scrollbar-thumb:hover {
   background: #ffffff4d;
@@ -1811,9 +1823,7 @@ main.back {
     height: 168px;
     font-size: 54px;
   }
-  .hero h1 {
-    font-size: 48px;
-  }
+  
   .star.big {
     margin-top: 24px;
   }
@@ -1838,9 +1848,7 @@ main.back {
   main {
     padding: 18px 20px 28px;
   }
-  h1 {
-    font-size: 30px;
-  }
+  
   .hero {
     margin: -18px -20px 18px;
     padding: 24px 20px 20px;
@@ -1853,7 +1861,6 @@ main.back {
     font-size: 38px;
   }
   .hero h1 {
-    font-size: 34px;
     margin: 4px 0 8px;
   }
   .agrid {
@@ -1908,7 +1915,9 @@ main.back {
     /* env(safe-area-inset-*): space taken by the iPhone's status bar and home bar */
     grid-template-rows: minmax(0, 1fr) calc(68px + env(safe-area-inset-bottom));
     padding: 0;
-    gap: 0;
+    gap: 0;;
+    background: var(--panel);
+    grid-template-rows: minmax(0, 1fr) calc(58px + max(env(safe-area-inset-bottom) - 14px, 0px));
   }
   nav {
     grid-row: 2;
@@ -1916,17 +1925,24 @@ main.back {
     justify-content: space-around;
     border-radius: 0;
     padding: 0 0 env(safe-area-inset-bottom);
-    background: linear-gradient(transparent, #000 40%);
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+    padding-bottom: max(env(safe-area-inset-bottom) - 14px, 0px);
+    position: relative;
+    z-index: 4;
   }
   .credit {
     display: none;
   }
   .about {
-    padding: calc(12px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom));
     align-items: flex-end;
+    padding: env(safe-area-inset-top) 0 0;
   }
   .acard {
     font-size: 15px;
+    max-height: 92%;
+    border-radius: 28px 28px 0 0;
+    background: var(--panel);
   }
   .ahero {
     padding: 72px 20px 28px;
@@ -1944,34 +1960,30 @@ main.back {
     grid-template-columns: minmax(0, 1fr);
   }
   .card > .art {
-    width: 76px;
-    height: 76px;
     font-size: 24px;
   }
-  .card .cn {
-    font-size: 18px;
-  }
+  
   nav button {
     width: 64px;
-    height: 60px;
     font-size: 11px;
+    color: #8e8199;
+    font-weight: 600;
+    height: 58px;
   }
   nav button.on {
     background: none;
+    font-weight: 700;
+    color: var(--acc);
   }
-  nav svg {
-    width: 24px;
-    height: 24px;
-  }
+  
   main {
     position: relative;
     grid-row: 1;
     border-radius: 0;
     padding: 0 16px 20px;
+    padding-bottom: 44px;
   }
-  h1 {
-    font-size: 26px;
-  }
+  
   .chip {
     padding: 9px 14px;
     font-size: 14px;
@@ -2005,26 +2017,26 @@ main.back {
   .grid {
     grid-template-columns: 1fr 1fr;
   }
-  .agrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+  
   .agrid .art {
     font-size: 24px;
   }
   .hero {
     /* slides up under the top bar so its purple glow fills the top */
     margin: calc(-120px - env(safe-area-inset-top)) -16px 18px;
-    padding: calc(132px + env(safe-area-inset-top)) 16px 20px;
     gap: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+    margin: calc(-98px - env(safe-area-inset-top)) -16px 18px;
+    padding: calc(110px + env(safe-area-inset-top)) 16px 20px;
   }
   .hero .art {
     width: 120px;
     height: 120px;
     font-size: 40px;
   }
-  .hero h1 {
-    font-size: 30px;
-  }
+  
   .rw {
     font-size: 15px;
   }
@@ -2042,6 +2054,8 @@ main.back {
   .card {
     gap: 12px;
     padding: 12px;
+    background: var(--card);
+    border-radius: 16px;
   }
   .rw,
   .rw.rwb {
@@ -2067,6 +2081,9 @@ main.back {
     grid-template-columns: 48px minmax(0, 1fr) auto;
     column-gap: 12px;
     row-gap: 4px;
+    border-radius: 0;
+    border-bottom: 1px solid var(--hi);
+    padding: 10px 0;
   }
   .vrow > .art {
     display: flex;
@@ -2076,6 +2093,8 @@ main.back {
     height: 48px;
     font-size: 16px;
     padding: 5px;
+    border-radius: 12px;
+    box-shadow: none;
   }
   .vrow > .rb {
     grid-column: 2;
@@ -2138,9 +2157,7 @@ main.back {
   .tcol b {
     font-size: 13px;
   }
-  .rb > b {
-    font-size: 16px;
-  }
+  
   .vb {
     font-size: 13px;
   }
@@ -2153,22 +2170,17 @@ main.back {
     height: 44px;
     font-size: 24px;
   }
-  .hero {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  
   .hero .hx {
     width: 100%;
   }
   .star.big {
     position: absolute;
     right: 12px;
-    top: calc(140px + env(safe-area-inset-top));
     margin: 0;
+    top: calc(86px + env(safe-area-inset-top));
   }
-  .hero {
-    position: relative;
-  }
+  
   .vb.big {
     font-size: 17px;
   }
@@ -2214,24 +2226,24 @@ main.back {
     width: 28px;
     height: 28px;
   }
-  .app.pl {
-    grid-template-rows: minmax(0, 1fr) 64px calc(68px + env(safe-area-inset-bottom));
-  }
+  
   .app.pl nav {
     grid-row: 3;
   }
   #player {
     grid-row: 2;
-    margin: 0 8px;
-    border-radius: 8px;
-    background: #4a1f45;
     grid-template-columns: minmax(0, 1fr) auto auto;
     gap: 4px;
     padding: 0 4px 0 8px;
+    margin: 0 10px 6px;
+    border-radius: 16px;
+    background: #2b2236;
+    margin-bottom: 28px;
   }
   .pla {
     width: 46px;
     height: 46px;
+    border-radius: 10px;
   }
   .pli b {
     font-size: 15px;
@@ -2257,8 +2269,9 @@ main.back {
   .plbtns .pp:hover {
     width: 44px;
     height: 44px;
-    background: none;
-    color: #fff;
+    background: var(--ink);
+    color: var(--panel);
+    border-radius: 50%;
   }
   .plp {
     position: absolute;
@@ -2323,17 +2336,18 @@ main.back {
     margin-bottom: 14px;
   }
   .top .chip.pall {
-    width: 48px;
-    height: 48px;
-    padding: 0;
     justify-content: center;
-    gap: 0;
-    font-size: 0;
+    width: auto;
+    height: 44px;
+    padding: 0 18px 0 14px;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    background: var(--acc);
+    color: var(--on-acc);
+    flex: none;
   }
-  .top .chip.pall svg {
-    width: 22px;
-    height: 22px;
-  }
+  
   /* pages without a distance button keep their extra buttons on the title row */
   .top:not(:has(.brk)) .chip:not(.pall) {
     order: 1;
@@ -2347,6 +2361,7 @@ main.back {
   .top .search {
     height: 46px;
     font-size: 17px;
+    border-radius: 14px;
   }
   .top .d-top {
     display: none;
@@ -2402,17 +2417,7 @@ main.back {
   font-weight: 200 700;
   font-display: swap;
 }
-html,
-body {
-  font-family:
-    Figtree,
-    system-ui,
-    -apple-system,
-    sans-serif;
-}
-main {
-  background: var(--panel);
-}
+
 h1,
 .hero h1 {
   font-family: var(--display);
@@ -2433,22 +2438,14 @@ h1,
   font-weight: 500;
   text-transform: uppercase;
 }
-.hero {
-  background: linear-gradient(#2b2236, transparent);
-}
+
 /* wordmark */
 .wmk {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
 }
-.wm-name {
-  font-family: var(--display);
-  font-weight: 600;
-  color: var(--ink);
-  letter-spacing: 0.08em;
-  margin-right: -0.08em;
-}
+
 /* outline stars fill in when on */
 .fv svg path {
   fill: currentColor;
@@ -2474,24 +2471,11 @@ nav button.on[data-v="Faves"] svg path {
 }
 
 @media (max-width: 700px) {
-  .app {
-    background: var(--panel);
-  }
-  main {
-    padding: 0 16px 20px;
-  }
-  nav {
-    background: var(--bg);
-    border-top: 1px solid var(--line);
-  }
-  nav button {
-    color: #8e8199;
-    font-weight: 600;
-  }
-  nav button.on {
-    color: var(--ink);
-    font-weight: 700;
-  }
+  
+  
+  
+  
+  
   nav svg {
     width: 23px;
     height: 23px;
@@ -2517,18 +2501,7 @@ nav button.on[data-v="Faves"] svg path {
     backdrop-filter: blur(14px);
     box-shadow: 0 6px 16px #0006;
   }
-  .mcounty {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    height: 36px;
-    padding: 0 12px;
-    border-radius: 18px;
-    background: var(--hi);
-    color: #cfc4d8;
-    font-size: 13px;
-    font-weight: 600;
-  }
+  
   .mcounty svg {
     width: 14px;
     height: 14px;
@@ -2557,16 +2530,7 @@ nav button.on[data-v="Faves"] svg path {
     font-weight: 500;
     margin-top: 6px;
   }
-  .top .chip.pall {
-    width: auto;
-    height: 44px;
-    padding: 0 18px 0 14px;
-    gap: 8px;
-    font-size: 15px;
-    font-weight: 700;
-    background: var(--acc);
-    color: var(--on-acc);
-  }
+  
   .top .chip.pall svg {
     width: 16px;
     height: 16px;
@@ -2582,9 +2546,7 @@ nav button.on[data-v="Faves"] svg path {
     padding: 0 4px;
     font-size: 16px;
   }
-  .top .search {
-    border-radius: 14px;
-  }
+  
 
   /* day tiles */
   .sw[data-row="days"] .chips .chips {
@@ -2684,11 +2646,10 @@ nav button.on[data-v="Faves"] svg path {
 
   /* show rows: time | band + venue | play | star */
   .rw:not(.vrow):not(.rwb):not(.hrow) {
-    grid-template-columns: 54px minmax(0, 1fr) auto auto;
-    column-gap: 10px;
     padding: 10px 0;
     border-radius: 0;
-    border-bottom: 1px solid #241d2f;
+    border-bottom: 1px solid var(--hi);
+    column-gap: 8px;
   }
   .rw:not(.vrow) > .rplay {
     grid-column: 3;
@@ -2746,7 +2707,7 @@ nav button.on[data-v="Faves"] svg path {
     text-align: left;
     padding: 10px 96px 10px 0;
     border-radius: 0;
-    border-bottom: 1px solid #241d2f;
+    border-bottom: 1px solid var(--hi);
   }
   .agrid .art.round {
     position: static;
@@ -2808,60 +2769,28 @@ nav button.on[data-v="Faves"] svg path {
   }
 
   /* Venues and Faves */
-  .vrow > .art {
-    border-radius: 12px;
-    box-shadow: none;
-  }
-  .rw.vrow {
-    border-radius: 0;
-    border-bottom: 1px solid #241d2f;
-    padding: 10px 0;
-  }
-  .card {
-    background: var(--card);
-    border-radius: 16px;
-  }
+  
+  
+  
   .card .cn {
     font-size: 19px;
   }
 
   /* band, venue and show pages: the header slides up under the top bar */
-  .hero {
-    margin: calc(-98px - env(safe-area-inset-top)) -16px 18px;
-    padding: calc(110px + env(safe-area-inset-top)) 16px 20px;
-  }
+  
   .hero h1 {
     font-size: 40px;
   }
-  .star.big {
-    top: calc(86px + env(safe-area-inset-top));
-  }
+  
 
   /* mini player */
-  #player {
-    margin: 0 10px 6px;
-    border-radius: 16px;
-    background: #2b2236;
-  }
-  .pla {
-    border-radius: 10px;
-  }
-  .plbtns .pp,
-  .plbtns .pp:hover {
-    background: var(--ink);
-    color: var(--panel);
-    border-radius: 50%;
-  }
+  
+  
+  
 
   /* About slides up from the bottom */
-  .about {
-    padding: env(safe-area-inset-top) 0 0;
-  }
-  .acard {
-    max-height: 92%;
-    border-radius: 28px 28px 0 0;
-    background: var(--panel);
-  }
+  
+  
   .about:not([hidden]) .acard {
     animation: sheet-up 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
@@ -3013,6 +2942,7 @@ nav button.on[data-v="Faves"] svg path {
   }
   nav button.on {
     background: var(--hi);
+    color: var(--acc);
   }
   /* day tiles */
   .sw[data-row="days"] .chips .chip {
@@ -3110,11 +3040,11 @@ nav button.on[data-v="Faves"] svg path {
   }
   /* show rows: time | photo | band + venue | tags | play | star */
   .rw:not(.vrow):not(.rwb):not(.hrow) {
-    grid-template-columns: 92px 60px minmax(0, 1fr) auto auto auto;
     gap: 18px;
     padding: 12px 0;
     border-radius: 0;
-    border-bottom: 1px solid #241d2f;
+    border-bottom: 1px solid var(--hi);
+    grid-template-columns: 100px 60px minmax(0, 1fr) auto auto auto;
   }
   .rw:not(.vrow):not(.rwb) > .rplay {
     grid-column: 5;
@@ -3155,7 +3085,7 @@ nav button.on[data-v="Faves"] svg path {
   .rw.vrow,
   .rw.rwb {
     border-radius: 0;
-    border-bottom: 1px solid #241d2f;
+    border-bottom: 1px solid var(--hi);
   }
   .vrow > .art {
     border-radius: 12px;
@@ -3169,8 +3099,8 @@ nav button.on[data-v="Faves"] svg path {
 /* half screen: no tags column */
 @media (max-width: 1000px) and (min-width: 701px) {
   .rw:not(.vrow):not(.rwb):not(.hrow) {
-    grid-template-columns: 70px 48px minmax(0, 1fr) auto auto;
     gap: 14px;
+    grid-template-columns: 96px 48px minmax(0, 1fr) auto auto;
   }
   .rw:not(.vrow):not(.rwb) > .rplay {
     grid-column: 4;
@@ -3454,10 +3384,9 @@ nav button.on[data-v="Faves"] svg path {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: clamp(34px, 11.6vw, 46px);
   }
-  .top .chip.pall {
-    flex: none;
-  }
+  
   .vaddr {
     font-size: 15px;
   }
@@ -3544,9 +3473,7 @@ nav button.on[data-v="Faves"] svg path {
 }
 @media (max-width: 700px) {
   /* shrink the title on narrow phones so long weekdays fit */
-  .top h1 {
-    font-size: clamp(34px, 11.6vw, 46px);
-  }
+  
 }
 
 /* source icon after the time, and its key under the list */
@@ -3582,20 +3509,8 @@ nav button.on[data-v="Faves"] svg path {
 .skey .cm svg {
   color: var(--community);
 }
-@media (min-width: 701px) {
-  .rw:not(.vrow):not(.rwb):not(.hrow) {
-    grid-template-columns: 100px 60px minmax(0, 1fr) auto auto auto;
-  }
-}
-@media (max-width: 1000px) and (min-width: 701px) {
-  .rw:not(.vrow):not(.rwb):not(.hrow) {
-    grid-template-columns: 96px 48px minmax(0, 1fr) auto auto;
-  }
-}
 @media (max-width: 700px) {
-  .rw:not(.vrow):not(.rwb):not(.hrow) {
-    grid-template-columns: 74px minmax(0, 1fr) auto auto;
-  }
+  
   .skey {
     font-size: 13px;
     gap: 6px 18px;
@@ -3611,7 +3526,6 @@ nav button.on[data-v="Faves"] svg path {
 @media (max-width: 700px) {
   .rw:not(.vrow):not(.rwb):not(.hrow) {
     grid-template-columns: 82px minmax(0, 1fr) auto auto;
-    column-gap: 8px;
   }
   .rw .vb {
     white-space: nowrap;
@@ -3628,12 +3542,8 @@ nav button.on[data-v="Faves"] svg path {
   .rw.rwb {
     grid-template-columns: 82px minmax(0, 1fr);
     padding: 10px 0;
-  }
-}
-@media (max-width: 700px) {
-  .rw.rwb {
     border-radius: 0;
-    border-bottom: 1px solid #241d2f;
+    border-bottom: 1px solid var(--hi);
   }
 }
 
@@ -3962,20 +3872,6 @@ a.srcline:hover {
   margin-left: 0;
 }
 /* phones: a snugger tab bar; the labels sit just above the home bar instead of a full home-bar height above it */
-@media (max-width: 700px) {
-  .app {
-    grid-template-rows: minmax(0, 1fr) calc(58px + max(env(safe-area-inset-bottom) - 14px, 0px));
-  }
-  .app.pl {
-    grid-template-rows: minmax(0, 1fr) 64px calc(58px + max(env(safe-area-inset-bottom) - 14px, 0px));
-  }
-  nav {
-    padding-bottom: max(env(safe-area-inset-bottom) - 14px, 0px);
-  }
-  nav button {
-    height: 58px;
-  }
-}
 
 /* ---- venue and show pages: the venue's photo (or its colors) behind the header, fading into the page ---- */
 .hero.ph {
@@ -4244,28 +4140,10 @@ a.srcline:hover {
 }
 
 /* the logo opens About. Car: at the bottom of the sidebar, above when the listings changed */
-@media (min-width: 701px) {
-  nav .logo {
-    order: 1;
-    margin: auto 0 6px;
-    padding: 10px 6px;
-  }
-  nav .logo .wm-name {
-    font-size: 20px;
-  }
-  .credit {
-    order: 2;
-  }
-}
 /* phones: TOPA circle in the middle of the tab bar */
 @media (max-width: 700px) {
-  .mcounty {
-    margin-right: auto;
-  }
-  nav {
-    position: relative;
-    z-index: 4;
-  }
+  
+  
   nav button,
   nav .logo {
     flex: 1;
@@ -4317,9 +4195,7 @@ a.srcline:hover {
   nav button[data-v] {
     position: relative;
   }
-  nav button.on {
-    color: var(--acc);
-  }
+  
   nav button.on::before {
     content: "";
     position: absolute;
@@ -4343,24 +4219,18 @@ a.srcline:hover {
     background: linear-gradient(#17121f00, var(--panel));
     pointer-events: none;
   }
-  main {
-    padding-bottom: 44px;
-  }
+  
   .app.pl {
     grid-template-rows: minmax(0, 1fr) 86px calc(58px + max(env(safe-area-inset-bottom) - 14px, 0px));
   }
-  #player {
-    margin-bottom: 28px;
-  }
+  
 }
 /* car: current tab */
 @media (min-width: 701px) {
   nav button[data-v] {
     position: relative;
   }
-  nav button.on {
-    color: var(--acc);
-  }
+  
   nav button.on::before {
     content: "";
     position: absolute;
@@ -4666,6 +4536,7 @@ i.newtag,
   font-weight: 500;
   font-size: 56px;
   line-height: 1.05;
+  text-transform: none;
 }
 .hinfo {
   flex: none;
@@ -4981,9 +4852,7 @@ i.ftag {
     opacity: 1;
     background: #2d2439;
   }
-  nav .logo.on {
-    background: #ff8a6629;
-  }
+  
   nav .logo .wm-name {
     font-size: 19px;
   }
@@ -5080,9 +4949,7 @@ i.ftag {
   .wback {
     display: none;
   }
-  nav .logo.on .wmk {
-    background: #ff8a6629;
-  }
+  
 }
 /* Home rows */
 .rw.hrow > .art {
@@ -5099,9 +4966,7 @@ i.ftag {
   grid-column: 3;
   grid-row: 1;
 }
-.hhead h1 {
-  text-transform: none;
-}
+
 /* TOPA glow on Home */
 nav .logo.on::before {
   display: none;

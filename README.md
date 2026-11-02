@@ -39,6 +39,8 @@ More in [`screenshots/`](screenshots/): every page on the Tesla screen (1920×12
 - **Cancelled or changed?** Rained out, moved, or listed wrong? Anyone can say so from the show's page. Once it's
   approved, a cancelled show stays listed but is clearly marked, with the reason and a link to the post, and Play all
   skips it. A show moved to a new date or time moves in the listings and is tagged **New time**.
+- **Suggest an edit.** Every band and venue page has **+ Suggest an edit**, which opens Contact in About with TOPA's
+  email, so anyone can send a fix without a GitHub account.
 - **Faves.** Tap any star to fave a band or venue, on a row or right on a band's photo. When a fave is playing on the day
   you're looking at, it's pinned at the top of Shows, and shows at a faved venue are tagged "★ Fave venue". The Faves tab
   switches between your bands and venues.
@@ -50,8 +52,8 @@ More in [`screenshots/`](screenshots/): every page on the Tesla screen (1920×12
   [`llms.txt`](https://topa.automatous.io/llms.txt), a plain-English copy of the listings, with no app needed.
 - **Works like an app.** Add it to a phone's home screen (see [Try it](#try-it)) and it opens full-screen. It keeps working
   offline with the last listings, pull down to refresh, and the back button (or swipe-back) moves through pages.
-- **About and Settings.** The ⓘ on Home has credits, links and Settings: your area, your own Home greeting, whether
-  TOPA opens on Shows or Home, and Karaoke mode.
+- **About and Settings.** The ⓘ on Home has credits, links, a way to contact TOPA, and Settings: your area, your own
+  Home greeting, whether TOPA opens on Shows or Home, and Karaoke mode.
 
 ## Try it
 

@@ -6,6 +6,17 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
 
 ---
 
+## 2.10.0
+
+**Suggest an edit, and a way to reach TOPA.**
+
+- Band and venue pages have **+ Suggest an edit**. It opens About at a new **Contact** section with TOPA's email, so
+  anyone can send a fix or a question without a GitHub account.
+- The links at the bottom of band and venue pages are shorter (**+ Add a show**, **+ Update info**, **+ Suggest an
+  edit**) and fit on one row on phones, the same as in the car. Each one is easier to tap.
+
+---
+
 ## 2.9.1
 
 **New icons for Bands and Venues.**

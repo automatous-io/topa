@@ -73,6 +73,7 @@ let status = { c: "loading" }; // c: loading | cached | live | offline; updated:
 const START_KEY = "topa.start.v1";
 const START = store.get(START_KEY) === "Home" ? "Home" : "Shows";
 const KARAOKE_KEY = "topa.karaoke.v1";
+const CONTACT = "topa@automatous.io";
 const karaokeOn = () => store.get(KARAOKE_KEY) === true;
 let view = (v => (v && v !== "Search" ? v : START))(params.get("view"));
 
@@ -1083,7 +1084,7 @@ const addLinks = list =>
       ([form, label, fill]) =>
         `<a href="${formUrl(form, fill)}" target="_blank" rel="noopener">+ ${label}</a>`,
     )
-    .join("")}</div>`;
+    .join("")}<button data-about="contact">+ Suggest an edit</button></div>`;
 
 // band page About
 const aboutBand = (name, chips = true) => {
@@ -1138,7 +1139,7 @@ function bandPage(name) {
     (L.length ? sourceKey() : "") +
     addLinks([
       ["add-show", "Add a show", { band: name }],
-      ["add-band", "Update band info", bandNow(name)],
+      ["add-band", "Update info", bandNow(name)],
     ])
   );
 }
@@ -1212,8 +1213,8 @@ function venuePage(key) {
     aboutVenue(v.venue) +
     (upcoming.length ? sourceKey() : "") +
     addLinks([
-      ["add-show", "Add a show here", { venue: v.venue }],
-      ["add-venue", "Update venue info", venueNow(v)],
+      ["add-show", "Add a show", { venue: v.venue }],
+      ["add-venue", "Update info", venueNow(v)],
     ])
   );
 }
@@ -2247,6 +2248,9 @@ function aboutHtml() {
     `<div class="abigs one aadd">` +
     `<button class="abig add" data-about-add>${svg("at")}<span><b>Add to TOPA</b><small>Shows, bands, venues</small></span><span class="ago">›</span></button>` +
     `</div>` +
+    `<h3 id="acontact">Contact</h3>` +
+    `<p class="acontact">Questions, or see something to fix?<br>` +
+    `<a href="mailto:${CONTACT}?subject=TOPA">${CONTACT}</a></p>` +
     `<h3>Good to know</h3>` +
     `<dl class="afacts">` +
     fact("Previews and art", newTab("https://music.apple.com", "Apple Music")) +
@@ -2310,13 +2314,14 @@ const aboutPage = html => {
   card.scrollTop = 0;
 };
 
-function openAbout() {
+function openAbout(to) {
   const a = document.getElementById("about");
   settleAbout();
   a.setAttribute("aria-label", "About TOPA");
   a.classList.remove("rep");
   a.querySelector(".acard").innerHTML = aboutHtml();
   a.hidden = false;
+  if (to) document.getElementById("a" + to)?.scrollIntoView({ block: "start" });
 }
 const ON_PHONE = () => matchMedia("(max-width: 700px)").matches;
 const CALM = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -2422,7 +2427,7 @@ document.body.onclick = ev => {
   if (!t) return;
   const d = t.dataset,
     top = () => (document.getElementById("main").scrollTop = 0);
-  if (d.about !== undefined) return openAbout();
+  if (d.about !== undefined) return openAbout(d.about);
   if (d.start) {
     store.set(START_KEY, d.start);
     t.parentNode.querySelectorAll("button").forEach(b => b.classList.toggle("on", b === t));

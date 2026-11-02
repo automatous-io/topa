@@ -948,16 +948,42 @@ h2 {
 .addrow {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 22px;
-  margin: 28px 0 8px;
+  gap: 0 22px;
+  margin: 18px 0 0;
 }
-.addrow a {
+.addrow a,
+.addrow button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--mute);
   font-size: 14px;
   text-decoration: none;
 }
 .addrow a:hover {
   color: var(--ink);
+}
+.addrow button {
+  padding: 0;
+  font: inherit;
+  font-size: 14px;
+}
+.addrow button:hover {
+  color: var(--ink);
+}
+@media (max-width: 700px) {
+  .addrow {
+    gap: 0 18px;
+  }
+}
+@media (max-width: 359px) {
+  .addrow {
+    gap: 0 8px;
+  }
+  .addrow a,
+  .addrow button {
+    font-size: 13px;
+  }
 }
 a.pldz {
   text-decoration: none;
@@ -1185,6 +1211,20 @@ a.pldz {
 .abig.inst > svg {
   background: var(--sunset);
   color: var(--on-acc);
+}
+.acontact {
+  margin: 0 0 12px;
+  text-align: center;
+  color: var(--mute);
+  line-height: 1.9;
+}
+.acontact a {
+  color: var(--acc);
+  font-weight: 700;
+  text-decoration: none;
+}
+.acontact a:hover {
+  text-decoration: underline;
 }
 button.abig.add:hover {
   background: #5ee0c12e;

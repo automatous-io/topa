@@ -463,6 +463,14 @@ class Merging(unittest.TestCase):
         )
         self.assertEqual(dropped, {1: 1, 2: 2})
 
+    def test_listed_slot_wins(self):
+        ours = [self.ev("Saltgrass", "Harbor Lights Tavern", "2026-11-07T20:30:00-08:00", "community")]
+        vr = [self.ev("Different Band", "Harbor Lights Tavern", "2026-11-07T20:30:00-08:00", "ventura-rocks"),
+              self.ev("Late Band", "Harbor Lights Tavern", "2026-11-07T22:00:00-08:00", "ventura-rocks")]
+        merged, dropped = c.merge([ours, vr])
+        self.assertEqual([e["artist"] for e in merged], ["Saltgrass", "Late Band"])
+        self.assertEqual(dropped, {1: 1})
+
     def test_same_band(self):
         self.assertTrue(c.same_band("The Tide Pool Ramblers", "tide pool ramblers"))
         self.assertTrue(c.same_band("Wren & the Night Owls", "Wren and the Night Owls & Friends"))

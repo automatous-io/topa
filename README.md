@@ -222,8 +222,8 @@ commit gets a ✓ or ✗ before it's tagged as a release.
 
 ## Credits
 
-- **Show listings** come from the [Ventura Rocks](https://www.venturarocks.com) community calendar and from the bands, fans,
-  and venues who send them to TOPA.
+- **Show listings** come from the [Ventura Rocks](https://www.venturarocks.com) community calendar and from local bands, venues,
+  and fans, through their own websites and calendars or the TOPA forms.
 - **Band and venue profiles** are put together by TOPA from public sources, such as each band's or venue's website and
   public social profiles, and from photos TOPA takes itself. Bands and venues can correct or add to their page through the
   forms.

@@ -1,0 +1,18 @@
+{
+  "name": "Ojai Playhouse",
+  "address": "145 E Ojai Ave, Ojai, CA 93023",
+  "city": "Ojai",
+  "lat": 34.447658,
+  "lng": -119.246566,
+  "phone": "(805) 646-1011",
+  "website": "https://ojaiplayhouse.com",
+  "instagram": "https://www.instagram.com/ojaiplayhouse/",
+  "facebook": "https://www.facebook.com/ojaiplayhouse/",
+  "bio": "The Ojai Playhouse is a movie theater on East Ojai Avenue in downtown Ojai. Along with films, it hosts concerts, comedy and other live events. The box office is around the corner at 107 S. Signal Street.",
+  "bio_source": "Written by TOPA from ojaiplayhouse.com.",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "the venue's website and US Census address lookup, 2026-11-01"
+}

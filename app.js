@@ -7,7 +7,7 @@
 
 // ---- Settings and state ----
 // the app's version: shown in About, and it names the offline cache, so bumping it refreshes every device
-const VERSION = "2.9.0";
+const VERSION = "2.9.1";
 const params = new URLSearchParams(location.search);
 
 // Is this the car's browser? Some versions say "Tesla" in the user agent, but current ones just say
@@ -433,9 +433,11 @@ const ICONS = {
   Shows:
     '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></g>',
   Bands:
-    '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></g>',
+    '<path d="M12 21.5c-1.3 0-6.9-7.6-7.8-11.6C3.4 6.3 7 3 12 3s8.6 3.3 7.8 6.9c-.9 4-6.5 11.6-7.8 11.6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
   Venues:
-    '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></g>',
+    '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3.5" width="18" height="5.5" rx="1"/><path d="M7 6.25h.01M10.3 6.25h.01M13.7 6.25h.01M17 6.25h.01M5 9v12h14V9M10 21v-6h4v6"/></g>',
+  mic: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></g>',
+  pin: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></g>',
   Faves:
     '<path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
   search:
@@ -704,7 +706,7 @@ const offCount = l => {
 
 // opens the distance picker
 const distanceButton = (c = "") =>
-  `<button class="pill loc ${c}" data-pop>${svg("Venues")}${radius < ANY ? `Within ${radius} mi` : "Any distance"}</button>`;
+  `<button class="pill loc ${c}" data-pop>${svg("pin")}${radius < ANY ? `Within ${radius} mi` : "Any distance"}</button>`;
 
 // page header: title (+ optional count), an optional search box, then buttons
 function topBar(title, extra = "", sub = "", noDistance, search = "") {
@@ -1343,7 +1345,7 @@ const homeRow = (e, withDay, mic) => {
   const faveVenue = withDay && SAVED.venues.includes(e.venue) && !SAVED.bands.includes(bandName(e));
   return (
     `<div class="rw hrow${e.cancelled ? " off" : ""}" data-show="${e.id}">` +
-    (mic ? `<div class="art kart">${svg("Bands")}</div>` : art(bandName(e))) +
+    (mic ? `<div class="art kart">${svg("mic")}</div>` : art(bandName(e))) +
     `<div class="rb"><b>${esc(e.artist)}</b><span class="vmeta">${esc(venueLabel(e))}${e.city ? " · " + esc(e.city) : ""}</span>` +
     `${faveVenue ? `<i class="fvtag">★ Fave venue</i>` : ""}</div>` +
     `<div class="hwhen">${day ? `<small>${day}</small>` : ""}<b>${timeLabel(e)}</b></div></div>`
@@ -2026,7 +2028,7 @@ function paintFull() {
   fave.classList.toggle("on", faved);
   fave.setAttribute("aria-label", faved ? "Unfave this band" : "Fave this band");
   fave.innerHTML = svg("Faves");
-  dir.innerHTML = svg("Venues");
+  dir.innerHTML = svg("pin");
   inFull("[data-pl=prev]").innerHTML = svg("prev");
   inFull("[data-pl=next]").innerHTML = svg("next");
   paintFullPlay();
@@ -2222,7 +2224,7 @@ function aboutHtml() {
     `Bands, fans, and venues add to it, so it keeps getting better.</p></header>` +
     `<div class="abody">` +
     `<h3>Settings</h3>` +
-    `<div class="aset">${svg("Venues")}<span><b>Area</b><small>Ventura County</small></span></div>` +
+    `<div class="aset">${svg("pin")}<span><b>Area</b><small>Ventura County</small></span></div>` +
     `<label class="aset">${svg("info")}<span><b>Greeting</b><small>The title on Home</small></span>` +
     `<input id="greet" maxlength="${GREET_MAX}" placeholder="${timeGreeting()}" value="${esc(store.get(GREET_KEY) || "")}" ` +
     `autocomplete="off" aria-label="Greeting on Home"></label>` +
@@ -2230,7 +2232,7 @@ function aboutHtml() {
     `<span class="aseg">${["Shows", "Home"]
       .map(k => `<button data-start="${k}" class="${(store.get(START_KEY) || "Shows") === k ? "on" : ""}">${k}</button>`)
       .join("")}</span></div>` +
-    `<div class="aset">${svg("Bands")}<span><b>Karaoke mode</b><small>Show all karaoke listings in Home</small></span>` +
+    `<div class="aset">${svg("mic")}<span><b>Karaoke mode</b><small>Show all karaoke listings in Home</small></span>` +
     `<span class="aseg">${["Off", "On"]
       .map(k => `<button data-kmode="${k}" class="${karaokeOn() === (k === "On") ? "on" : ""}">${k}</button>`)
       .join("")}</span></div>` +

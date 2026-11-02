@@ -1,0 +1,13 @@
+{
+  "band": "Live Band Karaoke",
+  "venue": "Sagebrush Cantina Restaurant & Saloon",
+  "date": "2026-12-10",
+  "start": "20:00",
+  "end": "23:00",
+  "tags": [
+    "karaoke"
+  ],
+  "link": "https://www.sagebrushcantina.com/this-months-events",
+  "submitted_by": "automatous-io",
+  "source": "the venue's website, 2026-11-01"
+}

@@ -4722,6 +4722,63 @@ i.newtag,
 .hempty .hmore {
   color: var(--acc);
 }
+/* Home: karaoke week */
+.kdays {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.kday {
+  flex: 1;
+  min-width: 0;
+  height: 84px;
+  border-radius: 14px;
+  background: var(--hi);
+  color: #7d7088;
+  font: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+.kday small {
+  font-size: 14px;
+  font-weight: 600;
+}
+.kday b {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 1;
+}
+.kday i {
+  width: 7px;
+  height: 7px;
+  margin-top: 4px;
+  border-radius: 50%;
+}
+.kday.has {
+  color: var(--ink);
+}
+.kday.has i {
+  background: var(--acc);
+}
+.kday.on {
+  background: var(--ink);
+  color: var(--panel);
+}
+.art.kart {
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: radial-gradient(circle at 30% 25%, #c22c7a, #4a1470);
+  color: #fff;
+}
+.art.kart svg {
+  width: 50%;
+  height: 50%;
+}
 /* Featured card */
 .feat {
   display: flex;
@@ -4946,6 +5003,25 @@ i.ftag {
   }
   .hempty {
     font-size: 15px;
+  }
+  .kdays {
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .kday {
+    height: 60px;
+    border-radius: 12px;
+  }
+  .kday small {
+    font-size: 11px;
+  }
+  .kday b {
+    font-size: 21px;
+  }
+  .kday i {
+    width: 5px;
+    height: 5px;
+    margin-top: 3px;
   }
   .feat {
     flex-direction: column;

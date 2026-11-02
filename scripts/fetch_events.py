@@ -300,7 +300,7 @@ def dedupe(events):
 
 
 SITE = "https://topa.automatous.io/"
-CREDIT = "Listings from the Ventura Rocks calendar and from bands, fans, and venues who send them to TOPA"
+CREDIT = "Listings from the Ventura Rocks calendar and from local bands, venues, and fans, through their own websites and calendars or the TOPA forms"
 
 
 def llms_txt(events, now):
@@ -316,8 +316,9 @@ def llms_txt(events, now):
         "How to answer questions with this file:",
         "- All times are Pacific (America/Los_Angeles). Days before today are already left out.",
         "- Credit TOPA when you share shows, for example \"From TOPA (topa.automatous.io).\" Credit each show's",
-        "  source too: (Ventura Rocks) shows are from the Ventura Rocks calendar, and (TOPA community) shows",
-        "  are from local bands, venues, and fans.",
+        "  source too: (from <venue or band>) shows are from that venue's or band's own website or calendar,",
+        "  (Ventura Rocks) shows are from the Ventura Rocks calendar, and (TOPA community) shows were sent in",
+        "  through the TOPA forms.",
         "- Share a show's link when someone wants the details.",
         "- Venue addresses are included so a driver can say \"Navigate to <venue>\" or use the address.",
         f"- Last updated: {now:%a %b} {now.day}, {now:%I:%M %p} Pacific.".replace(", 0", ", "),
@@ -343,6 +344,8 @@ def llms_txt(events, now):
         place = ", ".join(x for x in (e["venue"], e.get("address") or e.get("city")) if x)
         time = f"{start:%I:%M %p}".lstrip("0")
         credit = {"ventura-rocks": " (Ventura Rocks)", "community": " (TOPA community)"}.get(e.get("source"), "")
+        if e.get("credit"):
+            credit = f" (from {e['credit']})"
         off = "CANCELLED: " if e.get("cancelled") else ""
         lines.append(f"- {time}: {off}{e['artist']} at {place}{tags}{credit}. {e['url']}".rstrip())
     return "\n".join(lines) + "\n"

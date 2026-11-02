@@ -72,9 +72,12 @@ let status = { c: "loading" }; // c: loading | cached | live | offline; updated:
 // start page
 const START_KEY = "topa.start.v1";
 const START = store.get(START_KEY) === "Home" ? "Home" : "Shows";
+const KARAOKE_KEY = "topa.karaoke.v1";
+const karaokeOn = () => store.get(KARAOKE_KEY) === true;
 let view = (v => (v && v !== "Search" ? v : START))(params.get("view"));
 
 let fromHome = false; // came from See all on Home
+let kday = 0; // Home karaoke: days from today
 
 
 let prev = "Shows"; // the page before, so a show page can highlight where it was opened from
@@ -403,7 +406,14 @@ const toggleFave = (k, n) => {
   store.set(FAVES_KEY, SAVED);
 };
 
-const searchWords = () => term.toLowerCase().split(/\s+/).filter(Boolean);
+// karoke, kareoke, carioke… -> karaoke
+const KARAOKE_TYPO = /^[kc]a?r+[aeiouy]{1,3}k+[aeiy]{0,2}$/;
+const searchWords = () =>
+  term
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(w => (KARAOKE_TYPO.test(w) ? "karaoke" : w));
 const byDistance = a =>
   a.slice().sort((x, y) => (milesTo(x) ?? 1e9) - (milesTo(y) ?? 1e9) || x.startMs - y.startMs);
 
@@ -812,6 +822,7 @@ function searchIdeas() {
   const chips = l => l.map(x => `<button class="chip" data-term="${esc(x)}">${esc(x)}</button>`).join("");
   const towns = top(e => (e.city ? [e.city] : []), 8),
     genres = top(e => e.tags, 8);
+  if (!genres.includes("karaoke") && EVENTS.some(e => isStillOn(e) && e.tags.includes("karaoke"))) genres.push("karaoke");
   return (
     (towns.length ? `<h2 class="dh">Towns</h2><div class="ideas">${chips(towns)}</div>` : "") +
     (genres.length ? `<h2 class="dh">Genres</h2><div class="ideas">${chips(genres)}</div>` : "")
@@ -1326,12 +1337,13 @@ const backHome = page =>
     : `<span class="mgap"></span>`;
 
 // Home row
-const homeRow = (e, withDay) => {
+const homeRow = (e, withDay, mic) => {
   const d = new Date(e.start);
   const day = !withDay ? "" : sameDay(d, NOW) ? showDayWord(e) : `${weekdayLabel(e)} ${d.getMonth() + 1}/${d.getDate()}`;
   const faveVenue = withDay && SAVED.venues.includes(e.venue) && !SAVED.bands.includes(bandName(e));
   return (
-    `<div class="rw hrow${e.cancelled ? " off" : ""}" data-show="${e.id}">${art(bandName(e))}` +
+    `<div class="rw hrow${e.cancelled ? " off" : ""}" data-show="${e.id}">` +
+    (mic ? `<div class="art kart">${svg("Bands")}</div>` : art(bandName(e))) +
     `<div class="rb"><b>${esc(e.artist)}</b><span class="vmeta">${esc(venueLabel(e))}${e.city ? " · " + esc(e.city) : ""}</span>` +
     `${faveVenue ? `<i class="fvtag">★ Fave venue</i>` : ""}</div>` +
     `<div class="hwhen">${day ? `<small>${day}</small>` : ""}<b>${timeLabel(e)}</b></div></div>`
@@ -1352,6 +1364,35 @@ function featuredCard() {
     `<i class="ftag">Featured</i><b>${esc(f.band)}</b>${f.blurb ? `<p>${esc(f.blurb)}</p>` : ""}` +
     `<div class="frow2"><small>${nextLabel(next)} · ${esc(venueLabel(next))}</small>${heroPlayButton(f.band)}</div></div></div>`
   );
+}
+
+// Home karaoke: the next 7 days, one night at a time
+function karaokeWeek(soon) {
+  const L = soon.filter(e => e.tags.includes("karaoke"));
+  if (!L.length) return "";
+  const days = [...Array(7)].map((_, i) => {
+    const d = dayStart(NOW);
+    d.setDate(d.getDate() + i);
+    return d;
+  });
+  const wd = (d, long) => d.toLocaleDateString("en-US", { weekday: long ? "long" : "short" });
+  const on = days.map(d => L.filter(e => sameDay(new Date(e.start), d)));
+  const sel = on[kday] || [];
+  const next = on.findIndex((l, i) => i > kday && l.length);
+  const tiles = days
+    .map(
+      (d, i) =>
+        `<button class="kday${i === kday ? " on" : ""}${on[i].length ? " has" : ""}" data-kday="${i}" ` +
+        `aria-label="${wd(d, true)} ${d.getDate()}, ${on[i].length ? countLabel(on[i].length, "karaoke night") : "no karaoke"}">` +
+        `<small>${wd(d).toUpperCase()}</small><b>${d.getDate()}</b><i></i></button>`,
+    )
+    .join("");
+  const body = sel.length
+    ? `<div class="hlist">${sel.map(e => homeRow(e, true, true)).join("")}</div>`
+    : `<p class="hempty">No karaoke ${kday ? "on " + wd(days[kday], true) : todayWord().toLowerCase()} yet.` +
+      (next > 0 ? ` <button class="hmore" data-kday="${next}">Next: ${wd(days[next], true)} ›</button>` : "") +
+      `</p>`;
+  return homeHead("Karaoke this week", true, "data-kall") + `<div class="kdays">${tiles}</div>` + body;
 }
 
 // one row per band, max 2 from faved venues
@@ -1381,12 +1422,16 @@ const greeting = () => (store.get(GREET_KEY) || "").trim() || timeGreeting();
 function homePage() {
   const soon = EVENTS.filter(isStillOn);
   const faves = faveNext(soon).slice(0, 5);
-  const tonight = soon.filter(e => sameDay(new Date(e.start), NOW) && !faves.includes(e));
+  const kon = karaokeOn();
+  const tonight = soon.filter(
+    e => sameDay(new Date(e.start), NOW) && !faves.includes(e) && !(kon && e.tags.includes("karaoke")),
+  );
   const left =
     homeHead("Your faves are playing", faves.length, 'data-v="Faves" data-fromhome') +
     (faves.length
       ? `<div class="hlist">${faves.map(e => homeRow(e, true)).join("")}</div>`
       : `<p class="hempty">Tap ☆ on a band or venue and their next shows magically show up here.</p>`) +
+    (kon ? karaokeWeek(soon) : "") +
     featuredCard();
   const right =
     homeHead(todayWord(), tonight.length, 'data-v="Shows" data-fromhome') +
@@ -2185,6 +2230,10 @@ function aboutHtml() {
     `<span class="aseg">${["Shows", "Home"]
       .map(k => `<button data-start="${k}" class="${(store.get(START_KEY) || "Shows") === k ? "on" : ""}">${k}</button>`)
       .join("")}</span></div>` +
+    `<div class="aset">${svg("Bands")}<span><b>Karaoke mode</b><small>Show all karaoke listings in Home</small></span>` +
+    `<span class="aseg">${["Off", "On"]
+      .map(k => `<button data-kmode="${k}" class="${karaokeOn() === (k === "On") ? "on" : ""}">${k}</button>`)
+      .join("")}</span></div>` +
     (app ? `<div class="abigs one">${app}</div>` : "") +
     `<h3>Where shows come from</h3>` +
     `<div class="legend">` +
@@ -2364,7 +2413,7 @@ document.body.onclick = ev => {
     return;
   }
   const t = ev.target.closest(
-    "[data-share],[data-plfull],[data-fpclose],[data-fpfave],[data-search],[data-searchx],[data-term],[data-play],[data-playall],[data-pl],[data-plshow],[data-vsort],[data-clear],[data-show],[data-v],[data-d],[data-g],[data-band],[data-venue],[data-sort],[data-sb],[data-sv],[data-pop],[data-anyrad],[data-rad],[data-ssort],[data-ftab],[data-scroll],[data-about],[data-about-close],[data-about-add],[data-about-back],[data-install],[data-report],[data-rpick],[data-start]",
+    "[data-share],[data-plfull],[data-fpclose],[data-fpfave],[data-search],[data-searchx],[data-term],[data-play],[data-playall],[data-pl],[data-plshow],[data-vsort],[data-clear],[data-show],[data-v],[data-d],[data-g],[data-band],[data-venue],[data-sort],[data-sb],[data-sv],[data-pop],[data-anyrad],[data-rad],[data-ssort],[data-ftab],[data-scroll],[data-about],[data-about-close],[data-about-add],[data-about-back],[data-install],[data-report],[data-rpick],[data-start],[data-kmode],[data-kday],[data-kall]",
   );
   const pop = document.getElementById("pop");
   if (!ev.target.closest("#pop") && !(t && t.dataset.pop !== undefined)) pop.classList.remove("on");
@@ -2376,6 +2425,23 @@ document.body.onclick = ev => {
     store.set(START_KEY, d.start);
     t.parentNode.querySelectorAll("button").forEach(b => b.classList.toggle("on", b === t));
     return;
+  }
+  if (d.kmode) {
+    store.set(KARAOKE_KEY, d.kmode === "On");
+    t.parentNode.querySelectorAll("button").forEach(b => b.classList.toggle("on", b === t));
+    kday = 0;
+    if (view === "Home") render();
+    return;
+  }
+  if (d.kday !== undefined) {
+    kday = +d.kday;
+    return render();
+  }
+  if (d.kall !== undefined) {
+    fromHome = true;
+    term = "karaoke";
+    searchOpen = true;
+    return go("Shows");
   }
   if (d.report) return EVENTS[+d.report] && (countEvent("report-open"), openReport(EVENTS[+d.report]));
   if (d.rpick) {

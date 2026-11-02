@@ -344,14 +344,19 @@ def same_show(a, b):
     return venue(a) == venue(b) and a["start"][:10] == b["start"][:10] and same_band(a["artist"], b["artist"])
 
 
+def same_slot(a, b):
+    """Same venue and start time."""
+    return short_name(a["venue"]).lower() == short_name(b["venue"]).lower() and a["start"][:16] == b["start"][:16]
+
+
 def merge(ranked):
-    """Combine sources, best first. Drops shows a better source already has.
+    """Combine sources in order. Drops shows already listed, and shows in a slot that's already listed.
     Returns (shows, {source index: number dropped})."""
     merged, by_day, dropped = [], {}, {}
     for rank, events in enumerate(ranked):
         for e in events:
             day = e["start"][:10]
-            if any(same_show(e, s) for s in by_day.get(day, []) if s["_rank"] < rank):
+            if any(same_show(e, s) or same_slot(e, s) for s in by_day.get(day, []) if s["_rank"] < rank):
                 dropped[rank] = dropped.get(rank, 0) + 1
                 continue
             merged.append(e)

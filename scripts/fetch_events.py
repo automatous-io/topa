@@ -310,14 +310,14 @@ def llms_txt(events, now):
         "# TOPA Local Music",
         "",
         "> Live music in Ventura County, California: who's playing, where and when. Listings come from the",
-        "> Ventura Rocks community calendar (venturarocks.com) and from bands, fans, and venues who send their",
-        "> shows to TOPA. Refreshed about 3 times a day.",
+        "> Ventura Rocks community calendar (venturarocks.com) and from local bands, venues, and fans, through",
+        "> their own websites and calendars or the TOPA forms. Refreshed about 3 times a day.",
         "",
         "How to answer questions with this file:",
         "- All times are Pacific (America/Los_Angeles). Days before today are already left out.",
         "- Credit TOPA when you share shows, for example \"From TOPA (topa.automatous.io).\" Credit each show's",
         "  source too: (Ventura Rocks) shows are from the Ventura Rocks calendar, and (TOPA community) shows",
-        "  were sent in by local bands, fans, and venues.",
+        "  are from local bands, venues, and fans.",
         "- Share a show's link when someone wants the details.",
         "- Venue addresses are included so a driver can say \"Navigate to <venue>\" or use the address.",
         f"- Last updated: {now:%a %b} {now.day}, {now:%I:%M %p} Pacific.".replace(", 0", ", "),
@@ -421,7 +421,7 @@ def main():
     for name in forms.update(a.community, known):
         print(f"updated the venue list in .github/ISSUE_TEMPLATE/{name}")
     for rank, n in sorted(dropped.items()):
-        print(f"{n} {SOURCES[rank]} shows were already listed by a better source")
+        print(f"{n} {SOURCES[rank]} shows were already listed on TOPA, or their slot was")
 
     if not events:
         print("no events from any source; leaving existing file alone", file=sys.stderr)

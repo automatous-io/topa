@@ -407,6 +407,8 @@ def event(r, day, venues, bands):
         "url": r.get("link") or "",
         "source": "community",
     }
+    if r.get("note"):
+        e["note"] = r["note"]
     if v.get("lat") is not None:
         e["lat"], e["lng"] = v["lat"], v["lng"]
     return e

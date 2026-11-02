@@ -1,0 +1,20 @@
+{
+  "band": "Karaoke Thursday Nights",
+  "venue": "The Shores",
+  "weekday": "Thursday",
+  "start": "20:30",
+  "end": "00:30",
+  "first": "2026-11-05",
+  "until": "2026-12-31",
+  "skip": [
+    "2026-11-26",
+    "2026-12-24",
+    "2026-12-31"
+  ],
+  "tags": [
+    "karaoke"
+  ],
+  "link": "https://www.facebook.com/photo?fbid=1727043712762729",
+  "submitted_by": "automatous-io",
+  "source": "The Shores' Facebook flyer, posted 2026-10-29"
+}

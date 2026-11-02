@@ -1,0 +1,18 @@
+{
+  "band": "Karaoke Friday",
+  "venue": "Feros Ferio Winery",
+  "weekday": "Friday",
+  "start": "17:00",
+  "end": "21:30",
+  "first": "2026-11-06",
+  "until": "2026-12-31",
+  "skip": [
+    "2026-12-25"
+  ],
+  "tags": [
+    "karaoke"
+  ],
+  "link": "https://www.instagram.com/p/De-ZcYAvtMG/",
+  "submitted_by": "automatous-io",
+  "source": "Feros Ferio's Instagram flyer, posted 2026-10-26"
+}

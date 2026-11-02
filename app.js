@@ -142,7 +142,7 @@ function toShow(o, rawTags) {
     ...o,
     lat: c ? c[0] : null,
     lng: c ? c[1] : null,
-    tags: classifyGenres(rawTags),
+    tags: classifyGenres(/karaoke/i.test(o.artist) ? [...rawTags, "karaoke"] : rawTags),
     tix: isTicketed(rawTags),
   };
 }
@@ -1301,6 +1301,7 @@ function showPage(id) {
     `${distanceLabel(e) ? " · " + distanceLabel(e).toUpperCase() : ""}</small><h1 class="tobd" data-band="${esc(band)}">${esc(e.artist)}</h1>` +
     venueLink(e, "vb big", esc(venueLabel(e)) + (e.city ? ` <em>· ${esc(e.city)}</em>` : "")) +
     why +
+    (e.note ? `<p class="snote">${esc(e.note)}</p>` : "") +
     `</div></div><div class="mrow">${heroPlayButton(band)}${tags}</div>` +
     `${bandLinks(band)}</div></div>` +
     (e.venue

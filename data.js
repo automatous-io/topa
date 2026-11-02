@@ -90,4 +90,5 @@ const GENRE_FALLBACK = {
   americana: "americana",
   tribute: "tribute",
   surf: "surf",
+  karaoke: "karaoke",
 };

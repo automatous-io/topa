@@ -414,6 +414,8 @@ def event(r, day, venues, bands):
     }
     if r.get("note"):
         e["note"] = r["note"]
+    if r.get("from") in ("venue", "band"):
+        e["credit"] = r["venue"] if r["from"] == "venue" else r["band"]
     if v.get("lat") is not None:
         e["lat"], e["lng"] = v["lat"], v["lng"]
     return e

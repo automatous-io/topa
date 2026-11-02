@@ -1,0 +1,18 @@
+{
+  "band": "Karaoke Fridays",
+  "venue": "KJ's Neighborhood Bar",
+  "weekday": "Friday",
+  "start": "21:00",
+  "end": "",
+  "first": "2026-11-06",
+  "until": "2026-12-31",
+  "skip": [
+    "2026-12-25"
+  ],
+  "tags": [
+    "karaoke"
+  ],
+  "link": "https://www.instagram.com/kjs_neighborhoodbar/",
+  "submitted_by": "automatous-io",
+  "source": "@kjs_neighborhoodbar posts and @venturakaraoke's schedule, 2026-11-01"
+}

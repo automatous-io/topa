@@ -1,9 +1,14 @@
 {
-  "name": "KJ's (formerly Gibsons, formerly The Twist on Main....)",
+  "name": "KJ's Neighborhood Bar",
   "address": "454 E Main St, Ventura, CA 93001",
   "city": "Ventura",
   "lat": 34.280758,
   "lng": -119.293809,
+  "phone": "(805) 641-0053",
+  "instagram": "https://instagram.com/kjs_neighborhoodbar",
+  "facebook": "https://www.facebook.com/profile.php?id=61572123880880",
+  "bio": "KJ's Neighborhood Bar is a bar on East Main Street in downtown Ventura with live music, karaoke, DJs and special events. It hosts karaoke on Wednesday and Friday nights.",
+  "bio_source": "Written by TOPA from @kjs_neighborhoodbar, its Facebook and @venturakaraoke.",
   "maintainers": [
     "automatous-io"
   ],

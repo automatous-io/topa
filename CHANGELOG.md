@@ -6,6 +6,26 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
 
 ---
 
+## 2.9.0
+
+**Karaoke mode, and an About for bands and venues.**
+
+- Settings has a new **Karaoke mode**. Turn it on and Home gets **Karaoke this week**: a strip of the next seven days
+  with a dot on every karaoke night. Tap a day for that night's spots, or See all for every karaoke listing. Tonight
+  leaves karaoke out so nothing shows twice. It works the same on phones and in the car.
+- Karaoke is a genre now. Karaoke nights get a **karaoke** chip on the days they happen, search always offers it, and
+  common misspellings like "karoke" and "kareoke" still find it.
+- Weekly karaoke at The Shores, Feros Ferio, C Note Bar & Lounge and KJ's Neighborhood Bar, plus Feros Ferio's Sunday
+  singer/songwriter open mic.
+- 23 bands now have an About section, written from their own sites and pages, with their genres and links. Neon Blonde,
+  Frank Barajas, Danny D and Ken Devoe got band pages.
+- Venue pages have an About section too, and a Facebook link. The 18 busiest venues have one so far. The venue form has
+  new **About the venue** and **Facebook** boxes, so venues can fix or add their own.
+- A show can carry a short note on its page, like who hosts it.
+- Home labels each show Today or Tonight by its own start time, and a fave that plays today no longer shows up twice.
+
+---
+
 ## 2.8.0
 
 **Home behind the TOPA button, and band bios.**

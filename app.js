@@ -134,7 +134,7 @@ const townFromAddress = a => {
   );
 };
 
-// a show sent to TOPA directly (community/), not from the Ventura Rocks calendar
+// a show listed on TOPA itself (community/), not from the Ventura Rocks calendar
 const isAdded = e => e.source === "community";
 
 function toShow(o, rawTags) {
@@ -452,7 +452,7 @@ const ICONS = {
   ext: '<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
   // for a band's own show link when it's their Instagram post
   ig: '<rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.3"/>',
-  // where a show came from: @ for shows sent to TOPA, a calendar for Ventura Rocks
+  // where a show came from: @ for TOPA's own shows, a calendar for Ventura Rocks
   at: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.6"/><path d="M15.6 8.6v4.6a2.4 2.4 0 0 0 4.8 0V12a8.4 8.4 0 1 0-3.4 6.8"/></g>',
   cal: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10.2h17M8 3v4M16 3v4"/></g>',
   store:
@@ -628,7 +628,7 @@ const venueDateRow = e => {
   );
 };
 
-// where a show came from: @ (sent to TOPA) or a calendar (Ventura Rocks); after: gap on the left
+// where a show came from: @ (TOPA's own) or a calendar (Ventura Rocks); after: gap on the left
 const sourceIcon = (e, after) =>
   isAdded(e)
     ? `<span class="srci cm${after ? " af" : ""}" title="Sent straight to TOPA">${svg("at")}</span>`
@@ -636,7 +636,7 @@ const sourceIcon = (e, after) =>
 
 // key for the source icons, under a list of shows
 const sourceKey = () =>
-  `<div class="skey"><span>${svg("cal")}Ventura Rocks calendar</span><span class="cm">${svg("at")}Sent to TOPA</span></div>`;
+  `<div class="skey"><span>${svg("cal")}Ventura Rocks calendar</span><span class="cm">${svg("at")}From bands &amp; venues</span></div>`;
 
 // a show in a list; timeOnly when the date is already in the title or a day divider,
 // atVenue on lists that are all at one venue (its name, town and distance are already in the header)
@@ -1296,12 +1296,12 @@ function showPage(id) {
     .toUpperCase();
   const otherDates = EVENTS.filter(x => bandName(x) === band && x.id !== e.id);
   const alsoHere = e.venue ? EVENTS.filter(x => x.venue === e.venue && bandName(x) !== band).slice(0, 6) : [];
-  // source line: the Ventura Rocks listing or the link the show was sent with
+  // source line: the Ventura Rocks listing, or who listed the show and its link
   const href = isAdded(e) ? safeUrl(e.url) : e.url || VR_CAL;
   const onIg = isAdded(e) && /^https:\/\/(www\.)?instagram\.com\//.test(href);
   const from = !isAdded(e)
     ? "From the Ventura Rocks calendar · see the listing"
-    : "Sent to TOPA" + (href ? (onIg ? " · see the Instagram post" : " · see the details") : "");
+    : (e.credit ? `From ${esc(e.credit)}` : "Sent to TOPA") + (href ? (onIg ? " · see the Instagram post" : " · see the details") : "");
   const source = href
     ? `<a class="srcline" href="${esc(href)}" target="_blank" rel="noopener">${sourceIcon(e)}${from} ›</a>`
     : `<p class="srcline">${sourceIcon(e)}${from}</p>`;
@@ -2242,7 +2242,7 @@ function aboutHtml() {
     `<div class="legend">` +
     `<div><span class="srci vr">${svg("cal")}</span><span>The ${newTab(VR_SITE, "Ventura Rocks")} ` +
     `community calendar, checked 3x a day</span></div>` +
-    `<div><span class="srci cm">${svg("at")}</span><span>Sent to TOPA by bands, fans, and venues</span></div>` +
+    `<div><span class="srci cm">${svg("at")}</span><span>From local bands, venues, and fans: their own websites and calendars, or sent to TOPA</span></div>` +
     `</div>` +
     // right under the ways shows get in, so sending one is the next step
     `<div class="abigs one aadd">` +

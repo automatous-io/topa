@@ -19,3 +19,8 @@ __pycache__/
 # Tests (npm install; npm run sheet)
 node_modules/
 phone-sheet/
+
+# Built by the Update events workflow and deployed with the site
+/events.json
+/llms.txt
+/spots.json

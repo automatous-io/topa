@@ -7,31 +7,60 @@ on:
     # 3x daily, timed for evening plans. GitHub cron is UTC with no daylight saving:
     # 7am / noon / 4pm Pacific in summer (PDT), 6am / 11am / 3pm in winter (PST). Runs can start 10-30 min late.
     - cron: "17 14,19,23 * * *"
-  # publish merged submissions right away
+  # publish app changes and merged submissions right away
   push:
     branches: [main]
-    paths: ["community/**"]
   workflow_dispatch:
 permissions:
   contents: write
+  pages: write
+  id-token: write
 concurrency: update-events
 jobs:
-  fetch:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      # stdlib only; sends a descriptive User-Agent; fails (and commits nothing) if the page won't parse
-      - run: python scripts/fetch_events.py --upcoming --out events.json
-      - name: Commit if changed
+      # the site is the repo as is, plus the listings built below
+      - name: Copy the app
+        run: rsync -a --exclude .git --exclude node_modules --exclude events.json --exclude llms.txt --exclude spots.json ./ _site/
+      # last run's listings and map spots, so a failed fetch keeps them and spots are looked up once
+      - name: Start from the live listings
+        run: curl -fsS https://topa.automatous.io/events.json -o _site/events.json || echo "no live copy"
+      - uses: actions/cache/restore@v4
+        with:
+          path: _site/spots.json
+          key: spots-${{ github.run_id }}
+          restore-keys: spots-
+      # stdlib only; sends a descriptive User-Agent; fails (and deploys nothing) if the page won't parse
+      - run: python scripts/fetch_events.py --upcoming --out _site/events.json
+      - uses: actions/cache/save@v4
+        with:
+          path: _site/spots.json
+          key: spots-${{ github.run_id }}
+      # a new venue changes the form lists; that's the only thing committed
+      - name: Commit form changes
         run: |
-          if [ -z "$(git status --porcelain -- events.json llms.txt spots.json .github/ISSUE_TEMPLATE)" ]; then
-            echo "No change"; exit 0
+          if [ -z "$(git status --porcelain -- .github/ISSUE_TEMPLATE)" ]; then
+            echo "No form change"; exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
-          git add events.json llms.txt spots.json .github/ISSUE_TEMPLATE
-          git commit -m "Update events.json"
+          git add .github/ISSUE_TEMPLATE
+          git commit -m "chore: update the venue list in the forms"
           git push
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

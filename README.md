@@ -143,8 +143,9 @@ Ventura Rocks calendar (Tockify)        Bands, fans, venues
    `community/changes/` that marks the show cancelled or moves it to its new date or time, "It's back on" removes a
    cancellation, and other changes stay open as an issue to fix by hand.
 3. **Schedule.** [`.github/workflows/update-events.yml`](.github/workflows/update-events.yml) runs the fetch around 7am, noon
-   and 4pm Pacific, and right after a submission is merged. It commits `events.json`, `llms.txt` and `spots.json` only when they changed,
-   and keeps the forms' venue lists current ([`scripts/forms.py`](scripts/forms.py)).
+   and 4pm Pacific, and on every push to `main`. It builds `events.json`, `llms.txt` and `spots.json` next to the app and
+   deploys the whole site to GitHub Pages, so the listings are never committed. The only thing it commits is a change to the
+   forms' venue lists ([`scripts/forms.py`](scripts/forms.py)), when a new venue is added.
 4. **The app.** `index.html` shows the last saved listings right away (so it opens instantly and works offline), then swaps in the
    latest `events.json`. If the scheduled fetch ever fails, the old file stays in place and the "Updated" date stops moving.
 5. **Previews.** The app looks up each band on Apple Music's free search API in the background, soonest shows and what's on
@@ -155,7 +156,7 @@ Ventura Rocks calendar (Tockify)        Bands, fans, venues
 ## Run it locally
 
 ```sh
-python3 scripts/fetch_events.py --upcoming   # refresh events.json
+python3 scripts/fetch_events.py --upcoming   # build events.json (not in git; the live site has its own)
 python3 -m http.server 8000                  # then open http://localhost:8000
 ```
 
@@ -201,9 +202,7 @@ commit gets a ✓ or ✗ before it's tagged as a release.
 | `data.js` | Town centers and the genre map |
 | `styles.css` | All styles; phone rules in the `max-width: 700px` blocks |
 | `fonts/` | Oswald and Figtree, with their licenses |
-| `events.json` | Current listings, written by the fetch script |
-| `llms.txt` | The same listings in plain English for AI assistants, also written by the fetch script |
-| `spots.json` | Map spots looked up from listing addresses, also written by the fetch script |
+| `events.json`, `llms.txt`, `spots.json` | Built by the fetch script when the site deploys, not kept in git: the listings, the same in plain English for AI assistants, and saved map spots |
 | `scripts/fetch_events.py` | Pulls the calendar, merges in TOPA's shows, writes `events.json` and `llms.txt` |
 | `scripts/community.py` | Reads and checks the shows, bands and venues people send |
 | `scripts/submissions.py` | Turns a filled-in form into a file for a pull request |

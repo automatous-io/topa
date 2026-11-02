@@ -12,7 +12,7 @@ How to answer questions with this file:
   through the TOPA forms.
 - Share a show's link when someone wants the details.
 - Venue addresses are included so a driver can say "Navigate to <venue>" or use the address.
-- Last updated: Sun Nov 1, 7:32 PM Pacific.
+- Last updated: Mon Nov 2, 2:47 PM Pacific.
 
 ## Links
 
@@ -22,26 +22,6 @@ How to answer questions with this file:
 - [Add a show](https://github.com/automatous-io/topa/issues/new/choose): bands, fans, and venues send shows here
 
 ## Upcoming shows
-
-### Sunday, November 1
-- 10:00 AM: Unkle Monkey at Harbor Cove Cafe, 1867 Spinnaker Dr, Ventura, CA 93001 (from Harbor Cove Cafe). https://harborcovecafe.net/events/
-- 12:30 PM: Teresa Russell at Mrs. Olson's Coffee Hut, 2800 Harbor Blvd, Oxnard, CA 93035 (blues, rock) (from Mrs. Olson's Coffee Hut). https://www.mrsolsons.com/events-calendar
-- 2:00 PM: Soul Revival Band at Leashless Brewing, 585 E Thompson Blvd, Ventura, CA 93001 (blues, rock) (from Leashless Brewing). https://www.leashlessbrewing.com/event-calendar/2026/11/1/soul-revival-band
-- 2:00 PM: Live Music with Teresa Russell in the Tasting Room at Magnavino Cellars | Public Realm Brewing, 961 Rice Ave, Oxnard, CA 93030 (from Magnavino Cellars | Public Realm Brewing). https://www.magnavinocellars.com/events/
-- 2:00 PM: Teresa Russell at Magnavino Cellars | Public Realm Brewing, 961 Rice Ave, Oxnard, CA 93030 (blues, rock) (from Teresa Russell). https://teresarussell.com/events/magnavino-cellars-132-279-118-537-184-616-891-708-880-790/
-- 2:00 PM: Brandon Ragan Project at Tony's Pizzaria, 186 E Thompson Blvd, Ventura, CA 93001 (Ventura, Free, All-ages, Dance-favorites, Old-School-Sunday) (from Brandon Ragan Project). https://brandonragan.com/shows
-- 2:00 PM: Vinny Berry at Topa Topa Brewing, 4880 Colt St, Ventura, CA 93003 (rock, blues, covers, singer-songwriter) (from Vinny Berry). https://www.vinnyberrymusic.com/tour
-- 3:00 PM: Nikolay Sivchuk at Beatrice Wood Center for the Arts, 8585 N Ojai Rd, Ojai, CA 93023 (from Beatrice Wood Center for the Arts). https://www.beatricewood.com/schedule.html
-- 3:00 PM: Sunday Tunes with Dave & Tim Faux Real at Nabu, 2649 Townsgate Rd, Westlake Village, CA 91361 (from Nabu). https://nabuwines.com/events/dave-tim-faux-real-10192026/
-- 3:00 PM: Skin Deep at Sagebrush Cantina Restaurant & Saloon, 23527 Calabasas Rd, Calabasas, CA 91302 (from Sagebrush Cantina Restaurant & Saloon). https://www.sagebrushcantina.com/this-months-events
-- 3:00 PM: Sunday Jazz at Ventura College Performing Arts Center, 4700 Loma Vista Rd, Ventura, CA 93003 (from Ventura College Performing Arts Center). https://www.venturacollege.edu/events/sunday-jazz-nov-1
-- 3:00 PM: RJ Mischo Band at Winchesters Grill & Saloon, 632 E Main St, Ventura, CA 93001 (from Winchesters Grill & Saloon). https://www.winchestersgrill.com/events/rj-mischo-band
-- 4:00 PM: Bogey & John at Feros Ferio Winery, 310 E Ojai Ave, Ojai, CA 93023 (from Feros Ferio Winery). https://ferosferiowine.com/events
-- 4:00 PM: Ryder & Friends, MDRN LVRS at Bombay Bar & Grill, 143 S California St, Ventura, CA 93001 (Ventura, all-ages, kid-and-pet-friendly, danceable-favorites) (Ventura Rocks). https://tockify.com/vtarocks/detail/27080/1793577600000
-- 5:00 PM: Gaba Groove at Rock & Roll Pizza (Harley's Valley Bowl, 5255 Cochran St, Simi Valley, CA 93063 (Simi-Valley, Harley's-Valley-Bowl, all-ages, no-cover) (from Rock & Roll Pizza (Harley's Valley Bowl). https://www.harleysbowl.com/events/sunday-sessions-11-1-26
-- 7:00 PM: Amelia McLean at Ojai Underground Exchange, 616 Pearl St, Ojai, CA 93023 (Ojai, ticketed-event, bz) (from Ojai Underground Exchange). https://ojaiundergroundexchangetickets.square.site/amelia-mclean
-- 8:00 PM: Dax at Ventura Music Hall - VMH, 1888 E Thompson Blvd, Ventura, CA 93001 (Ventura, All-ages, VMH, ticketed-event) (from Ventura Music Hall - VMH). https://tixr.com/e/189663
-- 9:30 PM: CANCELLED: Zon Candela at Tarantula Hill Brewing Company, 244 E Thousand Oaks Blvd, Thousand Oaks, CA 91360 (Thousand-Oaks, ticketed-event) (Ventura Rocks). https://tockify.com/vtarocks/detail/27028/1793597400000
 
 ### Monday, November 2
 - 12:00 PM: Laurel Project presents Fortuna Quintet at Ventura College Performing Arts Center, 4700 Loma Vista Rd, Ventura, CA 93003 (from Ventura College Performing Arts Center). https://www.venturacollege.edu/events/laurel-project-presents-fortuna-quintet-nov-2

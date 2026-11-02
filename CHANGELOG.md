@@ -6,6 +6,19 @@ Notable changes by version. Earlier releases are listed under [tags](../../tags)
 
 ---
 
+## 2.11.0
+
+**Shows from the venues and bands themselves.**
+
+- Most shows now come from venues' and bands' websites and calendars, and each one links back to them. A show's
+  page says who listed it, like **From Harbor Cove Cafe**.
+- When TOPA has a show for a venue and start time, that's the one listed, even if the Ventura Rocks calendar has a
+  different act then.
+- The legend on band and venue pages reads **From bands & venues**, and About explains where shows come from.
+- New venue: the Ojai Playhouse.
+
+---
+
 ## 2.10.0
 
 **Suggest an edit, and a way to reach TOPA.**

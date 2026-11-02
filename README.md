@@ -171,6 +171,7 @@ Three address-bar switches help with testing: `?tesla=1` turns on the car-only v
 npm install                          # once; the only dependency is for testing (puppeteer-core)
 npm test                             # the app, in headless Chrome
 npm run sheet                        # every screen on every phone, in phone-sheet/index.html
+npm run shots                        # retake screenshots/ for a release (real listings and previews)
 python3 -m unittest discover tests   # forms, merging sources
 ```
 
@@ -206,6 +207,7 @@ commit gets a ✓ or ✗ before it's tagged as a release.
 | `scripts/submissions.py` | Turns a filled-in form into a file for a pull request |
 | `scripts/forms.py` | Keeps the forms' venue lists current |
 | `scripts/photos.py` | Shrinks band and venue photos |
+| `scripts/shots.mjs` | Retakes `screenshots/` for a release (`npm run shots`) |
 | `community/` | Shows, bands and venues, sent in or added by TOPA, one file each |
 | `.github/ISSUE_TEMPLATE/` | The forms: a show, a weekly show, a band, a venue, and Cancelled or changed? |
 | `.github/workflows/submission.yml` | Checks each form and opens the pull request |

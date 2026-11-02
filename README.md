@@ -26,11 +26,13 @@ More in [`screenshots/`](screenshots/): every page on the Tesla screen (1920×12
   another day, the weekend, or a genre. Each row shows the band, venue, town and distance.
 - **Home.** Tap the TOPA circle in the middle of the tab bar for Home: your faves' next shows, each band once, and
   tonight's lineup. Settings can make TOPA open there instead of Shows.
+- **Karaoke mode.** Turn it on in Settings and Home shows the week's karaoke nights, one day at a time. Karaoke is also a
+  genre, and search finds it even when it's misspelled.
 - **Hear before you go.** ▶ plays 30-second previews from Apple Music. "Play all" runs through a whole night's lineup
   like a radio. Tap the player to open it full screen.
 - **Bands and venues.** Every band and venue has its own page: dates, lineup, directions, call and website, plus the
-  band's links and photo when it has sent them. Bands can add a short bio and their genres, which show on their band page
-  and their shows. The Venues tab lists each venue's town, distance, show count and next show.
+  band's links and photo when it has sent them. Bands and venues can add a short About, and bands their genres, which
+  show on their pages and shows. The Venues tab lists each venue's town, distance, show count and next show.
 - **Anyone can add a show.** Bands, fans, and venues send shows, band info, and venue photos through short forms
   (Home → ⓘ → Add to TOPA). Each one is checked before it goes live. Shows sent this way get a small **@**;
   shows from the Ventura Rocks community calendar get a small calendar.
@@ -48,8 +50,8 @@ More in [`screenshots/`](screenshots/): every page on the Tesla screen (1920×12
   [`llms.txt`](https://topa.automatous.io/llms.txt), a plain-English copy of the listings, with no app needed.
 - **Works like an app.** Add it to a phone's home screen (see [Try it](#try-it)) and it opens full-screen. It keeps working
   offline with the last listings, pull down to refresh, and the back button (or swipe-back) moves through pages.
-- **About and Settings.** The ⓘ on Home has credits, links and Settings: your area, your own Home greeting, and whether
-  TOPA opens on Shows or Home.
+- **About and Settings.** The ⓘ on Home has credits, links and Settings: your area, your own Home greeting, whether
+  TOPA opens on Shows or Home, and Karaoke mode.
 
 ## Try it
 

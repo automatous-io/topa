@@ -1,5 +1,8 @@
 {
   "name": "KJ's Neighborhood Bar",
+  "aliases": [
+    "KJ's (formerly Gibsons, formerly The Twist on Main)"
+  ],
   "address": "454 E Main St, Ventura, CA 93001",
   "city": "Ventura",
   "lat": 34.280758,

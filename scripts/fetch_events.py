@@ -405,6 +405,16 @@ def main():
         old = {}
 
     added, bands, venues = community.load(a.community) if "community" in SOURCES else ([], {}, {})
+    renamed = community.one_name(added + events, a.community)
+    if renamed:
+        print(f"{renamed} shows listed under the band's or venue's usual name")
+    close = community.look_alikes(added + events, a.community)
+    if close:
+        lines = [f"- {'Band' if f == 'artist' else 'Venue'}: Ventura Rocks has \"{n}\", we have \"{o}\"" for f, n, o in close]
+        print("Close to a name we have (if it's the same, add it to that page's aliases):\n" + "\n".join(lines))
+        if os.environ.get("GITHUB_STEP_SUMMARY"):
+            with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as f:
+                f.write("### Names close to ours\nIf it's the same band or venue, add the name to its page's aliases.\n\n" + "\n".join(lines) + "\n")
     fill_places(added, events + (old.get("events") or []))
     found = {"community": added, "ventura-rocks": events}
     events, dropped = community.merge([found[s] for s in SOURCES])

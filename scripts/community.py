@@ -338,15 +338,102 @@ def same_band(a, b):
     return difflib.SequenceMatcher(None, x, y).ratio() >= 0.85  # typos
 
 
+# a venue's wording around the band
+BILLING = [
+    r"^live music with (.+?) in the tasting room$",
+    r"^music:\s*(.+)$",
+    r"^(.+?)\s*\(weekly \w+\)$",
+    r"^(.+?)\s*\(live music \w+\)$",
+    r"^(.+?)\s*\(unplugged\)$",
+]
+
+
+def plain_name(s):
+    """'Live Music with Adam G in the Tasting Room' -> 'Adam G'."""
+    for p in BILLING:
+        m = re.match(p, s.strip(), re.I)
+        if m:
+            return m.group(1).strip()
+    return s
+
+
+def names(root, kind):
+    """name_key -> the name on the band's or venue's TOPA page, for its name and every alias."""
+    out = {}
+    records = [r for r in read_folder(root, kind) if r.get("name")]
+    for r in records:
+        out.setdefault(name_key(r["name"]), r["name"])
+    for r in records:
+        for a in r.get("aliases") or []:
+            out.setdefault(name_key(a), r["name"])
+    return out
+
+
+def one_name(events, root=ROOT):
+    """Every band and venue under one name: the name on its TOPA page, or else the spelling TOPA's own shows use
+    most. Returns how many listings were renamed."""
+    bands, venues = names(root, "band"), names(root, "venue")
+    spellings = {"artist": {}, "venue": {}}
+    before = [(e["artist"], e["venue"]) for e in events]
+    for e in events:
+        e["artist"] = plain_name(e["artist"])
+        for field in spellings:
+            n = e[field]
+            pick = spellings[field].setdefault(name_key(n), {})
+            pick[n] = pick.get(n, 0) + (100 if e.get("source") == "community" else 1)
+    best = {f: {k: max(c, key=c.get) for k, c in s.items()} for f, s in spellings.items()}
+    for e in events:
+        k = name_key(e["artist"])
+        head, sep, rest = e["artist"].partition(" w/ ")
+        if k in bands:
+            e["artist"] = bands[k]
+        elif sep and name_key(head) in bands:
+            e["artist"] = bands[name_key(head)] + sep + rest
+        else:
+            e["artist"] = best["artist"].get(k, e["artist"])
+        k = name_key(e["venue"])
+        e["venue"] = venues.get(k) or best["venue"].get(k, e["venue"])
+    return sum((e["artist"], e["venue"]) != b for e, b in zip(events, before))
+
+
+def look_alikes(events, root=ROOT):
+    """Ventura Rocks names close to one of TOPA's but not the same: a new spelling to add to that page's aliases.
+    Returns [(field, their name, our name)]."""
+    ours = {"artist": set(names(root, "band").values()), "venue": set(names(root, "venue").values())}
+    for e in events:
+        if e.get("source") == "community":
+            ours["artist"].add(e["artist"])
+            ours["venue"].add(e["venue"])
+    found = set()
+    for e in events:
+        if e.get("source") == "community":
+            continue
+        for field, known in ours.items():
+            n = e[field]
+            if not n or n in known:
+                continue
+            keys = {name_key(k): k for k in known}
+            hit = difflib.get_close_matches(name_key(n), list(keys), n=1, cutoff=0.85)
+            if hit:
+                found.add((field, n, keys[hit[0]]))
+    return sorted(found)
+
+
+def same_venue(a, b):
+    """'Rosie's Corner (The Annex)' ~ "Rosie's Corner", but not ~ "Rosie's Corner (Midtown)"."""
+    if name_key(a) == name_key(b):
+        return True
+    return name_key(short_name(a)) == name_key(short_name(b)) and (short_name(a) == a.strip() or short_name(b) == b.strip())
+
+
 def same_show(a, b):
     """Same venue, day and band. The time can differ."""
-    venue = lambda e: short_name(e["venue"]).lower()
-    return venue(a) == venue(b) and a["start"][:10] == b["start"][:10] and same_band(a["artist"], b["artist"])
+    return same_venue(a["venue"], b["venue"]) and a["start"][:10] == b["start"][:10] and same_band(a["artist"], b["artist"])
 
 
 def same_slot(a, b):
     """Same venue and start time."""
-    return short_name(a["venue"]).lower() == short_name(b["venue"]).lower() and a["start"][:16] == b["start"][:16]
+    return same_venue(a["venue"], b["venue"]) and a["start"][:16] == b["start"][:16]
 
 
 def merge(ranked):

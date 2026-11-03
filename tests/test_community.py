@@ -432,6 +432,37 @@ class Loading(unittest.TestCase):
         self.assertEqual(bands["The Saltgrass Band"]["alias_of"], "Saltgrass")
         self.assertNotIn("alias_of", bands["Saltgrass"])
 
+    def test_one_name_per_band_and_venue(self):
+        self.put("band", "b.json", {"name": "Saltgrass", "aliases": ["Saltgrass Band"]})
+        self.put("venue", "v.json", {"name": "Harbor Lights Tavern", "aliases": ["Harbor Lights (formerly The Dock)"]})
+        ev = lambda artist, venue, source="ventura-rocks": {"artist": artist, "venue": venue, "source": source}
+        events = [
+            ev("The Saltgrass Band", "Harbor Lights (formerly The Dock)"),
+            ev("saltgrass w/ Friends", "harbor lights tavern"),
+            ev("Live Music with Kelp Mary in the Tasting Room", "The Pier", "community"),
+            ev("Kelp mary", "The Pier"),
+            ev("Kelp Mary", "The Pier", "community"),
+        ]
+        self.assertEqual(c.one_name(events, self.root), 4)
+        self.assertEqual([(e["artist"], e["venue"]) for e in events], [
+            ("Saltgrass", "Harbor Lights Tavern"),
+            ("Saltgrass w/ Friends", "Harbor Lights Tavern"),
+            ("Kelp Mary", "The Pier"),
+            ("Kelp Mary", "The Pier"),
+            ("Kelp Mary", "The Pier"),
+        ])
+
+    def test_close_names_are_flagged(self):
+        self.put("band", "b.json", {"name": "Saltgrass"})
+        events = [
+            {"artist": "Saltgras", "venue": "The Pier", "source": "ventura-rocks"},
+            {"artist": "Kelp Mary", "venue": "The Pier", "source": "community"},
+            {"artist": "Kelp Mery", "venue": "The Piers", "source": "ventura-rocks"},
+            {"artist": "Driftwood", "venue": "The Pier", "source": "ventura-rocks"},
+        ]
+        self.assertEqual(c.look_alikes(events, self.root), [
+            ("artist", "Kelp Mery", "Kelp Mary"), ("artist", "Saltgras", "Saltgrass"), ("venue", "The Piers", "The Pier")])
+
     def test_own_photos_fill_in_but_a_venue_photo_wins(self):
         for path in ("photos/venues/the-new-spot.jpg", "photos/venues/harbor-lights-tavern.jpg"):
             os.makedirs(os.path.join(self.root, os.path.dirname(path)), exist_ok=True)
@@ -441,6 +472,42 @@ class Loading(unittest.TestCase):
         c.add_own_photos(venues, {}, events, self.root)
         self.assertEqual(venues["The New Spot"]["photo"], "community/photos/venues/the-new-spot.jpg")
         self.assertEqual(venues["Harbor Lights Tavern"]["photo"], "photos/venues/harbor-lights-tavern.jpg")
+
+
+class OneName(unittest.TestCase):
+    """community/ itself: one page per band and venue, and shows use the page's name."""
+
+    def check(self, kind, field, folders):
+        pages, problems = {}, []
+        for r in c.read_folder(c.ROOT, kind):
+            for n in [r["name"], *(r.get("aliases") or [])]:
+                k = c.name_key(n)
+                if pages.get(k, r["name"]) != r["name"]:
+                    problems.append(f"{n!r} is on two {kind} pages: {pages[k]!r} and {r['name']!r}")
+                pages.setdefault(k, r["name"])
+        for folder in folders:
+            for r in c.read_folder(c.ROOT, folder):
+                n = r.get(field) or ""
+                if field == "band" and c.plain_name(n) != n:
+                    problems.append(f"community/{c.FOLDERS[folder]}/{r['_file']}: use {c.plain_name(n)!r}, not {n!r}")
+                elif pages.get(c.name_key(n), n) != n:
+                    problems.append(f"community/{c.FOLDERS[folder]}/{r['_file']}: use {pages[c.name_key(n)]!r}, not {n!r}")
+        self.assertEqual(problems, [], "\n" + "\n".join(problems))
+
+    def test_bands(self):
+        self.check("band", "band", ("show", "weekly"))
+
+    def test_venues(self):
+        self.check("venue", "venue", ("show", "weekly", "change"))
+
+    def test_no_show_twice(self):
+        seen, twice = {}, []
+        for r in c.read_folder(c.ROOT, "show"):
+            k = (r.get("date"), c.name_key(r.get("venue")), c.name_key(r.get("band")))
+            if k in seen:
+                twice.append(f"{seen[k]} and {r['_file']}")
+            seen[k] = r["_file"]
+        self.assertEqual(twice, [], "\n" + "\n".join(twice))
 
 
 class Merging(unittest.TestCase):
@@ -462,6 +529,14 @@ class Merging(unittest.TestCase):
              ("The Tide Pool Ramblers", "ventura-rocks"), ("Different Band", "ventura-rocks")],  # other venue, other band
         )
         self.assertEqual(dropped, {1: 1, 2: 2})
+
+    def test_two_spots_of_one_brewery_are_two_venues(self):
+        self.assertTrue(c.same_venue("Rosie's Corner (The Annex)", "rosie's corner"))
+        self.assertFalse(c.same_venue("Pier Street Brewing Co. (Pier Street downtown)", "Pier Street Brewing Co. (Pier Street Camarillo)"))
+        a = self.ev("Kelp Mary", "Pier Street Brewing Co. (Pier Street downtown)", "2026-11-07T16:00", "community")
+        b = self.ev("Saltgrass", "Pier Street Brewing Co. (Pier Street Camarillo)", "2026-11-07T16:00", "ventura-rocks")
+        shows, _ = c.merge([[a], [b]])
+        self.assertEqual(len(shows), 2)
 
     def test_listed_slot_wins(self):
         ours = [self.ev("Saltgrass", "Harbor Lights Tavern", "2026-11-07T20:30:00-08:00", "community")]

@@ -1,5 +1,8 @@
 {
-  "name": "Rock & Roll Pizza (Harley's Valley Bowl",
+  "name": "Rock & Roll Pizza (Harley's Valley Bowl)",
+  "aliases": [
+    "Rock & Roll Pizza (Harley's Valley Bowl"
+  ],
   "address": "5255 Cochran St, Simi Valley, CA 93063",
   "city": "Simi Valley",
   "lat": 34.279051,

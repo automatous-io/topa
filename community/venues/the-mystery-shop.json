@@ -1,5 +1,8 @@
 {
   "name": "The Mystery Shop",
+  "aliases": [
+    "Mystery Shop"
+  ],
   "address": "420 S A St, Oxnard, CA 93030",
   "city": "Oxnard",
   "lat": 34.198598,

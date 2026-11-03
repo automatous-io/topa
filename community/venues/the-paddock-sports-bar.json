@@ -1,0 +1,12 @@
+{
+  "name": "The Paddock Sports Bar",
+  "address": "1345 E Thousand Oaks Blvd, Thousand Oaks, CA 91362",
+  "city": "Thousand Oaks",
+  "website": "https://www.paddocksportsbar.com",
+  "instagram": "https://instagram.com/thepaddock805",
+  "maintainers": [
+    "automatous-io"
+  ],
+  "submitted_by": "automatous-io",
+  "source": "the venue's public Instagram profile, 2026-11-03"
+}

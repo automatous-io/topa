@@ -1,0 +1,20 @@
+{
+  "band": "Blues Jam",
+  "venue": "Bombay Bar & Grill",
+  "weekday": "Wednesday",
+  "start": "18:00",
+  "end": "21:00",
+  "first": "2026-11-04",
+  "until": "2026-12-31",
+  "skip": [],
+  "tags": [
+    "blues",
+    "jam",
+    "no-cover"
+  ],
+  "link": "https://www.instagram.com/p/DfCuMUnp3DU/",
+  "note": "Hosted by Ray Jay. Local musicians and bands. No cover.",
+  "submitted_by": "automatous-io",
+  "source": "the venue's Instagram, 2026-11-03",
+  "from": "venue"
+}

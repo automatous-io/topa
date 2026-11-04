@@ -5,11 +5,18 @@
     "Van Allen Band"
   ],
   "genres": [
-    "americana"
+    "americana",
+    "bluegrass",
+    "folk",
+    "blues"
   ],
   "town": "Ojai",
+  "bio": "The Van Allen Twins are an Ojai band led by two siblings whose original music, which they call Blues Grass, blends blues, bluegrass, country, folk and roots on harmonica, banjo and guitar. They began as an acoustic duo in 2021.",
+  "bio_source": "Written by TOPA from vanallentwins.com.",
   "links": {
-    "instagram": "https://instagram.com/vanallentwinsband"
+    "website": "https://www.vanallentwins.com",
+    "instagram": "https://instagram.com/vanallentwinsband",
+    "youtube": "https://www.youtube.com/@VanAllenTwinsMusic"
   },
   "apple": "1818553873",
   "photo": "",

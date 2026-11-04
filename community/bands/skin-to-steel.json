@@ -1,8 +1,14 @@
 {
   "name": "Skin to Steel",
   "aliases": [],
-  "genres": [],
+  "genres": [
+    "americana",
+    "roots",
+    "rock"
+  ],
   "town": "Ojai",
+  "bio": "Skin to Steel is an Ojai-based band playing americana, roots and rock, which it describes as raw storytelling and eclectic songs.",
+  "bio_source": "Written by TOPA from @skintosteelband.",
   "links": {
     "instagram": "https://instagram.com/skintosteelband"
   },

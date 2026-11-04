@@ -2,9 +2,12 @@
   "name": "The Rose Valley Thorns",
   "aliases": [],
   "genres": [
-    "bluegrass"
+    "bluegrass",
+    "acoustic"
   ],
   "town": "Ojai",
+  "bio": "The Rose Valley Thorns are a bluegrass band founded in Ojai. They describe their music as modern bluegrass that honors the traditional style, with original songs, and they have released a self-titled album.",
+  "bio_source": "Written by TOPA from the band's Bandcamp page and @therosevalleythorns.",
   "links": {
     "instagram": "https://instagram.com/therosevalleythorns"
   },

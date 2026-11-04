@@ -4,8 +4,11 @@
   "genres": [
     "reggae"
   ],
-  "town": "",
+  "town": "San Diego",
+  "bio": "Jahtiva is a San Diego reggae singer whose music draws on 1970s roots reggae along with jazz, blues and hip-hop.",
+  "bio_source": "Written by TOPA from jahtiva.com.",
   "links": {
+    "website": "https://www.jahtiva.com",
     "instagram": "https://instagram.com/jahtivareggae"
   },
   "apple": "1732326484",

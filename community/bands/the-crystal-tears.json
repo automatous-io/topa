@@ -1,10 +1,17 @@
 {
   "name": "The Crystal Tears",
   "aliases": [],
-  "genres": [],
+  "genres": [
+    "goth",
+    "soul"
+  ],
   "town": "Oxnard",
+  "bio": "The Crystal Tears are an Oxnard Chicano band formed in 2023 who call their sound GothSoul: brooding keys, guitar, cello and violin with bilingual lyrics. Their debut album came out in 2025 on Oxnard's YAY! Records.",
+  "bio_source": "Written by TOPA from thecrystaltears.bandcamp.com.",
   "links": {
-    "instagram": "https://instagram.com/thecrystaltearsoxnard"
+    "instagram": "https://instagram.com/thecrystaltearsoxnard",
+    "bandcamp": "https://thecrystaltears.bandcamp.com",
+    "youtube": "https://www.youtube.com/@TheCrystalTearsOxnard"
   },
   "apple": "none",
   "photo": "",

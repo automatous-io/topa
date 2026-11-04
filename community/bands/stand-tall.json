@@ -2,9 +2,12 @@
   "name": "Stand Tall",
   "aliases": [],
   "genres": [
+    "hardcore",
     "punk"
   ],
-  "town": "",
+  "town": "Bay Area",
+  "bio": "Stand Tall is a straight edge hardcore band from the Bay Area.",
+  "bio_source": "Written by TOPA from @standtallsxe.",
   "links": {
     "instagram": "https://instagram.com/standtallsxe"
   },

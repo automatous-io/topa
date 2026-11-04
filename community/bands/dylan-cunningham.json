@@ -2,11 +2,16 @@
   "name": "Dylan Cunningham",
   "aliases": [],
   "genres": [
-    "singer-songwriter"
+    "singer-songwriter",
+    "country",
+    "folk"
   ],
   "town": "Ventura",
+  "bio": "Dylan Cunningham is a singer-songwriter who grew up in New England and now lives in Ventura County. He plays soulful original songs and names the traditional country he was raised on, the psychedelia of the Grateful Dead and reggae among his influences. His album Grist for the Mill came out in 2025.",
+  "bio_source": "Written by TOPA from his Spotify artist page.",
   "links": {
-    "instagram": "https://instagram.com/dh_cunningham"
+    "instagram": "https://instagram.com/dh_cunningham",
+    "spotify": "https://open.spotify.com/artist/4luLjpQVL3ytDJvvmrXh2x"
   },
   "apple": "none",
   "photo": "",

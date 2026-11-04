@@ -4,13 +4,21 @@
     "Tony Ybarra spirtis of Jazz"
   ],
   "genres": [
-    "jazz"
+    "jazz",
+    "latin",
+    "flamenco"
   ],
-  "town": "",
+  "town": "Santa Barbara",
+  "bio": "Tony Ybarra is a Santa Barbara guitarist who plays flamenco, Latin styles and jazz, with six albums to his name. He founded Ybarra Music in 2002 to provide live music for weddings and events.",
+  "bio_source": "Written by TOPA from ybarramusic.com and @ybarramusicsb.",
   "links": {
-    "instagram": "https://instagram.com/ybarramusicsb"
+    "website": "http://www.ybarramusic.com",
+    "instagram": "https://instagram.com/ybarramusicsb",
+    "facebook": "https://www.facebook.com/TonyYbarraGuitarist/",
+    "bandcamp": "https://tonyybarra.bandcamp.com",
+    "youtube": "https://www.youtube.com/@TonyYbarra"
   },
-  "apple": "",
+  "apple": "192653637",
   "photo": "",
   "maintainers": [
     "automatous-io"

@@ -2,11 +2,18 @@
   "name": "Will Breman",
   "aliases": [],
   "genres": [
-    "folk"
+    "folk",
+    "soul",
+    "singer-songwriter"
   ],
   "town": "",
+  "bio": "Will Breman is a singer-songwriter from California's Central Coast who describes his music as soul/folk, blending folk ballads, soul-pop and bluegrass tunes. He competed on season 17 of NBC's The Voice.",
+  "bio_source": "Written by TOPA from willbremanmusic.com and @willbremanmusic.",
   "links": {
-    "instagram": "https://instagram.com/willbremanmusic"
+    "website": "https://www.willbremanmusic.com",
+    "instagram": "https://instagram.com/willbremanmusic",
+    "spotify": "https://open.spotify.com/artist/22tvkU91Vuone2rlxB7GyN",
+    "youtube": "https://www.youtube.com/channel/UCZPMUcCgG_OPSoZv_KARwvA"
   },
   "apple": "1188968096",
   "photo": "",

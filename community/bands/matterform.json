@@ -1,10 +1,17 @@
 {
   "name": "Matterform",
   "aliases": [],
-  "genres": [],
-  "town": "",
+  "genres": [
+    "jazz",
+    "funk",
+    "fusion"
+  ],
+  "town": "Ventura",
+  "bio": "Matterform is an instrumental band from Ventura that describes its music as classic funk grooves, psychedelic leads and jazz harmonic foundations. Its self-titled album came out in June 2026.",
+  "bio_source": "Written by TOPA from matterform.bandcamp.com.",
   "links": {
-    "instagram": "https://instagram.com/matterformband"
+    "instagram": "https://instagram.com/matterformband",
+    "bandcamp": "https://matterform.bandcamp.com"
   },
   "apple": "1870876475",
   "photo": "",

@@ -2,10 +2,16 @@
   "name": "George Krikes",
   "aliases": [],
   "genres": [
-    "acoustic"
+    "acoustic",
+    "folk",
+    "soul",
+    "singer-songwriter"
   ],
-  "town": "",
+  "town": "Los Angeles",
+  "bio": "George Krikes is a Los Angeles singer-songwriter and guitarist whose site describes his sound as soulful acoustic music rooted in California folk and bossa-infused soul. He was previously in the band King Washington and now performs solo.",
+  "bio_source": "Written by TOPA from georgekrikes.net and a Voyage LA interview.",
   "links": {
+    "website": "https://www.georgekrikes.net",
     "instagram": "https://instagram.com/george.krikes"
   },
   "apple": "432332386",

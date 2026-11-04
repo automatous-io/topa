@@ -2,9 +2,12 @@
   "name": "Electric Duke",
   "aliases": [],
   "genres": [
-    "tribute"
+    "tribute",
+    "rock"
   ],
   "town": "Los Angeles",
+  "bio": "",
+  "bio_source": "",
   "links": {
     "instagram": "https://instagram.com/electric_duke"
   },

@@ -1,8 +1,14 @@
 {
   "name": "Rapscallions",
-  "aliases": [],
-  "genres": [],
+  "aliases": [
+    "The Rapscallions"
+  ],
+  "genres": [
+    "americana"
+  ],
   "town": "Ventura",
+  "bio": "",
+  "bio_source": "",
   "links": {
     "instagram": "https://instagram.com/therapscallionsventura"
   },

@@ -2,11 +2,18 @@
   "name": "Shakedown Citi",
   "aliases": [],
   "genres": [
-    "tribute"
+    "tribute",
+    "jam"
   ],
-  "town": "",
+  "town": "New York",
+  "bio": "Shakedown Citi is a New York City Grateful Dead tribute band formed in 2023 that describes itself as channeling the spirit of the Dead and plays shows across the Northeast and beyond.",
+  "bio_source": "Written by TOPA from shakedownciti.com and @shakedownciti.",
   "links": {
-    "instagram": "https://instagram.com/shakedownciti"
+    "website": "https://www.shakedownciti.com",
+    "instagram": "https://instagram.com/shakedownciti",
+    "facebook": "https://www.facebook.com/profile.php?id=61552688850386",
+    "spotify": "https://open.spotify.com/artist/642FvT9DfSxEEAORYWqPmq",
+    "youtube": "https://www.youtube.com/@ShakedownCiti"
   },
   "apple": "1775593782",
   "photo": "",

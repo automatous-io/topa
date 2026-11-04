@@ -6,10 +6,12 @@
     "rock"
   ],
   "town": "Orange County",
+  "bio": "Gaba Groove is a three-piece reggae rock band from Orange County that plays its own songs; its latest release is Rasta Wars.",
+  "bio_source": "Written by TOPA from @gaba.groove.",
   "links": {
     "instagram": "https://instagram.com/gaba.groove"
   },
-  "apple": "",
+  "apple": "1575304398",
   "photo": "",
   "maintainers": [
     "automatous-io"

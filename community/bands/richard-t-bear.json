@@ -4,12 +4,20 @@
     "Richard T Bear & Friends"
   ],
   "genres": [
-    "funk",
+    "blues",
+    "soul",
+    "rock",
     "piano"
   ],
-  "town": "",
+  "town": "Los Angeles",
+  "bio": "Richard T Bear, also billed as T Bear, is a Los Angeles singer, songwriter and keyboardist whose site describes his music as a mix of blues, soul and rock. He returned to recording with Fresh Bear Tracks in 2021, followed by The Way of the World in 2024.",
+  "bio_source": "Written by TOPA from tbear.rocks.",
   "links": {
-    "instagram": "https://instagram.com/richard_tbear"
+    "website": "https://www.tbear.rocks",
+    "instagram": "https://instagram.com/richard_tbear",
+    "facebook": "https://www.facebook.com/richardtbear88",
+    "spotify": "https://open.spotify.com/artist/0bstvTCExOsEEw0tMQjb07",
+    "youtube": "https://www.youtube.com/channel/UCQV7XbQdA1ynEp34gw8EMmA"
   },
   "apple": "",
   "photo": "",

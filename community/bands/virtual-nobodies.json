@@ -3,16 +3,26 @@
   "aliases": [
     "Virtualy Nobies"
   ],
-  "genres": [],
-  "apple": "",
+  "genres": [
+    "alt-rock",
+    "americana",
+    "rock"
+  ],
+  "town": "Newbury Park",
+  "bio": "Virtual Nobodies are a four-piece alternative rock band from Newbury Park. They describe their sound as coastal-desert rock that blends cinematic Americana with modern grit. Their debut album is Any Last Words.",
+  "bio_source": "Written by TOPA from jaminthevan.com and museboat.com.",
+  "links": {
+    "website": "https://jaminthevan.com/band/virtual-nobodies/",
+    "instagram": "https://instagram.com/virtualnobodies",
+    "facebook": "https://www.facebook.com/people/Virtual-Nobodies/61579679319825/",
+    "spotify": "https://open.spotify.com/artist/0ai61DeA6TloJOZ8TYcqMf",
+    "youtube": "https://www.youtube.com/@virtualnobodies"
+  },
+  "apple": "1616859612",
   "photo": "",
   "maintainers": [
     "automatous-io"
   ],
   "submitted_by": "automatous-io",
-  "town": "Newbury Park",
-  "links": {
-    "website": "https://jaminthevan.com/band/virtual-nobodies/"
-  },
   "source": "public web search and the band's Jam in the Van page, 2026-11-03"
 }

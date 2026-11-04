@@ -1210,36 +1210,12 @@ a.pldz {
   font-size: 12px;
   color: var(--mute);
 }
-.abig.add {
-  background: #5ee0c11a;
-}
-.abig.add > svg {
-  background: var(--community);
-  color: #0e2a23;
-}
 .abig.inst {
   background: #ff8a661a;
 }
 .abig.inst > svg {
   background: var(--sunset);
   color: var(--on-acc);
-}
-.acontact {
-  margin: 0 0 12px;
-  text-align: center;
-  color: var(--mute);
-  line-height: 1.9;
-}
-.acontact a {
-  color: var(--acc);
-  font-weight: 700;
-  text-decoration: none;
-}
-.acontact a:hover {
-  text-decoration: underline;
-}
-button.abig.add:hover {
-  background: #5ee0c12e;
 }
 button.abig.inst:hover {
   background: #ff8a662e;
@@ -4134,10 +4110,6 @@ a.srcline:hover {
     font-size: 20px;
   }
 }
-/* About: Add to TOPA sits under Where shows come from */
-.abigs.aadd {
-  margin-top: 20px;
-}
 
 /* the logo opens About. Car: at the bottom of the sidebar, above when the listings changed */
 /* phones: TOPA circle in the middle of the tab bar */
@@ -4538,7 +4510,7 @@ i.newtag,
   line-height: 1.05;
   text-transform: none;
 }
-.hinfo {
+.hcog {
   flex: none;
   width: 56px;
   height: 56px;
@@ -4549,7 +4521,7 @@ i.newtag,
   align-items: center;
   justify-content: center;
 }
-.hinfo svg {
+.hcog svg {
   width: 26px;
   height: 26px;
 }
@@ -4782,7 +4754,7 @@ i.ftag {
 .wback:has(.mgap) {
   display: none;
 }
-/* About: Settings */
+/* Settings */
 .aset {
   display: flex;
   align-items: center;
@@ -4882,11 +4854,11 @@ i.ftag {
   .hhead h1 {
     font-size: 40px;
   }
-  .hinfo {
+  .hcog {
     width: 44px;
     height: 44px;
   }
-  .hinfo svg {
+  .hcog svg {
     width: 22px;
     height: 22px;
   }
@@ -5047,4 +5019,37 @@ h1.tobd:hover {
 }
 .aset input::placeholder {
   color: #7d7088;
+}
+/* Settings rows */
+.ahero.seth {
+  padding: 28px 80px 4px;
+  background: none;
+}
+.seth .atitle {
+  margin: 0;
+  font-size: 36px;
+}
+.agos {
+  margin-top: 22px;
+}
+.ago-row {
+  box-sizing: border-box;
+  width: 100%;
+  font: inherit;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+.ago-row:hover {
+  background: #ffffff1f;
+}
+.acontact {
+  margin: 26px 0 0;
+  text-align: center;
+  color: var(--mute);
+  line-height: 1.7;
+}
+.acard .acontact a {
+  color: var(--acc);
+  font-weight: 700;
 }

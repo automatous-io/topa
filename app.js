@@ -443,7 +443,9 @@ const ICONS = {
     '<path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
   search:
     '<g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></g>',
-  info: '<circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 10.5v6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="7.3" r="1.4"/>',
+  cog: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></g>',
+  pencil: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></g>',
+  topa: '<text x="12" y="15.5" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" font-weight="600" letter-spacing=".3">TOPA</text>',
   mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
   install:
     '<path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',
@@ -1443,7 +1445,7 @@ function homePage() {
       : `<p class="hempty">Nothing else ${todayWord().toLowerCase()}. <button class="hmore" data-v="Shows" data-fromhome>See this week</button></p>`);
   return (
     `<div class="hhead"><h1>${esc(greeting())}</h1>` +
-    `<button class="hinfo" data-about aria-label="About TOPA">${svg("info")}</button></div>` +
+    `<button class="hcog" data-about aria-label="Settings">${svg("cog")}</button></div>` +
     `<div class="hgrid"><div>${left}</div><div>${right}</div></div>`
   );
 }
@@ -2214,19 +2216,17 @@ function installTile() {
 
 const newTab = (href, label) => `<a href="${href}" target="_blank" rel="noopener">${label}</a>`;
 
-// About
-function aboutHtml() {
+// Settings
+function settingsHtml() {
   const app = installTile();
-  const fact = (label, value) => `<div><dt>${label}</dt><dd>${value}</dd></div>`;
+  const go = (attrs, icon, title, sub) =>
+    `<button class="aset ago-row"${attrs}>${svg(icon)}<span><b>${title}</b><small>${sub}</small></span><span class="ago">›</span></button>`;
   return (
     `<div class="abar"><button class="ax" data-about-close aria-label="Close">${CLOSE_ICON}</button></div>` +
-    `<header class="ahero">${wordmark("about", true)}` +
-    `<p class="astory">Made for and by local live music lovers.<br>` +
-    `Bands, fans, and venues add to it, so it keeps getting better.</p></header>` +
+    `<header class="ahero seth"><h2 class="atitle">Settings</h2></header>` +
     `<div class="abody">` +
-    `<h3>Settings</h3>` +
     `<div class="aset">${svg("pin")}<span><b>Area</b><small>Ventura County</small></span></div>` +
-    `<label class="aset">${svg("info")}<span><b>Greeting</b><small>The title on Home</small></span>` +
+    `<label class="aset">${svg("pencil")}<span><b>Greeting</b><small>The title on Home</small></span>` +
     `<input id="greet" maxlength="${GREET_MAX}" placeholder="${timeGreeting()}" value="${esc(store.get(GREET_KEY) || "")}" ` +
     `autocomplete="off" aria-label="Greeting on Home"></label>` +
     `<div class="aset">${svg("Shows")}<span><b>Open to</b><small>Where TOPA starts</small></span>` +
@@ -2238,19 +2238,32 @@ function aboutHtml() {
       .map(k => `<button data-kmode="${k}" class="${karaokeOn() === (k === "On") ? "on" : ""}">${k}</button>`)
       .join("")}</span></div>` +
     (app ? `<div class="abigs one">${app}</div>` : "") +
+    `<div class="agos">` +
+    go(" data-about-add", "at", "Add to TOPA", "Shows, bands, venues") +
+    go(" data-about-info", "topa", "About TOPA", "Where shows come from") +
+    `</div>` +
+    `<p class="acontact">Questions, or see something to fix?<br>` +
+    `<a id="acontact" href="mailto:${CONTACT}?subject=TOPA">${CONTACT}</a></p>` +
+    `</div>`
+  );
+}
+
+// About
+function aboutHtml() {
+  const fact = (label, value) => `<div><dt>${label}</dt><dd>${value}</dd></div>`;
+  return (
+    `<div class="abar"><button class="aback" data-about-back>‹ Settings</button>` +
+    `<button class="ax" data-about-close aria-label="Close">${CLOSE_ICON}</button></div>` +
+    `<header class="ahero">${wordmark("about", true)}` +
+    `<p class="astory">Made for and by local live music lovers.<br>` +
+    `Bands, fans, and venues add to it, so it keeps getting better.</p></header>` +
+    `<div class="abody">` +
     `<h3>Where shows come from</h3>` +
     `<div class="legend">` +
     `<div><span class="srci vr">${svg("cal")}</span><span>The ${newTab(VR_SITE, "Ventura Rocks")} ` +
     `community calendar, checked 3x a day</span></div>` +
     `<div><span class="srci cm">${svg("at")}</span><span>From local bands, venues, and fans: their own websites and calendars, or sent to TOPA</span></div>` +
     `</div>` +
-    // right under the ways shows get in, so sending one is the next step
-    `<div class="abigs one aadd">` +
-    `<button class="abig add" data-about-add>${svg("at")}<span><b>Add to TOPA</b><small>Shows, bands, venues</small></span><span class="ago">›</span></button>` +
-    `</div>` +
-    `<h3 id="acontact">Contact</h3>` +
-    `<p class="acontact">Questions, or see something to fix?<br>` +
-    `<a href="mailto:${CONTACT}?subject=TOPA">${CONTACT}</a></p>` +
     `<h3>Good to know</h3>` +
     `<dl class="afacts">` +
     fact("Previews and art", newTab("https://music.apple.com", "Apple Music")) +
@@ -2265,14 +2278,14 @@ function aboutHtml() {
   );
 }
 
-// About's second page: the four forms
+// Add to TOPA
 function addHtml() {
   const form = (name, icon, title, sub) =>
     `<a class="aform" href="${formUrl(name)}" target="_blank" rel="noopener">${svg(icon)}` +
     `<span><b>${title}</b><small>${sub}</small></span></a>`;
   const step = (title, text) => `<li><b>${title}</b><span>${text}</span></li>`;
   return (
-    `<div class="abar"><button class="aback" data-about-back>‹ About</button>` +
+    `<div class="abar"><button class="aback" data-about-back>‹ Settings</button>` +
     `<button class="ax" data-about-close aria-label="Close">${CLOSE_ICON}</button></div>` +
     `<header class="ahero addh"><div class="atrow"><span class="aat">${svg("at")}</span>` +
     `<div><h2 class="atitle">Add to TOPA</h2><p class="atag">Shows, bands, venues</p></div></div>` +
@@ -2317,9 +2330,9 @@ const aboutPage = html => {
 function openAbout(to) {
   const a = document.getElementById("about");
   settleAbout();
-  a.setAttribute("aria-label", "About TOPA");
+  a.setAttribute("aria-label", "Settings");
   a.classList.remove("rep");
-  a.querySelector(".acard").innerHTML = aboutHtml();
+  a.querySelector(".acard").innerHTML = settingsHtml();
   a.hidden = false;
   if (to) document.getElementById("a" + to)?.scrollIntoView({ block: "start" });
 }
@@ -2420,7 +2433,7 @@ document.body.onclick = ev => {
     return;
   }
   const t = ev.target.closest(
-    "[data-share],[data-plfull],[data-fpclose],[data-fpfave],[data-search],[data-searchx],[data-term],[data-play],[data-playall],[data-pl],[data-plshow],[data-vsort],[data-clear],[data-show],[data-v],[data-d],[data-g],[data-band],[data-venue],[data-sort],[data-sb],[data-sv],[data-pop],[data-anyrad],[data-rad],[data-ssort],[data-ftab],[data-scroll],[data-about],[data-about-close],[data-about-add],[data-about-back],[data-install],[data-report],[data-rpick],[data-start],[data-kmode],[data-kday],[data-kall]",
+    "[data-share],[data-plfull],[data-fpclose],[data-fpfave],[data-search],[data-searchx],[data-term],[data-play],[data-playall],[data-pl],[data-plshow],[data-vsort],[data-clear],[data-show],[data-v],[data-d],[data-g],[data-band],[data-venue],[data-sort],[data-sb],[data-sv],[data-pop],[data-anyrad],[data-rad],[data-ssort],[data-ftab],[data-scroll],[data-about],[data-about-close],[data-about-add],[data-about-info],[data-about-back],[data-install],[data-report],[data-rpick],[data-start],[data-kmode],[data-kday],[data-kall]",
   );
   const pop = document.getElementById("pop");
   if (!ev.target.closest("#pop") && !(t && t.dataset.pop !== undefined)) pop.classList.remove("on");
@@ -2491,7 +2504,8 @@ document.body.onclick = ev => {
   }
   if (d.aboutClose !== undefined) return closeAbout();
   if (d.aboutAdd !== undefined) return aboutPage(addHtml());
-  if (d.aboutBack !== undefined) return aboutPage(aboutHtml());
+  if (d.aboutInfo !== undefined) return aboutPage(aboutHtml());
+  if (d.aboutBack !== undefined) return aboutPage(settingsHtml());
   if (d.scroll) {
     const c = t.parentNode.querySelector(".chips");
     c.scrollBy({ left: +d.scroll * c.clientWidth * 0.7, behavior: "smooth" });

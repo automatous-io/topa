@@ -294,11 +294,19 @@ test("phones: the search button slides out a search box, and the X closes it", a
   assert.equal(await text(page, "h1"), "Today");
 });
 
-test("About opens and closes, and shows the version", async t => {
+test("the cog opens Settings; About has the version; back; Contact emails", async t => {
   const page = await open(t);
   await tap(page, "nav .logo");
-  await tap(page, ".hinfo");
+  await tap(page, ".hcog");
+  assert.equal(await text(page, ".atitle"), "Settings");
+  assert.match(await page.$eval("#acontact", a => a.getAttribute("href")), /^mailto:/);
+  const rows = await page.$$eval(".agos .ago-row b", bs => bs.map(b => b.textContent));
+  assert.deepEqual(rows, ["Add to TOPA", "About TOPA"]);
+  await tap(page, "[data-about-info]");
+  assert.match(await text(page, ".legend"), /Ventura Rocks/);
   assert.match(await text(page, ".aver a"), /^v\d+\.\d+\.\d+$/);
+  await tap(page, "[data-about-back]");
+  assert.equal(await text(page, ".atitle"), "Settings");
   await tap(page, ".ax");
   assert.equal(await page.$eval("#about", el => el.hidden), true);
 });
@@ -347,7 +355,7 @@ test("a show moved to a new time says so", async t => {
 test("phones: swiping the About popup down closes it, a small drag doesn't", async t => {
   const page = await open(t, { viewport: PHONE });
   await tap(page, "nav .logo");
-  await tap(page, ".hinfo");
+  await tap(page, ".hcog");
   const box = await page.$eval("#about .acard", c => {
     const r = c.getBoundingClientRect();
     return { x: r.left + r.width / 2, y: r.top + 40 };
@@ -380,7 +388,7 @@ test("a band with a bio gets an About section; one without doesn't", async t => 
 
 // ---- Home ----
 
-test("Home: the app opens on it, with faves and tonight, and ⓘ opens About with the area", async t => {
+test("Home: the app opens on it, with faves and tonight, and the cog opens Settings with the area", async t => {
   const band = EVENTS.find(e => e.start.startsWith("2026-10-24")).artist;
   const page = await open(t, { viewport: PHONE, query: "&view=Home", faves: { bands: [band], venues: [] } });
   assert.match(await text(page, ".hhead h1"), /^Good (morning|afternoon|evening)$/);
@@ -388,7 +396,7 @@ test("Home: the app opens on it, with faves and tonight, and ⓘ opens About wit
   assert.deepEqual(heads, ["Your faves are playing", "Today"]);
   assert.ok((await count(page, ".hlist .hrow")) > 1);
   assert.equal(await page.$(".feat"), null, "no Featured card until a band is featured");
-  await tap(page, ".hinfo");
+  await tap(page, ".hcog");
   assert.match(await text(page, ".aset"), /Area\s*Ventura County/);
 });
 
@@ -435,7 +443,7 @@ test("the app opens on Shows; Settings: Open to Home makes it start on Home", as
   await page.goto(plain, { waitUntil: "networkidle0" });
   assert.match(await text(page, "h1"), /^(Today|Tonight)$/);
   await tap(page, "nav .logo");
-  await tap(page, ".hinfo");
+  await tap(page, ".hcog");
   await tap(page, '[data-start="Home"]');
   await page.goto(plain, { waitUntil: "networkidle0" });
   assert.match(await text(page, ".hhead h1"), /^Good (morning|afternoon|evening)$/);

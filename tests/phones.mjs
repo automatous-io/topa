@@ -57,12 +57,12 @@ export const SCREENS = [
   { name: "Venue page", query: `&view=Venue:${encodeURIComponent(venue)}` },
   { name: "Show page", query: "", go: page => press(page, "#main .rw[data-show]") },
   { name: "Home", query: "&view=Home" },
-  { name: "About", query: "&view=Home", go: page => press(page, ".hinfo") },
+  { name: "About", query: "&view=Home", go: page => press(page, ".hcog") },
   {
     name: "Add to TOPA",
     query: "&view=Home",
     go: async page => {
-      await press(page, ".hinfo");
+      await press(page, ".hcog");
       await press(page, "[data-about-add]");
     },
   },

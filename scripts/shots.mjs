@@ -70,14 +70,23 @@ const SHOTS = [
   ["09b-faves-venues", "&view=Faves", p => p.click("[data-ftab=venues]")],
   ["10-distance-picker", "", (p, dev) => p.click(dev === "phone" ? ".pill.loc.d-row" : ".pill.loc.d-top")],
   ["11-player", "", p => playBand(p, "Jim Friery")],
-  ["12-about", "&view=Home", p => p.click(".hinfo")],
+  ["12-settings", "&view=Home", p => p.click(".hcog")],
   [
     "12b-add",
     "&view=Home",
     async p => {
-      await p.click(".hinfo");
+      await p.click(".hcog");
       await pause(300);
       await p.click("[data-about-add]");
+    },
+  ],
+  [
+    "12c-about",
+    "&view=Home",
+    async p => {
+      await p.click(".hcog");
+      await pause(300);
+      await p.click("[data-about-info]");
     },
   ],
   [
@@ -90,11 +99,16 @@ const SHOTS = [
   ],
 ];
 
-// the repo as a website, live listings included
+// the repo as a website, with the live listings
+const LIVE = "https://topa.automatous.io/events.json";
 const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png", ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".woff2": "font/woff2", ".webmanifest": "application/manifest+json" };
 const server = createServer(async (req, res) => {
   const path = decodeURIComponent(new URL(req.url, "http://x").pathname);
   const file = join(ROOT, normalize(path === "/" ? "/index.html" : path));
+  if (path === "/events.json" && !existsSync(file)) {
+    const live = await fetch(LIVE).then(r => (r.ok ? r.text() : ""), () => "");
+    return live ? res.writeHead(200, { "content-type": "application/json" }).end(live) : res.writeHead(404).end();
+  }
   try {
     res.writeHead(200, { "content-type": TYPES[extname(file)] || "application/octet-stream", "cache-control": "no-store" });
     res.end(await readFile(file));

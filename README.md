@@ -28,6 +28,8 @@ More in [`screenshots/`](screenshots/): every page on the Tesla screen (1920×12
   tonight's lineup. Settings can make TOPA open there instead of Shows.
 - **Karaoke mode.** Turn it on in Settings and Home shows the week's karaoke nights, one day at a time. Karaoke is also a
   genre, and search finds it even when it's misspelled.
+- **Open mic mode.** The same for open mics: turn it on in Settings and Home shows the week's open mic nights. Open mic
+  is a genre too.
 - **Hear before you go.** ▶ plays 30-second previews from Apple Music. "Play all" runs through a whole night's lineup
   like a radio. Tap the player to open it full screen.
 - **Bands and venues.** Every band and venue has its own page: dates, lineup, directions, call and website, plus the

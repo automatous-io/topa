@@ -72,13 +72,33 @@ let status = { c: "loading" }; // c: loading | cached | live | offline; updated:
 // start page
 const START_KEY = "topa.start.v1";
 const START = store.get(START_KEY) === "Home" ? "Home" : "Shows";
-const KARAOKE_KEY = "topa.karaoke.v1";
 const CONTACT = "topa@automatous.io";
-const karaokeOn = () => store.get(KARAOKE_KEY) === true;
+// Home modes: a week strip for one kind of night
+const MODES = [
+  {
+    tag: "karaoke",
+    key: "topa.karaoke.v1",
+    name: "Karaoke",
+    title: "Karaoke this week",
+    one: "karaoke night",
+    icon: "mic",
+    art: "",
+  },
+  {
+    tag: "open mic",
+    key: "topa.openmic.v1",
+    name: "Open mic",
+    title: "Open mics this week",
+    one: "open mic",
+    icon: "omic",
+    art: " oart",
+  },
+];
+const modeOn = m => store.get(m.key) === true;
 let view = (v => (v && v !== "Search" ? v : START))(params.get("view"));
 
 let fromHome = false; // came from See all on Home
-let kday = 0; // Home karaoke: days from today
+const mday = {}; // Home modes: days from today, by tag
 
 
 let prev = "Shows"; // the page before, so a show page can highlight where it was opened from
@@ -134,6 +154,9 @@ const townFromAddress = a => {
   );
 };
 
+// "Open Mic with Joon Gloom" -> open mic
+const artistTag = t => new RegExp(t.replace(" ", "[\\s-]?"), "i");
+
 // a show listed on TOPA itself (community/), not from the Ventura Rocks calendar
 const isAdded = e => e.source === "community";
 
@@ -146,7 +169,7 @@ function toShow(o, rawTags) {
     ...o,
     lat: c ? c[0] : null,
     lng: c ? c[1] : null,
-    tags: classifyGenres(/karaoke/i.test(o.artist) ? [...rawTags, "karaoke"] : rawTags),
+    tags: classifyGenres([...rawTags, ...MODES.filter(m => artistTag(m.tag).test(o.artist)).map(m => m.tag)]),
     tix: isTicketed(rawTags),
   };
 }
@@ -412,6 +435,7 @@ const KARAOKE_TYPO = /^[kc]a?r+[aeiouy]{1,3}k+[aeiy]{0,2}$/;
 const searchWords = () =>
   term
     .toLowerCase()
+    .replace(/\bopen-?mic/g, "open mic")
     .split(/\s+/)
     .filter(Boolean)
     .map(w => (KARAOKE_TYPO.test(w) ? "karaoke" : w));
@@ -447,6 +471,8 @@ const ICONS = {
   pencil: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></g>',
   topa: '<text x="12" y="15.5" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" font-weight="600" letter-spacing=".3">TOPA</text>',
   mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  // open mic: a mic on a stand
+  omic: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="6" r="3.5"/><path d="M12 9.5V20M7.5 20.5h9"/></g>',
   install:
     '<path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',
   share:
@@ -827,7 +853,9 @@ function searchIdeas() {
   const chips = l => l.map(x => `<button class="chip" data-term="${esc(x)}">${esc(x)}</button>`).join("");
   const towns = top(e => (e.city ? [e.city] : []), 8),
     genres = top(e => e.tags, 8);
-  if (!genres.includes("karaoke") && EVENTS.some(e => isStillOn(e) && e.tags.includes("karaoke"))) genres.push("karaoke");
+  MODES.forEach(({ tag }) => {
+    if (!genres.includes(tag) && EVENTS.some(e => isStillOn(e) && e.tags.includes(tag))) genres.push(tag);
+  });
   return (
     (towns.length ? `<h2 class="dh">Towns</h2><div class="ideas">${chips(towns)}</div>` : "") +
     (genres.length ? `<h2 class="dh">Genres</h2><div class="ideas">${chips(genres)}</div>` : "")
@@ -1342,13 +1370,13 @@ const backHome = page =>
     : `<span class="mgap"></span>`;
 
 // Home row
-const homeRow = (e, withDay, mic) => {
+const homeRow = (e, withDay, mode) => {
   const d = new Date(e.start);
   const day = !withDay ? "" : sameDay(d, NOW) ? showDayWord(e) : `${weekdayLabel(e)} ${d.getMonth() + 1}/${d.getDate()}`;
   const faveVenue = withDay && SAVED.venues.includes(e.venue) && !SAVED.bands.includes(bandName(e));
   return (
     `<div class="rw hrow${e.cancelled ? " off" : ""}" data-show="${e.id}">` +
-    (mic ? `<div class="art kart">${svg("mic")}</div>` : art(bandName(e))) +
+    (mode ? `<div class="art kart${mode.art}">${svg(mode.icon)}</div>` : art(bandName(e))) +
     `<div class="rb"><b>${esc(e.artist)}</b><span class="vmeta">${esc(venueLabel(e))}${e.city ? " · " + esc(e.city) : ""}</span>` +
     `${faveVenue ? `<i class="fvtag">★ Fave venue</i>` : ""}</div>` +
     `<div class="hwhen">${day ? `<small>${day}</small>` : ""}<b>${timeLabel(e)}</b></div></div>`
@@ -1371,9 +1399,9 @@ function featuredCard() {
   );
 }
 
-// Home karaoke: the next 7 days, one night at a time
-function karaokeWeek(soon) {
-  const L = soon.filter(e => e.tags.includes("karaoke"));
+// Home mode: the next 7 days, one night at a time
+function modeWeek(soon, m) {
+  const L = soon.filter(e => e.tags.includes(m.tag));
   if (!L.length) return "";
   const days = [...Array(7)].map((_, i) => {
     const d = dayStart(NOW);
@@ -1382,22 +1410,25 @@ function karaokeWeek(soon) {
   });
   const wd = (d, long) => d.toLocaleDateString("en-US", { weekday: long ? "long" : "short" });
   const on = days.map(d => L.filter(e => sameDay(new Date(e.start), d)));
+  const kday = mday[m.tag] || 0;
   const sel = on[kday] || [];
   const next = on.findIndex((l, i) => i > kday && l.length);
   const tiles = days
     .map(
       (d, i) =>
-        `<button class="kday${i === kday ? " on" : ""}${on[i].length ? " has" : ""}" data-kday="${i}" ` +
-        `aria-label="${wd(d, true)} ${d.getDate()}, ${on[i].length ? countLabel(on[i].length, "karaoke night") : "no karaoke"}">` +
+        `<button class="kday${i === kday ? " on" : ""}${on[i].length ? " has" : ""}" data-kday="${i}" data-mode="${m.tag}" ` +
+        `aria-label="${wd(d, true)} ${d.getDate()}, ${on[i].length ? countLabel(on[i].length, m.one) : "no " + m.tag}">` +
         `<small>${wd(d).toUpperCase()}</small><b>${d.getDate()}</b><i></i></button>`,
     )
     .join("");
   const body = sel.length
-    ? `<div class="hlist">${sel.map(e => homeRow(e, true, true)).join("")}</div>`
-    : `<p class="hempty">No karaoke ${kday ? "on " + wd(days[kday], true) : todayWord().toLowerCase()} yet.` +
-      (next > 0 ? ` <button class="hmore" data-kday="${next}">Next: ${wd(days[next], true)} ›</button>` : "") +
+    ? `<div class="hlist">${sel.map(e => homeRow(e, true, m)).join("")}</div>`
+    : `<p class="hempty">No ${m.tag} ${kday ? "on " + wd(days[kday], true) : todayWord().toLowerCase()} yet.` +
+      (next > 0
+        ? ` <button class="hmore" data-kday="${next}" data-mode="${m.tag}">Next: ${wd(days[next], true)} ›</button>`
+        : "") +
       `</p>`;
-  return homeHead("Karaoke this week", true, "data-kall") + `<div class="kdays">${tiles}</div>` + body;
+  return homeHead(m.title, true, `data-kall="${m.tag}"`) + `<div class="kdays">${tiles}</div>` + body;
 }
 
 // one row per band, max 2 from faved venues
@@ -1427,16 +1458,16 @@ const greeting = () => (store.get(GREET_KEY) || "").trim() || timeGreeting();
 function homePage() {
   const soon = EVENTS.filter(isStillOn);
   const faves = faveNext(soon).slice(0, 5);
-  const kon = karaokeOn();
+  const modes = MODES.filter(modeOn);
   const tonight = soon.filter(
-    e => sameDay(new Date(e.start), NOW) && !faves.includes(e) && !(kon && e.tags.includes("karaoke")),
+    e => sameDay(new Date(e.start), NOW) && !faves.includes(e) && !modes.some(m => e.tags.includes(m.tag)),
   );
   const left =
     homeHead("Your faves are playing", faves.length, 'data-v="Faves" data-fromhome') +
     (faves.length
       ? `<div class="hlist">${faves.map(e => homeRow(e, true)).join("")}</div>`
       : `<p class="hempty">Tap ☆ on a band or venue and their next shows magically show up here.</p>`) +
-    (kon ? karaokeWeek(soon) : "") +
+    modes.map(m => modeWeek(soon, m)).join("") +
     featuredCard();
   const right =
     homeHead(todayWord(), tonight.length, 'data-v="Shows" data-fromhome') +
@@ -2233,10 +2264,16 @@ function settingsHtml() {
     `<span class="aseg">${["Shows", "Home"]
       .map(k => `<button data-start="${k}" class="${(store.get(START_KEY) || "Shows") === k ? "on" : ""}">${k}</button>`)
       .join("")}</span></div>` +
-    `<div class="aset">${svg("mic")}<span><b>Karaoke mode</b><small>Show all karaoke listings in Home</small></span>` +
-    `<span class="aseg">${["Off", "On"]
-      .map(k => `<button data-kmode="${k}" class="${karaokeOn() === (k === "On") ? "on" : ""}">${k}</button>`)
-      .join("")}</span></div>` +
+    MODES.map(
+      m =>
+        `<div class="aset">${svg(m.icon)}<span><b>${m.name} mode</b><small>Show all ${m.tag} listings in Home</small></span>` +
+        `<span class="aseg">${["Off", "On"]
+          .map(
+            k =>
+              `<button data-kmode="${k}" data-mode="${m.tag}" class="${modeOn(m) === (k === "On") ? "on" : ""}">${k}</button>`,
+          )
+          .join("")}</span></div>`,
+    ).join("") +
     (app ? `<div class="abigs one">${app}</div>` : "") +
     `<div class="agos">` +
     go(" data-about-add", "at", "Add to TOPA", "Shows, bands, venues") +
@@ -2447,19 +2484,19 @@ document.body.onclick = ev => {
     return;
   }
   if (d.kmode) {
-    store.set(KARAOKE_KEY, d.kmode === "On");
+    store.set(MODES.find(m => m.tag === d.mode).key, d.kmode === "On");
     t.parentNode.querySelectorAll("button").forEach(b => b.classList.toggle("on", b === t));
-    kday = 0;
+    mday[d.mode] = 0;
     if (view === "Home") render();
     return;
   }
   if (d.kday !== undefined) {
-    kday = +d.kday;
+    mday[d.mode] = +d.kday;
     return render();
   }
   if (d.kall !== undefined) {
     fromHome = true;
-    term = "karaoke";
+    term = d.kall;
     searchOpen = true;
     return go("Shows");
   }

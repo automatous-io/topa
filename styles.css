@@ -4658,6 +4658,9 @@ i.newtag,
   background: radial-gradient(circle at 30% 25%, #c22c7a, #4a1470);
   color: #fff;
 }
+.art.kart.oart {
+  background: radial-gradient(circle at 30% 25%, #e8962e, #7a2a12);
+}
 .art.kart svg {
   width: 50%;
   height: 50%;

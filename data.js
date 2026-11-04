@@ -91,4 +91,6 @@ const GENRE_FALLBACK = {
   tribute: "tribute",
   surf: "surf",
   karaoke: "karaoke",
+  "open mic": "open mic",
+  openmic: "open mic",
 };

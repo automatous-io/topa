@@ -1,8 +1,14 @@
 {
   "name": "Unkle Monkey",
   "aliases": [],
-  "genres": [],
+  "genres": [
+    "singer-songwriter",
+    "rock",
+    "pop"
+  ],
   "town": "",
+  "bio": "Unkle Monkey is a Southern California band led by a singer-songwriter who calls himself a troubadour with over 500 songs, a traveler and a sailor. The band plays harbor shows around Ventura County.",
+  "bio_source": "Written by TOPA from @unklemonkey.",
   "links": {
     "instagram": "https://instagram.com/unklemonkey"
   },

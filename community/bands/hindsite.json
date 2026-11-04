@@ -3,11 +3,17 @@
   "aliases": [],
   "genres": [
     "covers",
-    "pop"
+    "pop",
+    "dance",
+    "r&b"
   ],
-  "town": "",
+  "town": "Los Angeles",
+  "bio": "HindSite is a Los Angeles-area Top 40 cover band that has been playing since 1998. Its sets take in pop, R&B, Latin music and hip-hop, and it plays weddings and events as well as club shows.",
+  "bio_source": "Written by TOPA from @hindsiteband and thenextshow.com.",
   "links": {
-    "instagram": "https://instagram.com/hindsiteband"
+    "website": "https://www.thenextshow.com",
+    "instagram": "https://instagram.com/hindsiteband",
+    "facebook": "https://facebook.com/hindsiteband"
   },
   "apple": "none",
   "photo": "",

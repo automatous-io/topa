@@ -2,12 +2,15 @@
   "name": "The Grizwalds",
   "aliases": [],
   "genres": [
+    "covers",
     "rock",
+    "r&b",
     "funk",
-    "disco",
-    "covers"
+    "disco"
   ],
   "town": "Los Angeles",
+  "bio": "The Grizwalds are an LA-area party band playing rock, R&B, funk and disco.",
+  "bio_source": "Written by TOPA from @therealgrizwalds.",
   "links": {
     "instagram": "https://instagram.com/therealgrizwalds"
   },

@@ -4,10 +4,20 @@
     "Adam G",
     "Adam Giacopuzzi"
   ],
-  "genres": [],
+  "genres": [
+    "covers",
+    "rock",
+    "pop",
+    "acoustic"
+  ],
   "town": "Camarillo",
+  "bio": "AdamG is a Southern California singer and guitarist who plays rock and pop covers, mostly from the 1990s and 2000s, in solo acoustic sets at pubs, breweries and restaurants around Ventura County. He also fronts the 90s rock band Four Way Stereo.",
+  "bio_source": "Written by TOPA from adamgmusic.com.",
   "links": {
-    "website": "https://adamgmusic.com"
+    "website": "https://adamgmusic.com",
+    "instagram": "https://instagram.com/adamgmusicofficial",
+    "facebook": "https://facebook.com/adamgmusic",
+    "youtube": "https://www.youtube.com/@AdamGMusicOfficial"
   },
   "apple": "",
   "photo": "",

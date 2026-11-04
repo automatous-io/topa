@@ -2,11 +2,16 @@
   "name": "Michael Russeck",
   "aliases": [],
   "genres": [
-    "piano"
+    "piano",
+    "singer-songwriter"
   ],
   "town": "",
+  "bio": "Michael Russeck is a keyboard player and songwriter who performs solo, as a duo and with a band, and has released his own recordings.",
+  "bio_source": "Written by TOPA from michaelrusseck.com and @michaelrusseck.",
   "links": {
-    "instagram": "https://instagram.com/michaelrusseck"
+    "website": "http://www.michaelrusseck.com",
+    "instagram": "https://instagram.com/michaelrusseck",
+    "youtube": "https://www.youtube.com/user/MichaelRusseck"
   },
   "apple": "",
   "photo": "",

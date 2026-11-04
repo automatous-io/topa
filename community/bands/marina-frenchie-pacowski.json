@@ -3,11 +3,18 @@
   "aliases": [],
   "genres": [
     "jazz",
-    "piano"
+    "piano",
+    "vocalist",
+    "standards"
   ],
-  "town": "",
+  "town": "Los Angeles",
+  "bio": "Marina \"Frenchie\" Pacowski is a Los Angeles concert pianist and jazz vocalist, raised in Biarritz, France. Her sets mix Great American Songbook standards, bebop and scat singing with French songs, bossa novas and ballads. Her debut jazz album Inner Urge came out in 2023.",
+  "bio_source": "Written by TOPA from marinapacowski.com.",
   "links": {
-    "instagram": "https://instagram.com/frenchiemarina"
+    "website": "https://www.marinapacowski.com",
+    "instagram": "https://instagram.com/frenchiemarina",
+    "facebook": "https://www.facebook.com/marina.pacowski",
+    "youtube": "https://www.youtube.com/user/marinapaco"
   },
   "apple": "",
   "photo": "",

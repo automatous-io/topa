@@ -2,11 +2,18 @@
   "name": "Patti Zlaket",
   "aliases": [],
   "genres": [
-    "singer-songwriter"
+    "singer-songwriter",
+    "piano"
   ],
   "town": "",
+  "bio": "Patti Zlaket is a singer-songwriter and pianist who grew up in Tucson and lives in Southern California after years in Los Angeles and Nashville. She has toured the U.S. and U.K., and her album Dance Again came out in 2026.",
+  "bio_source": "Written by TOPA from pattizlaket.com.",
   "links": {
-    "instagram": "https://instagram.com/pattizlaketofficial"
+    "website": "https://pattizlaket.com",
+    "instagram": "https://instagram.com/pattizlaketofficial",
+    "facebook": "https://www.facebook.com/pattizlaketofficial",
+    "bandcamp": "https://pattizlaket.bandcamp.com",
+    "spotify": "https://open.spotify.com/artist/4qftEj2NIzZmt6bzFD8WWa"
   },
   "apple": "80107206",
   "photo": "",

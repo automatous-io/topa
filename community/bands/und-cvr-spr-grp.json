@@ -1,13 +1,21 @@
 {
   "name": "UND CVR SPR GRP",
-  "aliases": [],
+  "aliases": [
+    "Undercover Supergroup"
+  ],
   "genres": [
+    "covers",
+    "dance",
     "pop",
     "rock"
   ],
   "town": "Ventura",
+  "bio": "UND CVR SPR GRP (Undercover Supergroup) is a Ventura cover band that calls itself a live band jukebox, playing dance pop and groove rock hits from the 1950s through the 2000s.",
+  "bio_source": "Written by TOPA from ndr-cvr.com and @undercover.supergroup.",
   "links": {
-    "instagram": "https://instagram.com/undercover.supergroup"
+    "website": "https://www.ndr-cvr.com",
+    "instagram": "https://instagram.com/undercover.supergroup",
+    "facebook": "https://www.facebook.com/UnderCover.SuperGroup"
   },
   "apple": "",
   "photo": "",

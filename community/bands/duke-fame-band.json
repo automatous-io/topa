@@ -2,10 +2,12 @@
   "name": "Duke Fame Band",
   "aliases": [],
   "genres": [
-    "rock",
+    "classic rock",
     "covers"
   ],
-  "town": "",
+  "town": "Simi Valley",
+  "bio": "",
+  "bio_source": "",
   "links": {
     "instagram": "https://instagram.com/duke_fame_band"
   },

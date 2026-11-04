@@ -4,11 +4,17 @@
     "Keith St John & Rowan Robertson (of Dio)"
   ],
   "genres": [
-    "rock"
+    "rock",
+    "metal",
+    "classic rock"
   ],
-  "town": "",
+  "town": "Los Angeles",
+  "bio": "Keith St John is a Los Angeles singer and songwriter whose bio ties his voice to hard rock and heavy metal. He has fronted Burning Rain, Montrose and Kingdom Come and produces the Ronnie Montrose Remembered shows.",
+  "bio_source": "Written by TOPA from keithstjohn.com.",
   "links": {
-    "instagram": "https://instagram.com/keith_st_john"
+    "website": "https://www.keithstjohn.com",
+    "instagram": "https://instagram.com/keith_st_john",
+    "youtube": "https://www.youtube.com/channel/UCOq07o0UwrcwmFwqTS3kFFg"
   },
   "apple": "",
   "photo": "",

@@ -2,10 +2,13 @@
   "name": "Bad Habit",
   "aliases": [],
   "genres": [
+    "covers",
     "80s",
-    "covers"
+    "90s"
   ],
-  "town": "",
+  "town": "Simi Valley",
+  "bio": "",
+  "bio_source": "",
   "links": {
     "instagram": "https://instagram.com/bad_habit_band"
   },

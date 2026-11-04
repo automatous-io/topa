@@ -1,9 +1,17 @@
 {
   "name": "The Return of the Ghastlies",
-  "aliases": [],
-  "genres": [],
+  "aliases": [
+    "The Ghastlies"
+  ],
+  "genres": [
+    "covers",
+    "rock"
+  ],
   "town": "Los Angeles",
+  "bio": "The Ghastlies describe themselves as a gang brought together to rework the songs of their youth, with a violin in the line-up.",
+  "bio_source": "Written by TOPA from theghastlies.us and @wearetheghastlies.",
   "links": {
+    "website": "https://theghastlies.us",
     "instagram": "https://instagram.com/wearetheghastlies"
   },
   "apple": "",

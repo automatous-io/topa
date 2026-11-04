@@ -2,9 +2,13 @@
   "name": "Beau Red",
   "aliases": [],
   "genres": [
-    "singer-songwriter"
+    "country",
+    "blues",
+    "bluegrass"
   ],
   "town": "Ojai",
+  "bio": "",
+  "bio_source": "",
   "links": {
     "instagram": "https://instagram.com/beauredmusic"
   },

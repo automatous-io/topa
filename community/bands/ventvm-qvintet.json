@@ -1,8 +1,12 @@
 {
   "name": "Ventvm Qvintet",
   "aliases": [],
-  "genres": [],
+  "genres": [
+    "classical"
+  ],
   "town": "Los Angeles",
+  "bio": "",
+  "bio_source": "",
   "links": {
     "instagram": "https://instagram.com/ventvmqvintet"
   },

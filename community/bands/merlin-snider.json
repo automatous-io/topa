@@ -2,11 +2,17 @@
   "name": "Merlin Snider",
   "aliases": [],
   "genres": [
-    "singer-songwriter"
+    "singer-songwriter",
+    "folk"
   ],
-  "town": "",
+  "town": "Ventura County",
+  "bio": "Merlin Snider is a Ventura County folk singer-songwriter and guitarist who sums up his work as \"I write songs. I sing them. I tell stories.\" His songs blend American roots music from folk and blues to rock, gospel and jazz.",
+  "bio_source": "Written by TOPA from merlinsnider.com.",
   "links": {
-    "instagram": "https://instagram.com/merlintunes"
+    "website": "https://merlinsnider.com",
+    "instagram": "https://instagram.com/merlintunes",
+    "facebook": "https://www.facebook.com/MerlinSniderMusic",
+    "youtube": "https://www.youtube.com/channel/UC5W_aNkPxv0oNhRO_liU9ZA"
   },
   "apple": "305532814",
   "photo": "",

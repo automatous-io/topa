@@ -5,11 +5,18 @@
   ],
   "genres": [
     "jazz",
-    "classic rock"
+    "classic rock",
+    "covers"
   ],
-  "town": "",
+  "town": "Los Angeles",
+  "bio": "Nutty is a Los Angeles jazz group that describes itself as \"classic rock, all jazzed-up\", reworking classic rock songs as swinging jazz arrangements.",
+  "bio_source": "Written by TOPA from nuttyjazz.com.",
   "links": {
-    "instagram": "https://instagram.com/nuttytopcats"
+    "website": "https://www.nuttyjazz.com",
+    "instagram": "https://instagram.com/nuttyisclassicrockalljazzedup",
+    "facebook": "https://www.facebook.com/NuttyIsJetsetterJazz/",
+    "spotify": "https://open.spotify.com/artist/72Qk72Ic7jM1kxuLDi6DFe",
+    "youtube": "https://www.youtube.com/c/NUTTY-ClassicRockAllJazzedUp/featured"
   },
   "apple": "none",
   "photo": "",

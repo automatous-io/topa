@@ -1,10 +1,18 @@
 {
   "name": "Nikolay Sivchuk",
-  "aliases": [],
-  "genres": [],
-  "town": "",
+  "aliases": [
+    "Nikolai Sivchuk"
+  ],
+  "genres": [
+    "classical",
+    "accordion"
+  ],
+  "town": "Los Angeles",
+  "bio": "Nikolay Sivchuk is a Los Angeles concert bayanist, or button accordionist, and composer who won the Coupe Mondiale world accordion championship.",
+  "bio_source": "Written by TOPA from @nikolai_sivchuk.",
   "links": {
-    "instagram": "https://instagram.com/nikolai_sivchuk"
+    "instagram": "https://instagram.com/nikolai_sivchuk",
+    "youtube": "https://youtube.com/@nikolaysivchuk"
   },
   "apple": "1649519605",
   "photo": "",

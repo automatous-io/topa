@@ -1,12 +1,19 @@
 {
   "name": "Heavy Hitters",
-  "aliases": [],
+  "aliases": [
+    "Morie & The Heavy Hitters"
+  ],
   "genres": [
-    "reggae"
+    "reggae",
+    "soul"
   ],
   "town": "Ventura",
+  "bio": "The Heavy Hitters are a Ventura County reggae band formed in 2022 who blend traditional reggae with soul, R&B and neo-soul. Their album The Heavy Hitters came out in 2024.",
+  "bio_source": "Written by TOPA from heavyhitters.band and @theheavyhittersmusic.",
   "links": {
-    "instagram": "https://instagram.com/theheavyhittersmusic"
+    "website": "https://www.heavyhitters.band",
+    "instagram": "https://instagram.com/theheavyhittersmusic",
+    "facebook": "https://www.facebook.com/Morie-The-Heavy-Hitters-116570131030784"
   },
   "apple": "none",
   "photo": "",

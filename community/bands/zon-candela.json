@@ -1,10 +1,15 @@
 {
   "name": "Zon Candela",
   "aliases": [],
-  "genres": [],
-  "town": "",
+  "genres": [
+    "latin"
+  ],
+  "town": "Thousand Oaks",
+  "bio": "Zon Candela is a Ventura County band playing Latin music in Spanish, with videos of Selena tributes and zapateado sets.",
+  "bio_source": "Written by TOPA from @zoncandela and the band's YouTube channel.",
   "links": {
-    "instagram": "https://instagram.com/zoncandela"
+    "instagram": "https://instagram.com/zoncandela",
+    "youtube": "https://www.youtube.com/@zoncandela"
   },
   "apple": "",
   "photo": "",

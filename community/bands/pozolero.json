@@ -4,9 +4,12 @@
   "genres": [
     "punk"
   ],
-  "town": "",
+  "town": "Somis",
+  "bio": "Pozolero is a band from Somis, in Ventura County, with three demos on Bandcamp.",
+  "bio_source": "Written by TOPA from pozolero.bandcamp.com.",
   "links": {
-    "instagram": "https://instagram.com/pozolero805"
+    "instagram": "https://instagram.com/pozolero805",
+    "bandcamp": "https://pozolero.bandcamp.com"
   },
   "apple": "1726042423",
   "photo": "",

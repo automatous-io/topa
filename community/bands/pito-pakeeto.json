@@ -2,11 +2,17 @@
   "name": "Pito Pakeeto",
   "aliases": [],
   "genres": [
-    "punk"
+    "punk",
+    "hardcore",
+    "thrash",
+    "metal"
   ],
   "town": "Ventura",
+  "bio": "Pito Pakeeto is a Ventura band that calls itself a spontaneous project, with songs usually written on the spot and mostly improvised lyrics. Its Bandcamp tags run from hardcore punk to thrash metal.",
+  "bio_source": "Written by TOPA from pitopakeeto.bandcamp.com and @pitopakeeto.",
   "links": {
-    "instagram": "https://instagram.com/pitopakeeto"
+    "instagram": "https://instagram.com/pitopakeeto",
+    "bandcamp": "https://pitopakeeto.bandcamp.com"
   },
   "apple": "1715531946",
   "photo": "",

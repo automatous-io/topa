@@ -4,11 +4,18 @@
     "Billy Nation tribute to Billy Joel"
   ],
   "genres": [
-    "tribute"
+    "tribute",
+    "piano",
+    "pop"
   ],
-  "town": "",
+  "town": "San Diego",
+  "bio": "Billy Nation is a Billy Joel tribute show based in Southern California, performed fully live by a full band, that tours across North America.",
+  "bio_source": "Written by TOPA from billynationtribute.com.",
   "links": {
-    "instagram": "https://instagram.com/billynationtribute"
+    "website": "https://billynationtribute.com",
+    "instagram": "https://instagram.com/billynationtribute",
+    "facebook": "https://www.facebook.com/billynationtribute",
+    "youtube": "https://www.youtube.com/channel/UCOl0v4w-10r8vWSecfpcXyg"
   },
   "apple": "",
   "photo": "",

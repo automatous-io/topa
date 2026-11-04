@@ -1,10 +1,19 @@
 {
   "name": "Spencer the Gardener",
   "aliases": [],
-  "genres": [],
-  "town": "",
+  "genres": [
+    "latin",
+    "pop"
+  ],
+  "town": "Santa Barbara",
+  "bio": "",
+  "bio_source": "",
   "links": {
-    "instagram": "https://instagram.com/spencerthegardener"
+    "website": "https://www.spencerthegardener.com",
+    "instagram": "https://instagram.com/spencerthegardener",
+    "facebook": "https://www.facebook.com/spencerthegardener",
+    "spotify": "https://open.spotify.com/artist/72oOFGi5hVgyCD0Be0aE3J",
+    "youtube": "https://www.youtube.com/channel/UCSotdb9OsEKeOsnxVOKep5g"
   },
   "apple": "72981149",
   "photo": "",

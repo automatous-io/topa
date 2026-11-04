@@ -2,9 +2,14 @@
   "name": "The Human Collective",
   "aliases": [],
   "genres": [
-    "reggae"
+    "reggae",
+    "rock",
+    "punk",
+    "dub"
   ],
-  "town": "",
+  "town": "Ventura",
+  "bio": "The Human Collective, also known as THC, describe themselves as \"a reggae-rock-punky-dub sort of thing\" based in Ventura.",
+  "bio_source": "Written by TOPA from @thcthehumancollective.",
   "links": {
     "instagram": "https://instagram.com/thcthehumancollective"
   },

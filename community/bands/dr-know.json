@@ -2,11 +2,15 @@
   "name": "Dr. Know",
   "aliases": [],
   "genres": [
-    "punk"
+    "punk",
+    "hardcore"
   ],
   "town": "Oxnard",
+  "bio": "Dr. Know is an Oxnard punk band that has played Nardcore punk rock since 1981.",
+  "bio_source": "Written by TOPA from @officialdrknow2026.",
   "links": {
-    "instagram": "https://instagram.com/officialdrknow2026"
+    "instagram": "https://instagram.com/officialdrknow2026",
+    "facebook": "https://www.facebook.com/drknow2026"
   },
   "apple": "6853934",
   "photo": "",
